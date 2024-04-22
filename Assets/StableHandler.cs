@@ -15,9 +15,12 @@ public class StableHandler : StableDiffusionGenerator
     public string ip;
     public int port;
 
+    public string filename;
+
     public string prompt, negPrompt;
     public int width, height, steps, cfgScale, seed, lastSeed;
     public bool tilling, tileX, tileY;
+    public long generatedSeed;
 
 
     StableDiffusionConfiguration sdc;
@@ -59,7 +62,7 @@ public class StableHandler : StableDiffusionGenerator
     {
         
     }
-
+    
 
 
 
@@ -173,7 +176,7 @@ public class StableHandler : StableDiffusionGenerator
                         texture.LoadImage(imageData);
                         texture.Apply();
 
-                        LoadIntoMaterial(texture);
+                        //LoadIntoMaterial(texture);
                     }
 
                     // Read the generation info back (only seed should have changed, as the generation picked a particular seed)
@@ -194,4 +197,5 @@ public class StableHandler : StableDiffusionGenerator
         generating = false;
         yield return null;
     }
+    
 }
