@@ -24,6 +24,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Normal_Map:
+        m_Texture: {fileID: 2800000, guid: ece759e7736845144b1400dce8b67d4b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Texture2D:
         m_Texture: {fileID: 2800000, guid: 2c3eda3c6b54e26479ade129968962fb, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -52,6 +56,7 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _use_normal: 0
     m_Colors:
     - _position_offset: {r: 0, g: 0, b: 0, a: 0}
     - _scale: {r: 1, g: 1, b: 1, a: 0}

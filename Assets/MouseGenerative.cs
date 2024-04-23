@@ -4,6 +4,7 @@ using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting.Dependencies.Sqlite;
 
 public class MouseGenerative : MonoBehaviour
 {
@@ -90,6 +91,17 @@ public class MouseGenerative : MonoBehaviour
             mat.SetTexture("_Texture2D", matInfo.materials[matInfo.selectedId].GetTexture("_Texture2D"));
             mat.SetVector("_position_offset", matInfo.materials[matInfo.selectedId].GetVector("_position_offset"));
             mat.SetVector("_scale", matInfo.materials[matInfo.selectedId].GetVector("_scale"));
+
+            Texture norm = matInfo.materials[matInfo.selectedId].GetTexture("_Normal_Map");
+            if (norm != null)
+            {
+                mat.SetTexture("_Normal_Map", norm);
+                mat.SetFloat("_use_normal", 1);
+            }
+            else
+                mat.SetFloat("_use_normal", 0);
+
+
             matInfo.Changed.Invoke();
         }
     }

@@ -35,23 +35,23 @@ public class TileObject : MonoBehaviour
 
     public bool isNorthClosed()
     {
-        return northWall.active;
+        return northWall.activeInHierarchy;
     }
 
 
     public bool isEastClosed()
     {
-        return eastWall.active;
+        return eastWall.activeInHierarchy;
     }
 
     public bool isSouthClosed()
     {
-        return eastWall.active;
+        return eastWall.activeInHierarchy;
     }
 
     public bool isWestClosed()
     {
-        return westWall.active;
+        return westWall.activeInHierarchy;
     }
 
     public bool isClosed(Cardinal c)
@@ -59,16 +59,16 @@ public class TileObject : MonoBehaviour
         switch (c)
         {
             case Cardinal.NORTH:
-                return northWall.active;
+                return northWall.activeInHierarchy;
             
             case Cardinal.EAST:
-                return eastWall.active;
+                return eastWall.activeInHierarchy;
 
             case Cardinal.SOUTH:
-                return southWall.active;
+                return southWall.activeInHierarchy;
 
             case Cardinal.WEST:
-                return westWall.active;
+                return westWall.activeInHierarchy;
         }
         return false;
     }

@@ -15,7 +15,13 @@ public class MaterialSetter : MonoBehaviour
 
         matInfo.materials[matInfo.selectedId].SetTexture("_Texture2D", tex);
         if (norm != null)
-            matInfo.materials[matInfo.selectedId].SetTexture("_NormalMap", norm);
+        {
+            matInfo.materials[matInfo.selectedId].SetTexture("_Normal_Map", norm);
+            matInfo.materials[matInfo.selectedId].SetFloat("_use_normal", 1);
+        }
+        else
+            matInfo.materials[matInfo.selectedId].SetFloat("_use_normal", 0);
+
 
         matInfo.Changed.Invoke();
     }

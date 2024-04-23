@@ -1807,6 +1807,7 @@ MonoBehaviour:
   tileX: 1
   tileY: 1
   generatedSeed: 0
+  generateStart: 0
   selectedModel: 0
   selectedSampler: 0
 --- !u!4 &1032284313

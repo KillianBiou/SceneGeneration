@@ -22,6 +22,9 @@ public class StableHandler : StableDiffusionGenerator
     public bool tilling, tileX, tileY;
     public long generatedSeed;
 
+    public bool generateStart;
+    private bool generating;
+
 
     StableDiffusionConfiguration sdc;
 
@@ -46,21 +49,18 @@ public class StableHandler : StableDiffusionGenerator
     public int selectedModel, selectedSampler;
 
 
-
-
-    private bool generating;
-
-
     // Start is called before the first frame update
     void Start()
     {
-        
+        generateStart = false;
+        generating = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(generateStart && !generating)
+            StartCoroutine(GenerateAsync());
     }
     
 
@@ -161,8 +161,10 @@ public class StableHandler : StableDiffusionGenerator
                 // Decode the image from Base64 string into an array of bytes
                 byte[] imageData = Convert.FromBase64String(json.images[0]);
 
+
+
                 // Write it in the specified project output folder
-                using (FileStream imageFile = new FileStream(filename, FileMode.Create))
+                using (FileStream imageFile = new FileStream(filename + "_T.png", FileMode.Create))
                 {
                     yield return imageFile.WriteAsync(imageData, 0, imageData.Length);
                 }
@@ -170,7 +172,7 @@ public class StableHandler : StableDiffusionGenerator
                 try
                 {
                     // Read back the image into a texture
-                    if (File.Exists(filename))
+                    if (File.Exists(filename + "_T.png"))
                     {
                         Texture2D texture = new Texture2D(2, 2);
                         texture.LoadImage(imageData);
