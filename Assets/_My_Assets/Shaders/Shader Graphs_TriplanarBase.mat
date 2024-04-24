@@ -58,7 +58,9 @@ Material:
     - _QueueOffset: 0
     - _use_normal: 0
     m_Colors:
-    - _position_offset: {r: 0, g: 0, b: 0, a: 0}
+    - _Rotation: {r: 0, g: 0, b: 0, a: 0}
+    - _Scaling: {r: 1, g: 1, b: 1, a: 1}
+    - _position_offset: {r: 0, g: -4.94, b: 0, a: 0}
     - _scale: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &7486406194215592602

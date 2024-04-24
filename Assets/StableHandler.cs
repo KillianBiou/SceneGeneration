@@ -7,15 +7,52 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor;
+using UnityEngine.Events;
+
+
+
+
+
+
+[Serializable]
+public struct SdRequest
+{
+    public string directory, filename;
+
+    public string prompt, negPrompt;
+    public int width, height, steps, cfgScale, seed;
+    public bool tilling, tileX, tileY;
+
+    public SdRequest(string dir, string fn, string p, string np, int w, int h, int s, int cfg, int sid, bool t, bool tx, bool ty)
+    {
+        directory = dir;
+        filename = fn;
+        prompt = p;
+        negPrompt = np;
+        width = w;
+        height = h;
+        steps = s;
+        cfgScale = cfg;
+        seed = sid;
+        tilling = t;
+        tileX = tx;
+        tileY = ty;
+    }
+}
+
+
+
+
 
 public class StableHandler : StableDiffusionGenerator
 {
 
-    public string model;
-    public string ip;
-    public int port;
+    //public string model;
+    //public string ip;
+    //public int port;
 
-    public string filename;
+    public string directory, filename;
 
     public string prompt, negPrompt;
     public int width, height, steps, cfgScale, seed, lastSeed;
@@ -24,9 +61,19 @@ public class StableHandler : StableDiffusionGenerator
 
     public bool generateStart;
     private bool generating;
+    public UnityEvent FinishedGenerating;
 
 
-    StableDiffusionConfiguration sdc;
+    [HideInInspector]
+    public int selectedSampler = 0;
+    [HideInInspector]
+    public int selectedModel = 0;
+
+    public StableDiffusionConfiguration sdc;
+
+
+    private Queue<SdRequest> requests;
+
 
     public string[] modelsList
     {
@@ -46,23 +93,33 @@ public class StableHandler : StableDiffusionGenerator
             return sdc.samplers;
         }
     }
-    public int selectedModel, selectedSampler;
 
 
-    // Start is called before the first frame update
     void Start()
     {
         generateStart = false;
         generating = false;
+        requests = new Queue<SdRequest>();
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if(generateStart && !generating)
+        if (generateStart && !generating)
             StartCoroutine(GenerateAsync());
+        else if (generateStart && generating)
+        {
+            requests.Enqueue(new SdRequest(directory, filename, prompt, negPrompt, width, height, steps, cfgScale, seed, tilling, tileX, tileY));
+            generateStart = false;
+        }
+
+        if((!generateStart && !generating) && requests.Count != 0)
+            StartCoroutine(GenerateAsync(requests.Dequeue()));
     }
-    
+
+
+    public void RequestGeneration(SdRequest rq)
+    {
+        requests.Enqueue(rq);
+    }
 
 
 
@@ -70,6 +127,7 @@ public class StableHandler : StableDiffusionGenerator
     IEnumerator GenerateAsync()
     {
         generating = true;
+        generateStart = false;
 
         // Set the model parameters
         yield return sdc.SetModelAsync(modelsList[selectedModel]);
@@ -120,8 +178,6 @@ public class StableHandler : StableDiffusionGenerator
             Debug.LogError(e.Message + "\n\n" + e.StackTrace);
         }
 
-
-
         // Read the output of generation
         if (httpWebRequest != null)
         {
@@ -130,10 +186,10 @@ public class StableHandler : StableDiffusionGenerator
 
             while (!webResponse.IsCompleted)
             {
-                if (sdc.settings.useAuth && !sdc.settings.user.Equals("") && !sdc.settings.pass.Equals(""))
+                /*if (sdc.settings.useAuth && !sdc.settings.user.Equals("") && !sdc.settings.pass.Equals(""))
                     UpdateGenerationProgressWithAuth();
                 else
-                    UpdateGenerationProgress();
+                    UpdateGenerationProgress();*/
 
                 yield return new WaitForSeconds(0.5f);
             }
@@ -164,7 +220,7 @@ public class StableHandler : StableDiffusionGenerator
 
 
                 // Write it in the specified project output folder
-                using (FileStream imageFile = new FileStream(filename + "_T.png", FileMode.Create))
+                using (FileStream imageFile = new FileStream(Application.dataPath + directory + filename + ".png", FileMode.Create))
                 {
                     yield return imageFile.WriteAsync(imageData, 0, imageData.Length);
                 }
@@ -172,13 +228,11 @@ public class StableHandler : StableDiffusionGenerator
                 try
                 {
                     // Read back the image into a texture
-                    if (File.Exists(filename + "_T.png"))
+                    if (File.Exists(Application.dataPath + directory + filename + ".png"))
                     {
                         Texture2D texture = new Texture2D(2, 2);
                         texture.LoadImage(imageData);
                         texture.Apply();
-
-                        //LoadIntoMaterial(texture);
                     }
 
                     // Read the generation info back (only seed should have changed, as the generation picked a particular seed)
@@ -194,10 +248,162 @@ public class StableHandler : StableDiffusionGenerator
                 {
                     Debug.LogError(e.Message + "\n\n" + e.StackTrace);
                 }
+
+                FinishedGenerating.Invoke();
+                EditorUtility.ClearProgressBar();
             }
         }
         generating = false;
         yield return null;
     }
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    IEnumerator GenerateAsync(SdRequest rq)
+    {
+        generating = true;
+
+        // Set the model parameters
+        yield return sdc.SetModelAsync(modelsList[selectedModel]);
+
+        // Generate the image
+        HttpWebRequest httpWebRequest = null;
+        try
+        {
+            // Make a HTTP POST request to the Stable Diffusion server
+            httpWebRequest = (HttpWebRequest)WebRequest.Create(sdc.settings.StableDiffusionServerURL + sdc.settings.TextToImageAPI);
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+
+            // add auth-header to request
+            if (sdc.settings.useAuth && !sdc.settings.user.Equals("") && !sdc.settings.pass.Equals(""))
+            {
+                httpWebRequest.PreAuthenticate = true;
+                byte[] bytesToEncode = Encoding.UTF8.GetBytes(sdc.settings.user + ":" + sdc.settings.pass);
+                string encodedCredentials = Convert.ToBase64String(bytesToEncode);
+                httpWebRequest.Headers.Add("Authorization", "Basic " + encodedCredentials);
+            }
+
+            // Send the generation parameters along with the POST request
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                SDParamsInTxt2Img sd = new SDParamsInTxt2Img();
+                sd.prompt = rq.prompt;
+                sd.negative_prompt = rq.negPrompt;
+                sd.steps = rq.steps;
+                sd.cfg_scale = rq.cfgScale;
+                sd.width = rq.width;
+                sd.height = rq.height;
+                sd.seed = rq.seed;
+                sd.tiling = rq.tilling;
+
+                if (selectedSampler >= 0 && selectedSampler < samplersList.Length)
+                    sd.sampler_name = samplersList[selectedSampler];
+
+                // Serialize the input parameters
+                string json = JsonConvert.SerializeObject(sd);
+
+                // Send to the server
+                streamWriter.Write(json);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message + "\n\n" + e.StackTrace);
+        }
+
+        // Read the output of generation
+        if (httpWebRequest != null)
+        {
+            // Wait that the generation is complete before procedding
+            Task<WebResponse> webResponse = httpWebRequest.GetResponseAsync();
+
+            while (!webResponse.IsCompleted)
+            {
+                /*if (sdc.settings.useAuth && !sdc.settings.user.Equals("") && !sdc.settings.pass.Equals(""))
+                    UpdateGenerationProgressWithAuth();
+                else
+                    UpdateGenerationProgress();*/
+
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            // Stream the result from the server
+            var httpResponse = webResponse.Result;
+
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                // Decode the response as a JSON string
+                string result = streamReader.ReadToEnd();
+
+                // Deserialize the JSON string into a data structure
+                SDResponseTxt2Img json = JsonConvert.DeserializeObject<SDResponseTxt2Img>(result);
+
+                // If no image, there was probably an error so abort
+                if (json.images == null || json.images.Length == 0)
+                {
+                    Debug.LogError("No image was return by the server. This should not happen. Verify that the server is correctly setup.");
+
+                    generating = false;
+                    yield break;
+                }
+
+                // Decode the image from Base64 string into an array of bytes
+                byte[] imageData = Convert.FromBase64String(json.images[0]);
+
+
+                if(!Directory.Exists(Application.dataPath + rq.directory))
+                    Directory.CreateDirectory(Application.dataPath + rq.directory);
+
+                // Write it in the specified project output folder
+                using (FileStream imageFile = new FileStream(Application.dataPath + rq.directory + rq.filename, FileMode.Create))
+                {
+                    yield return imageFile.WriteAsync(imageData, 0, imageData.Length);
+                }
+
+                try
+                {
+                    // Read back the image into a texture
+                    if (File.Exists(Application.dataPath + rq.directory + rq.filename))
+                    {
+                        Texture2D texture = new Texture2D(2, 2);
+                        texture.LoadImage(imageData);
+                        texture.Apply();
+                    }
+
+                    // Read the generation info back (only seed should have changed, as the generation picked a particular seed)
+                    if (json.info != "")
+                    {
+                        SDParamsOutTxt2Img info = JsonConvert.DeserializeObject<SDParamsOutTxt2Img>(json.info);
+
+                        // Read the seed that was used by Stable Diffusion to generate this result
+                        generatedSeed = info.seed;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e.Message + "\n\n" + e.StackTrace);
+                }
+
+                FinishedGenerating.Invoke();
+                EditorUtility.ClearProgressBar();
+            }
+        }
+        generating = false;
+        yield return null;
+    }
+
 }

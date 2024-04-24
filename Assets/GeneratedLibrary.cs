@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
 using TMPro.EditorUtilities;
+using UnityEditor;
 
 public class GeneratedLibrary : MonoBehaviour
 {
@@ -17,6 +18,37 @@ public class GeneratedLibrary : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
+    {
+        LoadLibrary();
+
+
+        StableHandler sdh;
+        if ((sdh = FindFirstObjectByType<StableHandler>()) != null)
+            sdh.FinishedGenerating.AddListener(ReloadLibrary);
+    }
+
+    public void ApplyTexture()
+    {
+        if (selectedMaterial == null || selectedMaterial.selectedId ==-1)
+            return;
+
+        selectedMaterial.materials[selectedMaterial.selectedId].SetTexture("_Texture2D", texture);
+        if(normal != null)
+            selectedMaterial.materials[selectedMaterial.selectedId].SetTexture("_Normal_Map", normal);
+    }
+
+    public void ReloadLibrary()
+    {
+        for (int i = transform.childCount; i > 0; i--)
+        {
+            Destroy(transform.GetChild(i - 1).gameObject);
+        }
+
+        LoadLibrary();
+    }
+
+
+    public void LoadLibrary()
     {
         DirectoryInfo dir = new DirectoryInfo(Application.dataPath + libraryName);
         FileInfo[] info = dir.GetFiles("*_T.png");
@@ -42,17 +74,6 @@ public class GeneratedLibrary : MonoBehaviour
             last.transform.GetChild(0).GetComponent<RawImage>().texture = tex;
 
             last.transform.SetParent(transform, false);
-            //last.GetComponent<Button>().onClick.AddListener(ApplyTexture);
         }
-    }
-
-    public void ApplyTexture()
-    {
-        if (selectedMaterial == null || selectedMaterial.selectedId ==-1)
-            return;
-
-        selectedMaterial.materials[selectedMaterial.selectedId].SetTexture("_Texture2D", texture);
-        if(normal != null)
-            selectedMaterial.materials[selectedMaterial.selectedId].SetTexture("_Normal_Map", normal);
     }
 }

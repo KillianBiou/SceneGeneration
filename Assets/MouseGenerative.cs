@@ -90,10 +90,11 @@ public class MouseGenerative : MonoBehaviour
         {
             mat.SetTexture("_Texture2D", matInfo.materials[matInfo.selectedId].GetTexture("_Texture2D"));
             mat.SetVector("_position_offset", matInfo.materials[matInfo.selectedId].GetVector("_position_offset"));
-            mat.SetVector("_scale", matInfo.materials[matInfo.selectedId].GetVector("_scale"));
+            mat.SetVector("_Scaling", matInfo.materials[matInfo.selectedId].GetVector("_Scaling"));
+            mat.SetVector("_Rotation", matInfo.materials[matInfo.selectedId].GetVector("_Rotation"));
 
             Texture norm = matInfo.materials[matInfo.selectedId].GetTexture("_Normal_Map");
-            if (norm != null)
+            if (matInfo.materials[matInfo.selectedId].GetFloat("_use_normal") == 1.0)
             {
                 mat.SetTexture("_Normal_Map", norm);
                 mat.SetFloat("_use_normal", 1);
