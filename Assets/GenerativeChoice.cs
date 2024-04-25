@@ -31,7 +31,7 @@ public class GenerativeChoice : MonoBehaviour
     {
         for (int i = uiContainer.transform.childCount; i > 0; i--)
         {
-            Destroy(transform.GetChild(i - 1).gameObject);
+            Destroy(uiContainer.transform.GetChild(i - 1).gameObject);
         }
 
         DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/GeneratedData/" + folderName);
@@ -50,6 +50,7 @@ public class GenerativeChoice : MonoBehaviour
         if (!sdh)
             return;
 
+        ClearPicker();
 
         rq.directory = folderName +"/";
         for (int i = 0; i < n; i++)
@@ -69,6 +70,11 @@ public class GenerativeChoice : MonoBehaviour
     {
         if (!sdh)
             return;
+
+        ClearPicker();
+
+        if (!folderName.EndsWith('/'))
+            folderName = folderName + '/';
 
 
         req.directory = "/GeneratedData/" + folderName + "/";

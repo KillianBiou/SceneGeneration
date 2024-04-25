@@ -219,6 +219,8 @@ public class StableHandler : StableDiffusionGenerator
 
 
 
+                directory = PathFixer(directory);
+
                 // Write it in the specified project output folder
                 using (FileStream imageFile = new FileStream(Application.dataPath + directory + filename + ".png", FileMode.Create))
                 {
@@ -256,15 +258,6 @@ public class StableHandler : StableDiffusionGenerator
         generating = false;
         yield return null;
     }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -364,6 +357,7 @@ public class StableHandler : StableDiffusionGenerator
                 // Decode the image from Base64 string into an array of bytes
                 byte[] imageData = Convert.FromBase64String(json.images[0]);
 
+                rq.directory = PathFixer(rq.directory);
 
                 if(!Directory.Exists(Application.dataPath + rq.directory))
                     Directory.CreateDirectory(Application.dataPath + rq.directory);
@@ -405,5 +399,21 @@ public class StableHandler : StableDiffusionGenerator
         generating = false;
         yield return null;
     }
+
+
+    private string PathFixer(string s)
+    {
+        string fix = s;
+
+        if (!s.StartsWith('/'))
+            fix = "/" + fix;
+
+        if (!s.EndsWith('/'))
+            fix = fix + "/";
+
+        return fix;
+    }
+
+
 
 }
