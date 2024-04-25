@@ -47,7 +47,7 @@ public class GenerativeChoice : MonoBehaviour
 
     public void GenerateChoices(SdRequest rq, int n)
     {
-        if (!sdh)
+        if (!sdh || pending)
             return;
 
         ClearPicker();
