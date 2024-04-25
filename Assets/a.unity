@@ -486,8 +486,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   images:
   - {fileID: 2800000, guid: 183d40b73a4a020409e954441d587172, type: 3}
-  - {fileID: 2800000, guid: ac758a3f87c093a439e8fa180d2d7886, type: 3}
-  - {fileID: 2800000, guid: e65c8861bcd6fda4c9f609ada4052727, type: 3}
+  - {fileID: 2800000, guid: c56ed085cbee5d743b34ee2ea51fbe3a, type: 3}
+  - {fileID: 2800000, guid: 1b1ad7b3f1dc4454c8217ba8aaa54a3d, type: 3}
+  - {fileID: 2800000, guid: fd125aea7472c6c4f866b994c6d00608, type: 3}
+  - {fileID: 2800000, guid: 75870df4be6b78f4795881a3581ed54f, type: 3}
+  - {fileID: 2800000, guid: fd1a948c36dcb1d4fb15378b67392aee, type: 3}
+  - {fileID: 2800000, guid: fd880e1f2c28ba5499308045ba98bde4, type: 3}
   generatedMat: {fileID: -876546973899608171, guid: fba9bc3204083104cbce69129c9d0d64,
     type: 3}
   debugObject: {fileID: 0}
@@ -671,6 +675,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3884133589274479110, guid: 0633bed2e2396b47fb15e8154b69cc2a,
         type: 3}
+      propertyPath: noRemoveBg
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3884133589274479110, guid: 0633bed2e2396b47fb15e8154b69cc2a,
+        type: 3}
       propertyPath: pythonPath
       value: C:\Users\light\AppData\Local\Programs\Python\Python310\python
       objectReference: {fileID: 0}
@@ -688,7 +697,7 @@ PrefabInstance:
         type: 3}
       propertyPath: images.Array.data[0]
       value: 
-      objectReference: {fileID: 2800000, guid: 3134fce1567840448b1a7cb29e243272, type: 3}
+      objectReference: {fileID: 2800000, guid: 0b9939c81a37d674caaf63311882d558, type: 3}
     - target: {fileID: 3884133589274479110, guid: 0633bed2e2396b47fb15e8154b69cc2a,
         type: 3}
       propertyPath: marchingCubesResolution
@@ -892,7 +901,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 381.5919, y: 76.336}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2052733549
