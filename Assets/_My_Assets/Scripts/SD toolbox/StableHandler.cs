@@ -61,11 +61,14 @@ public class StableHandler : StableDiffusionGenerator
 
     public bool generateStart;
     private bool generating;
+    
+    
+    [HideInInspector]
     public UnityEvent FinishedGenerating;
 
 
     [HideInInspector]
-    public int selectedSampler = 0;
+    public int selectedSampler = 4;
     [HideInInspector]
     public int selectedModel = 0;
 
@@ -84,6 +87,7 @@ public class StableHandler : StableDiffusionGenerator
             return sdc.modelNames;
         }
     }
+
     public string[] samplersList
     {
         get
@@ -260,7 +264,27 @@ public class StableHandler : StableDiffusionGenerator
     }
 
 
+    public void Generate()
+    {
+        StartCoroutine(GenerateAsync());
+    }
 
+    public void LoadModel(string name)
+    {
+        int i = 0;
+        foreach (string s in modelsList)
+        {
+            if (s == name)
+                selectedModel = i;
+
+            i++;
+        }
+    }
+
+    public void LoadModel(int i)
+    {
+        selectedModel = i;
+    }
 
 
 

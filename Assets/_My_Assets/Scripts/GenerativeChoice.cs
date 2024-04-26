@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,8 +10,11 @@ public class GenerativeChoice : MonoBehaviour
 {
 
     public string folderName;
-
     public GameObject uiContainer, buttonChoice;
+    [SerializeField]
+    private TMP_Text title;
+
+
 
 
     private StableHandler sdh;
@@ -41,6 +46,8 @@ public class GenerativeChoice : MonoBehaviour
         {
             f.Delete();
         }
+
+        title.text = "Choices";
     }
 
 
@@ -109,6 +116,15 @@ public class GenerativeChoice : MonoBehaviour
                 last.transform.SetParent(uiContainer.transform);
 
             }
+
+            //LayoutRebuilder.MarkLayoutForRebuild(GetComponent<RectTransform>());
+            //LayoutRebuilder.MarkLayoutForRebuild(gameObject.transform as RectTransform);
+            //LayoutRebuilder.MarkLayoutForRebuild(uiContainer.transform as RectTransform);
+
+            //EditorUtility.SetDirty(transform.parent.GetComponent<Canvas>());
+
+            title.text = "Choices (" + amount + ")";
+            uiContainer.SetActive(true);
 
             pending = false;
             sdh.FinishedGenerating.RemoveListener(CountingResults);
