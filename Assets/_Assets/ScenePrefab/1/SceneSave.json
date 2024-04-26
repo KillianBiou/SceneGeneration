@@ -1,0 +1,1957 @@
+{
+    "m_FormatVersion": 2,
+    "m_RootGameObjects": [
+        {
+            "name": "TripoSR",
+            "hideFlags": 0,
+            "layer": 0,
+            "tag": "Untagged",
+            "active": true,
+            "components": [
+                {
+                    "$type": "UnityEngine.Transform, UnityEngine.CoreModule",
+                    "localPosition": {
+                        "x": -0.398,
+                        "y": 0,
+                        "z": 0.006
+                    },
+                    "localRotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0,
+                        "w": 1
+                    },
+                    "localScale": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hideFlags": 0
+                },
+                {
+                    "$type": "TripoSRForUnity, Assembly-CSharp",
+                    "pythonPath": "C:\\Users\\light\\AppData\\Local\\Programs\\Python\\Python310\\python",
+                    "autoAddMesh": false,
+                    "autoAddPhysicsComponents": false,
+                    "autoFixRotation": true,
+                    "moveAndRename": true,
+                    "moveAndRenamePath": "Models",
+                    "showDebugLogs": true,
+                    "images": [
+                        {
+                            "sceneID": -1
+                        }
+                    ],
+                    "device": "cuda:0",
+                    "pretrainedModelNameOrPath": "stabilityai/TripoSR",
+                    "chunkSize": 8196,
+                    "marchingCubesResolution": 256,
+                    "noRemoveBg": false,
+                    "foregroundRatio": 0.85,
+                    "outputDir": "output/",
+                    "modelSaveFormat": "obj",
+                    "render": false,
+                    "currentState": 0,
+                    "enabled": true,
+                    "hideFlags": 0
+                },
+                {
+                    "$type": "TextureGenerator, Assembly-CSharp",
+                    "pythonPath": "C:\\Users\\light\\AppData\\Local\\Programs\\Python\\Python310\\python",
+                    "modelFile": {
+                        "sceneID": -1
+                    },
+                    "modelDescription": "lelouch figure black suit, code geass",
+                    "negativeModelDescription": "lighting, shadows, grid, dark, mesh",
+                    "autoAddMesh": false,
+                    "autoAddPhysicsComponents": false,
+                    "showDebugLogs": true,
+                    "imageModel": "Lykon/dreamshaper-8",
+                    "steps": 20,
+                    "mapSize": 1024,
+                    "outputDir": "output/",
+                    "enabled": true,
+                    "hideFlags": 0
+                }
+            ],
+            "children": []
+        },
+        {
+            "name": "Player",
+            "hideFlags": 0,
+            "layer": 0,
+            "tag": "Untagged",
+            "active": true,
+            "components": [
+                {
+                    "$type": "UnityEngine.Transform, UnityEngine.CoreModule",
+                    "localPosition": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "localRotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0,
+                        "w": 1
+                    },
+                    "localScale": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 1
+                    },
+                    "hideFlags": 0
+                },
+                {
+                    "$type": "Player, Assembly-CSharp",
+                    "sceneSavePath": "C:/SceneGeneration/SceneGeneration/Assets\\_Assets/ScenePrefab",
+                    "images": [
+                        {
+                            "sceneID": -1
+                        },
+                        {
+                            "sceneID": -1
+                        },
+                        {
+                            "sceneID": -1
+                        },
+                        {
+                            "sceneID": -1
+                        },
+                        {
+                            "sceneID": -1
+                        },
+                        {
+                            "sceneID": -1
+                        },
+                        {
+                            "sceneID": -1
+                        },
+                        {
+                            "sceneID": -1
+                        },
+                        {
+                            "sceneID": -1
+                        }
+                    ],
+                    "generatedMat": {
+                        "sceneID": -1
+                    },
+                    "debugObject": {
+                        "sceneID": -1
+                    },
+                    "generationLock": false,
+                    "camera": {
+                        "sceneID": 8
+                    },
+                    "playgroundHolder": {
+                        "sceneID": 49
+                    },
+                    "enabled": true,
+                    "hideFlags": 0
+                }
+            ],
+            "children": [
+                {
+                    "name": "MainCamera",
+                    "hideFlags": 0,
+                    "layer": 0,
+                    "tag": "MainCamera",
+                    "active": true,
+                    "components": [
+                        {
+                            "$type": "UnityEngine.Transform, UnityEngine.CoreModule",
+                            "localPosition": {
+                                "x": 0.008728386,
+                                "y": 1.47783,
+                                "z": 0.001120992
+                            },
+                            "localRotation": {
+                                "x": 0.1134192,
+                                "y": 0.1010336,
+                                "z": -0.01249245,
+                                "w": 0.9883179
+                            },
+                            "localScale": {
+                                "x": 1,
+                                "y": 1,
+                                "z": 1
+                            },
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "UnityEngine.Camera, UnityEngine.CoreModule",
+                            "nearClipPlane": 0.2,
+                            "farClipPlane": 500,
+                            "fieldOfView": 40,
+                            "renderingPath": -1,
+                            "allowHDR": true,
+                            "allowMSAA": true,
+                            "allowDynamicResolution": false,
+                            "forceIntoRenderTexture": false,
+                            "orthographicSize": 10,
+                            "orthographic": false,
+                            "opaqueSortMode": 0,
+                            "transparencySortMode": 0,
+                            "depth": -1,
+                            "cullingMask": -1,
+                            "eventMask": -1,
+                            "layerCullSpherical": false,
+                            "cameraType": 1,
+                            "overrideSceneCullingMask": 0,
+                            "useOcclusionCulling": true,
+                            "backgroundColor": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0,
+                                "a": 1
+                            },
+                            "clearFlags": 1,
+                            "depthTextureMode": 0,
+                            "clearStencilAfterLightingPass": false,
+                            "usePhysicalProperties": false,
+                            "iso": 200,
+                            "shutterSpeed": 0.005,
+                            "aperture": 16,
+                            "focusDistance": 10,
+                            "focalLength": 50,
+                            "bladeCount": 5,
+                            "barrelClipping": 0.25,
+                            "anamorphism": 0,
+                            "sensorSize": {
+                                "x": 36,
+                                "y": 24
+                            },
+                            "lensShift": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "gateFit": 2,
+                            "rect": {
+                                "x": 0,
+                                "y": 0,
+                                "width": 1,
+                                "height": 1
+                            },
+                            "targetTexture": {
+                                "sceneID": -1
+                            },
+                            "targetDisplay": 0,
+                            "useJitteredProjectionMatrixForTransparentRendering": true,
+                            "stereoSeparation": 0.022,
+                            "stereoConvergence": 10,
+                            "stereoTargetEye": 3,
+                            "enabled": true,
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "UnityEngine.AudioListener, UnityEngine.AudioModule",
+                            "enabled": true,
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "Cinemachine.CinemachineBrain, Cinemachine",
+                            "m_ShowDebugText": false,
+                            "m_ShowCameraFrustum": true,
+                            "m_IgnoreTimeScale": false,
+                            "m_WorldUpOverride": {
+                                "sceneID": -1
+                            },
+                            "m_UpdateMethod": 2,
+                            "m_BlendUpdateMethod": 1,
+                            "m_DefaultBlend": {
+                                "m_Style": 1,
+                                "m_Time": 2,
+                                "m_CustomCurve": {
+                                    "preWrapMode": 8,
+                                    "postWrapMode": 8
+                                }
+                            },
+                            "m_CustomBlends": {
+                                "sceneID": -1
+                            },
+                            "m_CameraCutEvent": {
+                                "m_PersistentCalls": {
+                                    "m_Calls": []
+                                }
+                            },
+                            "m_CameraActivatedEvent": {
+                                "m_PersistentCalls": {
+                                    "m_Calls": []
+                                }
+                            },
+                            "enabled": true,
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "UnityEngine.Rendering.Universal.UniversalAdditionalCameraData, Unity.RenderPipelines.Universal.Runtime",
+                            "m_RenderShadows": true,
+                            "m_RequiresDepthTextureOption": 2,
+                            "m_RequiresOpaqueTextureOption": 2,
+                            "m_CameraType": 0,
+                            "m_Cameras": [],
+                            "m_RendererIndex": -1,
+                            "m_VolumeLayerMask": {
+                                "m_Bits": 1,
+                                "value": 1
+                            },
+                            "m_VolumeTrigger": {
+                                "sceneID": -1
+                            },
+                            "m_VolumeFrameworkUpdateModeOption": 2,
+                            "m_RenderPostProcessing": false,
+                            "m_Antialiasing": 0,
+                            "m_AntialiasingQuality": 2,
+                            "m_StopNaN": false,
+                            "m_Dithering": false,
+                            "m_ClearDepth": true,
+                            "m_AllowXRRendering": true,
+                            "m_AllowHDROutput": true,
+                            "m_UseScreenCoordOverride": false,
+                            "m_ScreenSizeOverride": {
+                                "x": 0,
+                                "y": 0,
+                                "z": 0,
+                                "w": 0
+                            },
+                            "m_ScreenCoordScaleBias": {
+                                "x": 0,
+                                "y": 0,
+                                "z": 0,
+                                "w": 0
+                            },
+                            "m_RequiresDepthTexture": false,
+                            "m_RequiresColorTexture": false,
+                            "m_Version": 2,
+                            "m_TaaSettings": {
+                                "m_Quality": 3,
+                                "m_FrameInfluence": 0.1,
+                                "m_JitterScale": 1,
+                                "m_MipBias": 0,
+                                "m_VarianceClampScale": 0.9,
+                                "m_ContrastAdaptiveSharpening": 0
+                            },
+                            "enabled": true,
+                            "hideFlags": 0
+                        }
+                    ],
+                    "children": []
+                },
+                {
+                    "name": "PlayerFollowCamera",
+                    "hideFlags": 0,
+                    "layer": 0,
+                    "tag": "Untagged",
+                    "active": true,
+                    "components": [
+                        {
+                            "$type": "UnityEngine.Transform, UnityEngine.CoreModule",
+                            "localPosition": {
+                                "x": 0,
+                                "y": 1.465,
+                                "z": 6.237679E-09
+                            },
+                            "localRotation": {
+                                "x": 0,
+                                "y": 0,
+                                "z": 0,
+                                "w": 1
+                            },
+                            "localScale": {
+                                "x": 1,
+                                "y": 1,
+                                "z": 1
+                            },
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "Cinemachine.CinemachineVirtualCamera, Cinemachine",
+                            "m_LookAt": {
+                                "sceneID": -1
+                            },
+                            "m_Follow": {
+                                "sceneID": 29
+                            },
+                            "m_Lens": {
+                                "FieldOfView": 40,
+                                "OrthographicSize": 10,
+                                "NearClipPlane": 0.2,
+                                "FarClipPlane": 500,
+                                "Dutch": 0,
+                                "ModeOverride": 0,
+                                "LensShift": {
+                                    "x": 0,
+                                    "y": 0
+                                },
+                                "GateFit": 2,
+                                "FocusDistance": 10,
+                                "m_SensorSize": {
+                                    "x": 1,
+                                    "y": 1
+                                }
+                            },
+                            "m_Transitions": {
+                                "m_BlendHint": 0,
+                                "m_InheritPosition": false,
+                                "m_OnCameraLive": {
+                                    "m_PersistentCalls": {
+                                        "m_Calls": []
+                                    }
+                                }
+                            },
+                            "m_LegacyBlendHint": 0,
+                            "m_ComponentOwner": {
+                                "sceneID": 17
+                            },
+                            "m_ExcludedPropertiesInInspector": [
+                                "m_Script"
+                            ],
+                            "m_LockStageInInspector": [],
+                            "m_StreamingVersion": 20170927,
+                            "m_Priority": 10,
+                            "m_StandbyUpdate": 2,
+                            "enabled": true,
+                            "hideFlags": 0
+                        }
+                    ],
+                    "children": [
+                        {
+                            "name": "cm",
+                            "hideFlags": 3,
+                            "layer": 0,
+                            "tag": "Untagged",
+                            "active": true,
+                            "components": [
+                                {
+                                    "$type": "UnityEngine.Transform, UnityEngine.CoreModule",
+                                    "localPosition": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "localRotation": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0,
+                                        "w": 1
+                                    },
+                                    "localScale": {
+                                        "x": 1,
+                                        "y": 1,
+                                        "z": 1
+                                    },
+                                    "hideFlags": 3
+                                },
+                                {
+                                    "$type": "Cinemachine.CinemachinePipeline, Cinemachine",
+                                    "enabled": true,
+                                    "hideFlags": 3
+                                },
+                                {
+                                    "$type": "Cinemachine.CinemachineBasicMultiChannelPerlin, Cinemachine",
+                                    "m_NoiseProfile": {
+                                        "sceneID": -1
+                                    },
+                                    "m_PivotOffset": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 1
+                                    },
+                                    "m_AmplitudeGain": 0.5,
+                                    "m_FrequencyGain": 0.3,
+                                    "mNoiseOffsets": {
+                                        "x": -451.3796,
+                                        "y": 684.7062,
+                                        "z": 648.0488
+                                    },
+                                    "enabled": true,
+                                    "hideFlags": 3
+                                },
+                                {
+                                    "$type": "Cinemachine.Cinemachine3rdPersonFollow, Cinemachine",
+                                    "Damping": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "ShoulderOffset": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "VerticalArmLength": 0,
+                                    "CameraSide": 0.6,
+                                    "CameraDistance": 0,
+                                    "CameraCollisionFilter": {
+                                        "m_Bits": 1,
+                                        "value": 1
+                                    },
+                                    "IgnoreTag": "Player",
+                                    "CameraRadius": 0.15,
+                                    "DampingIntoCollision": 0,
+                                    "DampingFromCollision": 0,
+                                    "enabled": true,
+                                    "hideFlags": 3
+                                }
+                            ],
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "PlayerCapsule",
+                    "hideFlags": 0,
+                    "layer": 8,
+                    "tag": "Player",
+                    "active": true,
+                    "components": [
+                        {
+                            "$type": "UnityEngine.Transform, UnityEngine.CoreModule",
+                            "localPosition": {
+                                "x": 0,
+                                "y": 0.08999985,
+                                "z": 6.237679E-09
+                            },
+                            "localRotation": {
+                                "x": 0,
+                                "y": 0.1058302,
+                                "z": 0,
+                                "w": 0.9943843
+                            },
+                            "localScale": {
+                                "x": 1,
+                                "y": 1,
+                                "z": 1
+                            },
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "UnityEngine.CharacterController, UnityEngine.PhysicsModule",
+                            "radius": 0.5,
+                            "height": 2,
+                            "slopeLimit": 45,
+                            "stepOffset": 0.25,
+                            "skinWidth": 0.02,
+                            "minMoveDistance": 0,
+                            "detectCollisions": true,
+                            "enableOverlapRecovery": true,
+                            "enabled": true,
+                            "isTrigger": false,
+                            "hasModifiableContacts": false,
+                            "providesContacts": false,
+                            "layerOverridePriority": 0,
+                            "sharedMaterial": {
+                                "sceneID": -1
+                            },
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "StarterAssets.FirstPersonController, Unity.StarterAssets",
+                            "MoveSpeed": 4,
+                            "SprintSpeed": 6,
+                            "RotationSpeed": 1,
+                            "SpeedChangeRate": 10,
+                            "JumpHeight": 1.2,
+                            "Gravity": -15,
+                            "JumpTimeout": 0.1,
+                            "FallTimeout": 0.15,
+                            "Grounded": true,
+                            "GroundedOffset": -0.14,
+                            "GroundedRadius": 0.5,
+                            "GroundLayers": {
+                                "m_Bits": 1,
+                                "value": 1
+                            },
+                            "CinemachineCameraTarget": {
+                                "sceneID": 28
+                            },
+                            "TopClamp": 89,
+                            "BottomClamp": -89,
+                            "enabled": true,
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "BasicRigidBodyPush, Unity.StarterAssets",
+                            "pushLayers": {
+                                "m_Bits": 0,
+                                "value": 0
+                            },
+                            "canPush": false,
+                            "strength": 1.1,
+                            "enabled": true,
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "StarterAssets.StarterAssetsInputs, Unity.StarterAssets",
+                            "move": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "look": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "jump": false,
+                            "sprint": false,
+                            "analogMovement": false,
+                            "cursorLocked": true,
+                            "cursorInputForLook": true,
+                            "enabled": true,
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "UnityEngine.InputSystem.PlayerInput, Unity.InputSystem",
+                            "m_Actions": {
+                                "sceneID": -1
+                            },
+                            "m_NotificationBehavior": 0,
+                            "m_UIInputModule": {
+                                "sceneID": -1
+                            },
+                            "m_DeviceLostEvent": {
+                                "m_PersistentCalls": {
+                                    "m_Calls": []
+                                }
+                            },
+                            "m_DeviceRegainedEvent": {
+                                "m_PersistentCalls": {
+                                    "m_Calls": []
+                                }
+                            },
+                            "m_ControlsChangedEvent": {
+                                "m_PersistentCalls": {
+                                    "m_Calls": []
+                                }
+                            },
+                            "m_ActionEvents": [
+                                {
+                                    "m_ActionId": "6bc1aaf4-b110-4ff7-891e-5b9fe6f32c4d",
+                                    "m_ActionName": "Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow,/XInputControllerWindows/leftStick]",
+                                    "m_PersistentCalls": {
+                                        "m_Calls": [
+                                            {
+                                                "m_Target": {
+                                                    "sceneID": -1
+                                                },
+                                                "m_TargetAssemblyTypeName": "",
+                                                "m_MethodName": "InputMove",
+                                                "m_Mode": 0,
+                                                "m_Arguments": {
+                                                    "m_ObjectArgument": {
+                                                        "sceneID": -1
+                                                    },
+                                                    "m_ObjectArgumentAssemblyTypeName": "UnityEngine.Object, UnityEngine",
+                                                    "m_IntArgument": 0,
+                                                    "m_FloatArgument": 0,
+                                                    "m_StringArgument": "",
+                                                    "m_BoolArgument": false
+                                                },
+                                                "m_CallState": 2
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "m_ActionId": "2690c379-f54d-45be-a724-414123833eb4",
+                                    "m_ActionName": "Player/Look[/Mouse/delta,/XInputControllerWindows/rightStick]",
+                                    "m_PersistentCalls": {
+                                        "m_Calls": [
+                                            {
+                                                "m_Target": {
+                                                    "sceneID": -1
+                                                },
+                                                "m_TargetAssemblyTypeName": "",
+                                                "m_MethodName": "InputLook",
+                                                "m_Mode": 0,
+                                                "m_Arguments": {
+                                                    "m_ObjectArgument": {
+                                                        "sceneID": -1
+                                                    },
+                                                    "m_ObjectArgumentAssemblyTypeName": "UnityEngine.Object, UnityEngine",
+                                                    "m_IntArgument": 0,
+                                                    "m_FloatArgument": 0,
+                                                    "m_StringArgument": "",
+                                                    "m_BoolArgument": false
+                                                },
+                                                "m_CallState": 2
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "m_ActionId": "8c4abdf8-4099-493a-aa1a-129acec7c3df",
+                                    "m_ActionName": "Player/Jump[/Keyboard/space,/XInputControllerWindows/buttonSouth]",
+                                    "m_PersistentCalls": {
+                                        "m_Calls": [
+                                            {
+                                                "m_Target": {
+                                                    "sceneID": -1
+                                                },
+                                                "m_TargetAssemblyTypeName": "",
+                                                "m_MethodName": "InputJump",
+                                                "m_Mode": 0,
+                                                "m_Arguments": {
+                                                    "m_ObjectArgument": {
+                                                        "sceneID": -1
+                                                    },
+                                                    "m_ObjectArgumentAssemblyTypeName": "UnityEngine.Object, UnityEngine",
+                                                    "m_IntArgument": 0,
+                                                    "m_FloatArgument": 0,
+                                                    "m_StringArgument": "",
+                                                    "m_BoolArgument": false
+                                                },
+                                                "m_CallState": 2
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "m_ActionId": "980e881e-182c-404c-8cbf-3d09fdb48fef",
+                                    "m_ActionName": "Player/Sprint[/Keyboard/leftShift,/XInputControllerWindows/leftTrigger]",
+                                    "m_PersistentCalls": {
+                                        "m_Calls": [
+                                            {
+                                                "m_Target": {
+                                                    "sceneID": -1
+                                                },
+                                                "m_TargetAssemblyTypeName": "",
+                                                "m_MethodName": "InputSprint",
+                                                "m_Mode": 0,
+                                                "m_Arguments": {
+                                                    "m_ObjectArgument": {
+                                                        "sceneID": -1
+                                                    },
+                                                    "m_ObjectArgumentAssemblyTypeName": "UnityEngine.Object, UnityEngine",
+                                                    "m_IntArgument": 0,
+                                                    "m_FloatArgument": 0,
+                                                    "m_StringArgument": "",
+                                                    "m_BoolArgument": false
+                                                },
+                                                "m_CallState": 2
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "m_ActionId": "e4ce1614-c754-48c1-9103-33130441661f",
+                                    "m_ActionName": "UI/New action",
+                                    "m_PersistentCalls": {
+                                        "m_Calls": []
+                                    }
+                                }
+                            ],
+                            "m_NeverAutoSwitchControlSchemes": false,
+                            "m_DefaultControlScheme": "",
+                            "m_DefaultActionMap": "Player",
+                            "m_SplitScreenIndex": 0,
+                            "m_Camera": {
+                                "sceneID": -1
+                            },
+                            "enabled": true,
+                            "hideFlags": 0
+                        }
+                    ],
+                    "children": [
+                        {
+                            "name": "PlayerCameraRoot",
+                            "hideFlags": 0,
+                            "layer": 0,
+                            "tag": "CinemachineTarget",
+                            "active": true,
+                            "components": [
+                                {
+                                    "$type": "UnityEngine.Transform, UnityEngine.CoreModule",
+                                    "localPosition": {
+                                        "x": 0,
+                                        "y": 1.375,
+                                        "z": 0
+                                    },
+                                    "localRotation": {
+                                        "x": 0.1075656,
+                                        "y": 0,
+                                        "z": 0,
+                                        "w": 0.994198
+                                    },
+                                    "localScale": {
+                                        "x": 1,
+                                        "y": 1,
+                                        "z": 1
+                                    },
+                                    "hideFlags": 0
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "name": "Capsule",
+                            "hideFlags": 0,
+                            "layer": 8,
+                            "tag": "Untagged",
+                            "active": true,
+                            "components": [
+                                {
+                                    "$type": "UnityEngine.Transform, UnityEngine.CoreModule",
+                                    "localPosition": {
+                                        "x": 0,
+                                        "y": 1,
+                                        "z": 0
+                                    },
+                                    "localRotation": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0,
+                                        "w": 1
+                                    },
+                                    "localScale": {
+                                        "x": 1,
+                                        "y": 1,
+                                        "z": 1
+                                    },
+                                    "hideFlags": 0
+                                },
+                                {
+                                    "$type": "UnityEngine.MeshFilter, UnityEngine.CoreModule",
+                                    "sharedMesh": {
+                                        "sceneID": -1
+                                    },
+                                    "hideFlags": 0
+                                },
+                                {
+                                    "$type": "UnityEngine.MeshRenderer, UnityEngine.CoreModule",
+                                    "additionalVertexStreams": {
+                                        "sceneID": -1
+                                    },
+                                    "enlightenVertexStream": {
+                                        "sceneID": -1
+                                    },
+                                    "scaleInLightmap": 1,
+                                    "receiveGI": 1,
+                                    "stitchLightmapSeams": true,
+                                    "enabled": true,
+                                    "shadowCastingMode": 1,
+                                    "receiveShadows": true,
+                                    "forceRenderingOff": false,
+                                    "motionVectorGenerationMode": 1,
+                                    "lightProbeUsage": 1,
+                                    "reflectionProbeUsage": 1,
+                                    "renderingLayerMask": 1,
+                                    "rendererPriority": 0,
+                                    "rayTracingMode": 2,
+                                    "sortingLayerName": "Default",
+                                    "sortingLayerID": 0,
+                                    "sortingOrder": 0,
+                                    "sortingGroupID": 1048575,
+                                    "sortingGroupOrder": 0,
+                                    "stagePriority": 0,
+                                    "allowOcclusionWhenDynamic": true,
+                                    "staticBatchRootTransform": {
+                                        "sceneID": -1
+                                    },
+                                    "lightProbeProxyVolumeOverride": {
+                                        "sceneID": -1
+                                    },
+                                    "probeAnchor": {
+                                        "sceneID": -1
+                                    },
+                                    "sharedMaterials": [
+                                        {
+                                            "sceneID": -1
+                                        }
+                                    ],
+                                    "hideFlags": 0
+                                },
+                                {
+                                    "$type": "UnityEngine.CapsuleCollider, UnityEngine.PhysicsModule",
+                                    "center": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "radius": 0.5,
+                                    "height": 2,
+                                    "direction": 1,
+                                    "enabled": true,
+                                    "isTrigger": false,
+                                    "hasModifiableContacts": false,
+                                    "providesContacts": false,
+                                    "layerOverridePriority": 0,
+                                    "sharedMaterial": {
+                                        "sceneID": -1
+                                    },
+                                    "hideFlags": 0
+                                }
+                            ],
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "UI_EventSystem",
+                    "hideFlags": 0,
+                    "layer": 0,
+                    "tag": "Untagged",
+                    "active": true,
+                    "components": [
+                        {
+                            "$type": "UnityEngine.Transform, UnityEngine.CoreModule",
+                            "localPosition": {
+                                "x": 0,
+                                "y": 0,
+                                "z": 0
+                            },
+                            "localRotation": {
+                                "x": 0,
+                                "y": 0,
+                                "z": 0,
+                                "w": 1
+                            },
+                            "localScale": {
+                                "x": 1,
+                                "y": 1,
+                                "z": 1
+                            },
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "UnityEngine.EventSystems.EventSystem, UnityEngine.UI",
+                            "m_FirstSelected": {
+                                "sceneID": -1
+                            },
+                            "m_sendNavigationEvents": true,
+                            "m_DragThreshold": 10,
+                            "enabled": true,
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "UnityEngine.InputSystem.UI.InputSystemUIInputModule, Unity.InputSystem",
+                            "m_MoveRepeatDelay": 0.5,
+                            "m_MoveRepeatRate": 0.1,
+                            "m_XRTrackingOrigin": {
+                                "sceneID": -1
+                            },
+                            "m_ActionsAsset": {
+                                "sceneID": -1
+                            },
+                            "m_PointAction": {
+                                "sceneID": -1
+                            },
+                            "m_MoveAction": {
+                                "sceneID": -1
+                            },
+                            "m_SubmitAction": {
+                                "sceneID": -1
+                            },
+                            "m_CancelAction": {
+                                "sceneID": -1
+                            },
+                            "m_LeftClickAction": {
+                                "sceneID": -1
+                            },
+                            "m_MiddleClickAction": {
+                                "sceneID": -1
+                            },
+                            "m_RightClickAction": {
+                                "sceneID": -1
+                            },
+                            "m_ScrollWheelAction": {
+                                "sceneID": -1
+                            },
+                            "m_TrackedDevicePositionAction": {
+                                "sceneID": -1
+                            },
+                            "m_TrackedDeviceOrientationAction": {
+                                "sceneID": -1
+                            },
+                            "m_DeselectOnBackgroundClick": true,
+                            "m_PointerBehavior": 0,
+                            "m_CursorLockBehavior": 0,
+                            "m_SendPointerHoverToParent": true,
+                            "enabled": true,
+                            "hideFlags": 0
+                        }
+                    ],
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "Plane",
+            "hideFlags": 0,
+            "layer": 0,
+            "tag": "Untagged",
+            "active": true,
+            "components": [
+                {
+                    "$type": "UnityEngine.Transform, UnityEngine.CoreModule",
+                    "localPosition": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "localRotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0,
+                        "w": 1
+                    },
+                    "localScale": {
+                        "x": 10,
+                        "y": 10,
+                        "z": 10
+                    },
+                    "hideFlags": 0
+                },
+                {
+                    "$type": "UnityEngine.MeshFilter, UnityEngine.CoreModule",
+                    "sharedMesh": {
+                        "sceneID": -1
+                    },
+                    "hideFlags": 0
+                },
+                {
+                    "$type": "UnityEngine.MeshRenderer, UnityEngine.CoreModule",
+                    "additionalVertexStreams": {
+                        "sceneID": -1
+                    },
+                    "enlightenVertexStream": {
+                        "sceneID": -1
+                    },
+                    "scaleInLightmap": 1,
+                    "receiveGI": 1,
+                    "stitchLightmapSeams": true,
+                    "enabled": true,
+                    "shadowCastingMode": 1,
+                    "receiveShadows": true,
+                    "forceRenderingOff": false,
+                    "motionVectorGenerationMode": 1,
+                    "lightProbeUsage": 1,
+                    "reflectionProbeUsage": 1,
+                    "renderingLayerMask": 1,
+                    "rendererPriority": 0,
+                    "rayTracingMode": 2,
+                    "sortingLayerName": "Default",
+                    "sortingLayerID": 0,
+                    "sortingOrder": 0,
+                    "sortingGroupID": 1048575,
+                    "sortingGroupOrder": 0,
+                    "stagePriority": 0,
+                    "allowOcclusionWhenDynamic": true,
+                    "staticBatchRootTransform": {
+                        "sceneID": -1
+                    },
+                    "lightProbeProxyVolumeOverride": {
+                        "sceneID": -1
+                    },
+                    "probeAnchor": {
+                        "sceneID": -1
+                    },
+                    "sharedMaterials": [
+                        {
+                            "sceneID": -1
+                        }
+                    ],
+                    "hideFlags": 0
+                },
+                {
+                    "$type": "UnityEngine.MeshCollider, UnityEngine.PhysicsModule",
+                    "sharedMesh": {
+                        "sceneID": -1
+                    },
+                    "convex": false,
+                    "cookingOptions": 30,
+                    "enabled": true,
+                    "isTrigger": false,
+                    "hasModifiableContacts": false,
+                    "providesContacts": false,
+                    "layerOverridePriority": 0,
+                    "sharedMaterial": {
+                        "sceneID": -1
+                    },
+                    "hideFlags": 0
+                }
+            ],
+            "children": []
+        },
+        {
+            "name": "Directional Light",
+            "hideFlags": 0,
+            "layer": 0,
+            "tag": "Untagged",
+            "active": true,
+            "components": [
+                {
+                    "$type": "UnityEngine.Transform, UnityEngine.CoreModule",
+                    "localPosition": {
+                        "x": 0,
+                        "y": 3,
+                        "z": 0
+                    },
+                    "localRotation": {
+                        "x": -0.5582497,
+                        "y": -0.04411103,
+                        "z": 0.09506305,
+                        "w": -0.8230278
+                    },
+                    "localScale": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 1
+                    },
+                    "hideFlags": 0
+                },
+                {
+                    "$type": "UnityEngine.Light, UnityEngine.CoreModule",
+                    "type": 1,
+                    "shape": 0,
+                    "spotAngle": 30,
+                    "innerSpotAngle": 21.80208,
+                    "color": {
+                        "r": 1,
+                        "g": 0.9568627,
+                        "b": 0.8392157,
+                        "a": 1
+                    },
+                    "colorTemperature": 6570,
+                    "useColorTemperature": false,
+                    "intensity": 1,
+                    "bounceIntensity": 1,
+                    "useBoundingSphereOverride": false,
+                    "boundingSphereOverride": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0,
+                        "w": 0
+                    },
+                    "useViewFrustumForShadowCasterCull": true,
+                    "shadowCustomResolution": -1,
+                    "shadowBias": 0.05,
+                    "shadowNormalBias": 0.4,
+                    "shadowNearPlane": 0.2,
+                    "useShadowMatrixOverride": false,
+                    "range": 10,
+                    "flare": {
+                        "sceneID": -1
+                    },
+                    "cullingMask": -1,
+                    "renderingLayerMask": 1,
+                    "lightShadowCasterMode": 0,
+                    "shadowRadius": 0,
+                    "shadowAngle": 0,
+                    "shadows": 2,
+                    "shadowStrength": 1,
+                    "shadowResolution": -1,
+                    "cookieSize": 10,
+                    "cookie": {
+                        "sceneID": -1
+                    },
+                    "renderMode": 0,
+                    "areaSize": {
+                        "x": 1,
+                        "y": 1
+                    },
+                    "lightmapBakeType": 4,
+                    "enabled": true,
+                    "hideFlags": 0
+                },
+                {
+                    "$type": "UnityEngine.Rendering.Universal.UniversalAdditionalLightData, Unity.RenderPipelines.Universal.Runtime",
+                    "m_Version": 3,
+                    "m_UsePipelineSettings": true,
+                    "m_AdditionalLightsShadowResolutionTier": 2,
+                    "m_LightLayerMask": 1,
+                    "m_RenderingLayers": 1,
+                    "m_CustomShadowLayers": false,
+                    "m_ShadowLayerMask": 1,
+                    "m_ShadowRenderingLayers": 1,
+                    "m_LightCookieSize": {
+                        "x": 1,
+                        "y": 1
+                    },
+                    "m_LightCookieOffset": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "m_SoftShadowQuality": 0,
+                    "enabled": true,
+                    "hideFlags": 0
+                }
+            ],
+            "children": []
+        },
+        {
+            "name": "Playground",
+            "hideFlags": 0,
+            "layer": 0,
+            "tag": "Untagged",
+            "active": true,
+            "components": [
+                {
+                    "$type": "UnityEngine.Transform, UnityEngine.CoreModule",
+                    "localPosition": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "localRotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0,
+                        "w": 1
+                    },
+                    "localScale": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 1
+                    },
+                    "hideFlags": 0
+                }
+            ],
+            "children": []
+        },
+        {
+            "name": "Canvas",
+            "hideFlags": 0,
+            "layer": 5,
+            "tag": "Untagged",
+            "active": true,
+            "components": [
+                {
+                    "$type": "UnityEngine.RectTransform, UnityEngine.CoreModule",
+                    "anchorMin": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "anchorMax": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "anchoredPosition": {
+                        "x": 351,
+                        "y": 197.5
+                    },
+                    "sizeDelta": {
+                        "x": 800,
+                        "y": 450.1425
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    },
+                    "drivenProperties": -1,
+                    "localPosition": {
+                        "x": 351,
+                        "y": 197.5,
+                        "z": 0
+                    },
+                    "localRotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0,
+                        "w": 1
+                    },
+                    "localScale": {
+                        "x": 0.8775,
+                        "y": 0.8775,
+                        "z": 0.8775
+                    },
+                    "hideFlags": 0
+                },
+                {
+                    "$type": "UnityEngine.Canvas, UnityEngine.UIModule",
+                    "renderMode": 0,
+                    "scaleFactor": 0.8775,
+                    "referencePixelsPerUnit": 100,
+                    "overridePixelPerfect": false,
+                    "vertexColorAlwaysGammaSpace": false,
+                    "pixelPerfect": false,
+                    "planeDistance": 100,
+                    "overrideSorting": false,
+                    "sortingOrder": 0,
+                    "targetDisplay": 0,
+                    "sortingLayerID": 0,
+                    "additionalShaderChannels": 25,
+                    "sortingLayerName": "Default",
+                    "updateRectTransformForStandalone": 0,
+                    "normalizedSortingGridSize": 0.1,
+                    "sortingGridNormalizedSize": 0,
+                    "stagePriority": 0,
+                    "enabled": true,
+                    "hideFlags": 0
+                },
+                {
+                    "$type": "UnityEngine.UI.CanvasScaler, UnityEngine.UI",
+                    "m_UiScaleMode": 1,
+                    "m_ReferencePixelsPerUnit": 100,
+                    "m_ScaleFactor": 1,
+                    "m_ReferenceResolution": {
+                        "x": 800,
+                        "y": 600
+                    },
+                    "m_ScreenMatchMode": 0,
+                    "m_MatchWidthOrHeight": 0,
+                    "m_PhysicalUnit": 3,
+                    "m_FallbackScreenDPI": 96,
+                    "m_DefaultSpriteDPI": 96,
+                    "m_DynamicPixelsPerUnit": 1,
+                    "m_PresetInfoIsWorld": false,
+                    "enabled": true,
+                    "hideFlags": 0
+                },
+                {
+                    "$type": "UnityEngine.UI.GraphicRaycaster, UnityEngine.UI",
+                    "m_IgnoreReversedGraphics": true,
+                    "m_BlockingObjects": 0,
+                    "m_BlockingMask": {
+                        "m_Bits": -1,
+                        "value": -1
+                    },
+                    "enabled": true,
+                    "hideFlags": 0
+                }
+            ],
+            "children": [
+                {
+                    "name": "TripoSR",
+                    "hideFlags": 0,
+                    "layer": 5,
+                    "tag": "Untagged",
+                    "active": true,
+                    "components": [
+                        {
+                            "$type": "UnityEngine.RectTransform, UnityEngine.CoreModule",
+                            "anchorMin": {
+                                "x": 0,
+                                "y": 1
+                            },
+                            "anchorMax": {
+                                "x": 0,
+                                "y": 1
+                            },
+                            "anchoredPosition": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "sizeDelta": {
+                                "x": 381.5919,
+                                "y": 76.336
+                            },
+                            "pivot": {
+                                "x": 0,
+                                "y": 1
+                            },
+                            "drivenProperties": 0,
+                            "localPosition": {
+                                "x": -400,
+                                "y": 225.0712,
+                                "z": 0
+                            },
+                            "localRotation": {
+                                "x": 0,
+                                "y": 0,
+                                "z": 0,
+                                "w": 1
+                            },
+                            "localScale": {
+                                "x": 1,
+                                "y": 1,
+                                "z": 1
+                            },
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "UnityEngine.CanvasRenderer, UnityEngine.UIModule",
+                            "hasPopInstruction": false,
+                            "materialCount": 1,
+                            "popMaterialCount": 0,
+                            "cullTransparentMesh": true,
+                            "cull": false,
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "UnityEngine.UI.Image, UnityEngine.UI",
+                            "m_Sprite": {
+                                "sceneID": -1
+                            },
+                            "m_Type": 1,
+                            "m_PreserveAspect": false,
+                            "m_FillCenter": true,
+                            "m_FillMethod": 4,
+                            "m_FillAmount": 1,
+                            "m_FillClockwise": true,
+                            "m_FillOrigin": 0,
+                            "m_UseSpriteMesh": false,
+                            "m_PixelsPerUnitMultiplier": 1,
+                            "m_Maskable": true,
+                            "m_OnCullStateChanged": {
+                                "m_PersistentCalls": {
+                                    "m_Calls": []
+                                }
+                            },
+                            "m_Material": {
+                                "sceneID": -1
+                            },
+                            "m_Color": {
+                                "r": 1,
+                                "g": 1,
+                                "b": 1,
+                                "a": 0.392
+                            },
+                            "m_RaycastTarget": true,
+                            "m_RaycastPadding": {
+                                "x": 0,
+                                "y": 0,
+                                "z": 0,
+                                "w": 0
+                            },
+                            "enabled": true,
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "TripoSRStateUI, Assembly-CSharp",
+                            "stateText": {
+                                "sceneID": 67
+                            },
+                            "enabled": true,
+                            "hideFlags": 0
+                        }
+                    ],
+                    "children": [
+                        {
+                            "name": "BaseText",
+                            "hideFlags": 0,
+                            "layer": 5,
+                            "tag": "Untagged",
+                            "active": true,
+                            "components": [
+                                {
+                                    "$type": "UnityEngine.RectTransform, UnityEngine.CoreModule",
+                                    "anchorMin": {
+                                        "x": 0,
+                                        "y": 0
+                                    },
+                                    "anchorMax": {
+                                        "x": 0,
+                                        "y": 1
+                                    },
+                                    "anchoredPosition": {
+                                        "x": -3.051758E-05,
+                                        "y": 0
+                                    },
+                                    "sizeDelta": {
+                                        "x": 163.3422,
+                                        "y": 0
+                                    },
+                                    "pivot": {
+                                        "x": 0,
+                                        "y": 0.5
+                                    },
+                                    "drivenProperties": 0,
+                                    "localPosition": {
+                                        "x": -3.051758E-05,
+                                        "y": -38.168,
+                                        "z": 0
+                                    },
+                                    "localRotation": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0,
+                                        "w": 1
+                                    },
+                                    "localScale": {
+                                        "x": 1,
+                                        "y": 1,
+                                        "z": 1
+                                    },
+                                    "hideFlags": 0
+                                },
+                                {
+                                    "$type": "UnityEngine.CanvasRenderer, UnityEngine.UIModule",
+                                    "hasPopInstruction": false,
+                                    "materialCount": 1,
+                                    "popMaterialCount": 0,
+                                    "cullTransparentMesh": true,
+                                    "cull": false,
+                                    "hideFlags": 0
+                                },
+                                {
+                                    "$type": "TMPro.TextMeshProUGUI, Unity.TextMeshPro",
+                                    "m_hasFontAssetChanged": false,
+                                    "m_baseMaterial": {
+                                        "sceneID": -1
+                                    },
+                                    "m_maskOffset": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0,
+                                        "w": 0
+                                    },
+                                    "m_text": "TripoSR:",
+                                    "m_isRightToLeft": false,
+                                    "m_fontAsset": {
+                                        "sceneID": -1
+                                    },
+                                    "m_sharedMaterial": {
+                                        "sceneID": -1
+                                    },
+                                    "m_fontSharedMaterials": [],
+                                    "m_fontMaterial": {
+                                        "sceneID": -1
+                                    },
+                                    "m_fontMaterials": [],
+                                    "m_fontColor32": {
+                                        "r": 0,
+                                        "g": 0,
+                                        "b": 0,
+                                        "a": 255
+                                    },
+                                    "m_fontColor": {
+                                        "r": 0,
+                                        "g": 0,
+                                        "b": 0,
+                                        "a": 1
+                                    },
+                                    "m_enableVertexGradient": false,
+                                    "m_colorMode": 3,
+                                    "m_fontColorGradient": {
+                                        "topLeft": {
+                                            "r": 1,
+                                            "g": 1,
+                                            "b": 1,
+                                            "a": 1
+                                        },
+                                        "topRight": {
+                                            "r": 1,
+                                            "g": 1,
+                                            "b": 1,
+                                            "a": 1
+                                        },
+                                        "bottomLeft": {
+                                            "r": 1,
+                                            "g": 1,
+                                            "b": 1,
+                                            "a": 1
+                                        },
+                                        "bottomRight": {
+                                            "r": 1,
+                                            "g": 1,
+                                            "b": 1,
+                                            "a": 1
+                                        }
+                                    },
+                                    "m_fontColorGradientPreset": {
+                                        "sceneID": -1
+                                    },
+                                    "m_spriteAsset": {
+                                        "sceneID": -1
+                                    },
+                                    "m_tintAllSprites": false,
+                                    "m_StyleSheet": {
+                                        "sceneID": -1
+                                    },
+                                    "m_TextStyleHashCode": -1183493901,
+                                    "m_overrideHtmlColors": false,
+                                    "m_faceColor": {
+                                        "r": 255,
+                                        "g": 255,
+                                        "b": 255,
+                                        "a": 255
+                                    },
+                                    "m_fontSize": 41.75,
+                                    "m_fontSizeBase": 36,
+                                    "m_fontWeight": 400,
+                                    "m_enableAutoSizing": true,
+                                    "m_fontSizeMin": 18,
+                                    "m_fontSizeMax": 72,
+                                    "m_fontStyle": 0,
+                                    "m_HorizontalAlignment": 2,
+                                    "m_VerticalAlignment": 512,
+                                    "m_textAlignment": 65535,
+                                    "m_characterSpacing": 0,
+                                    "m_wordSpacing": 0,
+                                    "m_lineSpacing": 0,
+                                    "m_lineSpacingMax": 0,
+                                    "m_paragraphSpacing": 0,
+                                    "m_charWidthMaxAdj": 0,
+                                    "m_enableWordWrapping": true,
+                                    "m_wordWrappingRatios": 0.4,
+                                    "m_overflowMode": 0,
+                                    "m_linkedTextComponent": {
+                                        "sceneID": -1
+                                    },
+                                    "parentLinkedComponent": {
+                                        "sceneID": -1
+                                    },
+                                    "m_enableKerning": true,
+                                    "m_enableExtraPadding": false,
+                                    "checkPaddingRequired": false,
+                                    "m_isRichText": true,
+                                    "m_parseCtrlCharacters": true,
+                                    "m_isOrthographic": true,
+                                    "m_isCullingEnabled": false,
+                                    "m_horizontalMapping": 0,
+                                    "m_verticalMapping": 0,
+                                    "m_uvLineOffset": 0,
+                                    "m_geometrySortingOrder": 0,
+                                    "m_IsTextObjectScaleStatic": false,
+                                    "m_VertexBufferAutoSizeReduction": false,
+                                    "m_useMaxVisibleDescender": true,
+                                    "m_pageToDisplay": 1,
+                                    "m_margin": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0,
+                                        "w": 0
+                                    },
+                                    "m_isUsingLegacyAnimationComponent": false,
+                                    "m_isVolumetricText": false,
+                                    "m_Maskable": true,
+                                    "m_OnCullStateChanged": {
+                                        "m_PersistentCalls": {
+                                            "m_Calls": []
+                                        }
+                                    },
+                                    "m_Material": {
+                                        "sceneID": -1
+                                    },
+                                    "m_Color": {
+                                        "r": 1,
+                                        "g": 1,
+                                        "b": 1,
+                                        "a": 1
+                                    },
+                                    "m_RaycastTarget": true,
+                                    "m_RaycastPadding": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0,
+                                        "w": 0
+                                    },
+                                    "enabled": true,
+                                    "hideFlags": 0
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "name": "State",
+                            "hideFlags": 0,
+                            "layer": 5,
+                            "tag": "Untagged",
+                            "active": true,
+                            "components": [
+                                {
+                                    "$type": "UnityEngine.RectTransform, UnityEngine.CoreModule",
+                                    "anchorMin": {
+                                        "x": 0,
+                                        "y": 0
+                                    },
+                                    "anchorMax": {
+                                        "x": 0,
+                                        "y": 1
+                                    },
+                                    "anchoredPosition": {
+                                        "x": 163.34,
+                                        "y": 0
+                                    },
+                                    "sizeDelta": {
+                                        "x": 218.25,
+                                        "y": 0
+                                    },
+                                    "pivot": {
+                                        "x": 0,
+                                        "y": 0.5
+                                    },
+                                    "drivenProperties": 0,
+                                    "localPosition": {
+                                        "x": 163.34,
+                                        "y": -38.168,
+                                        "z": 0
+                                    },
+                                    "localRotation": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0,
+                                        "w": 1
+                                    },
+                                    "localScale": {
+                                        "x": 1,
+                                        "y": 1,
+                                        "z": 1
+                                    },
+                                    "hideFlags": 0
+                                },
+                                {
+                                    "$type": "UnityEngine.CanvasRenderer, UnityEngine.UIModule",
+                                    "hasPopInstruction": false,
+                                    "materialCount": 1,
+                                    "popMaterialCount": 0,
+                                    "cullTransparentMesh": true,
+                                    "cull": false,
+                                    "hideFlags": 0
+                                },
+                                {
+                                    "$type": "TMPro.TextMeshProUGUI, Unity.TextMeshPro",
+                                    "m_hasFontAssetChanged": false,
+                                    "m_baseMaterial": {
+                                        "sceneID": -1
+                                    },
+                                    "m_maskOffset": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0,
+                                        "w": 0
+                                    },
+                                    "m_text": "WAITING",
+                                    "m_isRightToLeft": false,
+                                    "m_fontAsset": {
+                                        "sceneID": -1
+                                    },
+                                    "m_sharedMaterial": {
+                                        "sceneID": -1
+                                    },
+                                    "m_fontSharedMaterials": [],
+                                    "m_fontMaterial": {
+                                        "sceneID": -1
+                                    },
+                                    "m_fontMaterials": [],
+                                    "m_fontColor32": {
+                                        "r": 25,
+                                        "g": 8,
+                                        "b": 255,
+                                        "a": 255
+                                    },
+                                    "m_fontColor": {
+                                        "r": 0.09653069,
+                                        "g": 0.03301889,
+                                        "b": 1,
+                                        "a": 1
+                                    },
+                                    "m_enableVertexGradient": false,
+                                    "m_colorMode": 3,
+                                    "m_fontColorGradient": {
+                                        "topLeft": {
+                                            "r": 1,
+                                            "g": 1,
+                                            "b": 1,
+                                            "a": 1
+                                        },
+                                        "topRight": {
+                                            "r": 1,
+                                            "g": 1,
+                                            "b": 1,
+                                            "a": 1
+                                        },
+                                        "bottomLeft": {
+                                            "r": 1,
+                                            "g": 1,
+                                            "b": 1,
+                                            "a": 1
+                                        },
+                                        "bottomRight": {
+                                            "r": 1,
+                                            "g": 1,
+                                            "b": 1,
+                                            "a": 1
+                                        }
+                                    },
+                                    "m_fontColorGradientPreset": {
+                                        "sceneID": -1
+                                    },
+                                    "m_spriteAsset": {
+                                        "sceneID": -1
+                                    },
+                                    "m_tintAllSprites": false,
+                                    "m_StyleSheet": {
+                                        "sceneID": -1
+                                    },
+                                    "m_TextStyleHashCode": -1183493901,
+                                    "m_overrideHtmlColors": false,
+                                    "m_faceColor": {
+                                        "r": 255,
+                                        "g": 255,
+                                        "b": 255,
+                                        "a": 255
+                                    },
+                                    "m_fontSize": 45,
+                                    "m_fontSizeBase": 36,
+                                    "m_fontWeight": 400,
+                                    "m_enableAutoSizing": true,
+                                    "m_fontSizeMin": 1,
+                                    "m_fontSizeMax": 45,
+                                    "m_fontStyle": 0,
+                                    "m_HorizontalAlignment": 2,
+                                    "m_VerticalAlignment": 512,
+                                    "m_textAlignment": 65535,
+                                    "m_characterSpacing": 0,
+                                    "m_wordSpacing": 0,
+                                    "m_lineSpacing": 0,
+                                    "m_lineSpacingMax": 0,
+                                    "m_paragraphSpacing": 0,
+                                    "m_charWidthMaxAdj": 0,
+                                    "m_enableWordWrapping": true,
+                                    "m_wordWrappingRatios": 0.4,
+                                    "m_overflowMode": 0,
+                                    "m_linkedTextComponent": {
+                                        "sceneID": -1
+                                    },
+                                    "parentLinkedComponent": {
+                                        "sceneID": -1
+                                    },
+                                    "m_enableKerning": true,
+                                    "m_enableExtraPadding": false,
+                                    "checkPaddingRequired": false,
+                                    "m_isRichText": true,
+                                    "m_parseCtrlCharacters": true,
+                                    "m_isOrthographic": true,
+                                    "m_isCullingEnabled": false,
+                                    "m_horizontalMapping": 0,
+                                    "m_verticalMapping": 0,
+                                    "m_uvLineOffset": 0,
+                                    "m_geometrySortingOrder": 0,
+                                    "m_IsTextObjectScaleStatic": false,
+                                    "m_VertexBufferAutoSizeReduction": false,
+                                    "m_useMaxVisibleDescender": true,
+                                    "m_pageToDisplay": 1,
+                                    "m_margin": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0,
+                                        "w": 0
+                                    },
+                                    "m_isUsingLegacyAnimationComponent": false,
+                                    "m_isVolumetricText": false,
+                                    "m_Maskable": true,
+                                    "m_OnCullStateChanged": {
+                                        "m_PersistentCalls": {
+                                            "m_Calls": []
+                                        }
+                                    },
+                                    "m_Material": {
+                                        "sceneID": -1
+                                    },
+                                    "m_Color": {
+                                        "r": 1,
+                                        "g": 1,
+                                        "b": 1,
+                                        "a": 1
+                                    },
+                                    "m_RaycastTarget": true,
+                                    "m_RaycastPadding": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0,
+                                        "w": 0
+                                    },
+                                    "enabled": true,
+                                    "hideFlags": 0
+                                }
+                            ],
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "CrossHair",
+                    "hideFlags": 0,
+                    "layer": 5,
+                    "tag": "Untagged",
+                    "active": true,
+                    "components": [
+                        {
+                            "$type": "UnityEngine.RectTransform, UnityEngine.CoreModule",
+                            "anchorMin": {
+                                "x": 0.5,
+                                "y": 0.5
+                            },
+                            "anchorMax": {
+                                "x": 0.5,
+                                "y": 0.5
+                            },
+                            "anchoredPosition": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "sizeDelta": {
+                                "x": 5,
+                                "y": 5
+                            },
+                            "pivot": {
+                                "x": 0.5,
+                                "y": 0.5
+                            },
+                            "drivenProperties": 0,
+                            "localPosition": {
+                                "x": 0,
+                                "y": 0,
+                                "z": 0
+                            },
+                            "localRotation": {
+                                "x": 0,
+                                "y": 0,
+                                "z": 0,
+                                "w": 1
+                            },
+                            "localScale": {
+                                "x": 1,
+                                "y": 1,
+                                "z": 1
+                            },
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "UnityEngine.CanvasRenderer, UnityEngine.UIModule",
+                            "hasPopInstruction": false,
+                            "materialCount": 1,
+                            "popMaterialCount": 0,
+                            "cullTransparentMesh": true,
+                            "cull": false,
+                            "hideFlags": 0
+                        },
+                        {
+                            "$type": "UnityEngine.UI.Image, UnityEngine.UI",
+                            "m_Sprite": {
+                                "sceneID": -1
+                            },
+                            "m_Type": 0,
+                            "m_PreserveAspect": false,
+                            "m_FillCenter": true,
+                            "m_FillMethod": 4,
+                            "m_FillAmount": 1,
+                            "m_FillClockwise": true,
+                            "m_FillOrigin": 0,
+                            "m_UseSpriteMesh": false,
+                            "m_PixelsPerUnitMultiplier": 1,
+                            "m_Maskable": true,
+                            "m_OnCullStateChanged": {
+                                "m_PersistentCalls": {
+                                    "m_Calls": []
+                                }
+                            },
+                            "m_Material": {
+                                "sceneID": -1
+                            },
+                            "m_Color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0,
+                                "a": 1
+                            },
+                            "m_RaycastTarget": true,
+                            "m_RaycastPadding": {
+                                "x": 0,
+                                "y": 0,
+                                "z": 0,
+                                "w": 0
+                            },
+                            "enabled": true,
+                            "hideFlags": 0
+                        }
+                    ],
+                    "children": []
+                }
+            ]
+        }
+    ],
+    "m_RenderSettings": null
+}

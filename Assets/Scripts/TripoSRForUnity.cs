@@ -178,7 +178,7 @@ public class TripoSRForUnity : MonoBehaviour
         currentState = TripoState.WAITING;
         isProcessRunning = false;
         pythonProcess = null;
-        
+
         if (moveAndRename) UnityEditor.EditorApplication.delayCall += MoveAndRenameOutputFile;
         else if (autoAddMesh) UnityEditor.EditorApplication.delayCall += () => AddMeshToScene(null);
 
@@ -190,7 +190,6 @@ public class TripoSRForUnity : MonoBehaviour
         string originalPath = Path.Combine(Application.dataPath, "TripoSR/" + outputDir + "0/mesh.obj");
         string modelsDirectory = "Assets/"+moveAndRenamePath;
         string newFileName = moveAndRenamePath.Split("\\")[moveAndRenamePath.Split("\\").Length - 1] + ".obj";
-        UnityEngine.Debug.Log(newFileName);
         string newAssetPath = Path.Combine(modelsDirectory, newFileName);
         string newPath = Path.Combine(Application.dataPath, newAssetPath.Substring("Assets/".Length));
 
@@ -203,6 +202,9 @@ public class TripoSRForUnity : MonoBehaviour
             else {
                 File.Move(originalPath, newPath);
                 AssetDatabase.Refresh();
+
+
+                GenerationDatabase.Instance.AddEntry(newFileName.Split(".")[0], newAssetPath);
 
                 UnityEngine.Debug.Log($"Moved and renamed mesh to path: {newPath}");
             }
