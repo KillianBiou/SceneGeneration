@@ -11,7 +11,7 @@ public class SD_PromptHandler : MonoBehaviour
 
     public bool preserve;
 
-    private void Start()
+    private void Awake()
     {
         handler = FindFirstObjectByType<StableHandler>();
     }
