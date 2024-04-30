@@ -212,7 +212,6 @@ public class Player : MonoBehaviour
 
             temp.transform.GetChild(0).position = child.child[0].position;
             temp.transform.GetChild(0).rotation = child.child[0].rotation;
-            temp.transform.GetChild(0).GetComponent<Renderer>().material = ;
         }
 
         Debug.Log("Scene loaded from " + scenePath);
