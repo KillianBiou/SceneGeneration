@@ -19,7 +19,7 @@ public class TripoSRForUnity : MonoBehaviour
 {
     [Header("General Settings")]
     [SerializeField, Tooltip("Path to your Python executable")]
-    private string pythonPath = "/usr/bin/python";
+    public string pythonPath = "/usr/bin/python";
     
     [SerializeField, Tooltip("If true, automatically adds the generated mesh to the scene.")]
     private bool autoAddMesh = true;

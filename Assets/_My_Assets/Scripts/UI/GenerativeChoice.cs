@@ -1,8 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using TMPro;
 using UnityEditor;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +26,11 @@ public class GenerativeChoice : MonoBehaviour
     private bool pending;
 
     public SdRequest req;
+
+    private Process pythonProcess;
+    private bool isProcessRunning = false;
+
+    public static event Action OnPythonProcessEnded;
 
     // Start is called before the first frame update
     void Start()
@@ -80,6 +89,8 @@ public class GenerativeChoice : MonoBehaviour
 
         ClearPicker();
 
+        uiContainer.transform.parent.gameObject.SetActive(true);
+
         if (!folderName.EndsWith('/'))
             folderName = folderName + '/';
 
@@ -91,10 +102,85 @@ public class GenerativeChoice : MonoBehaviour
             sdh.RequestGeneration(req);
         }
 
-        sdh.FinishedGenerating.AddListener(CountingResults);
+        sdh.FinishedGenerating.AddListener(RemoveBackground);
         amount = n;
         pending = true;
     }
+
+    public void RemoveBackground()
+    {
+        if (isProcessRunning)
+        {
+            UnityEngine.Debug.Log("A background remover process is already running - quitting and replacing process.");
+
+            if (pythonProcess is { HasExited: false })
+            {
+                pythonProcess.Kill();
+                pythonProcess.Dispose();
+            }
+
+            pythonProcess = null;
+            isProcessRunning = false;
+        }
+
+        DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/GeneratedData/" + folderName);
+        FileInfo[] info = dir.GetFiles("*.png");
+
+        if (info.Length >= amount)
+        {
+            string[] names = new string[info.Length];
+
+            for (int i = 0; i < info.Length; i++)
+            {
+                names[i] = Application.dataPath + "/GeneratedData/" + folderName + "/" + info[i].Name;
+            }
+
+            string args = $"\"{string.Join("\" \"", names)}\" ";
+
+            ProcessStartInfo start = new ProcessStartInfo
+            {
+                FileName = TripoSRForUnity.Instance.pythonPath,
+                Arguments = $"{Path.Combine(Application.dataPath, "TripoSR/BackgroundRemover.py")} {args}",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+
+
+
+            pythonProcess = new Process { StartInfo = start };
+            pythonProcess.StartInfo = start;
+            pythonProcess.EnableRaisingEvents = true;
+            pythonProcess.Exited += OnPythonProcessExited;
+
+            pythonProcess.OutputDataReceived += (sender, e) =>
+            {
+                UnityEngine.Debug.Log(e.Data);
+            };
+
+            pythonProcess.ErrorDataReceived += (sender, e) =>
+            {
+                UnityEngine.Debug.Log(e.Data);
+            };
+
+            pythonProcess.Start();
+            pythonProcess.BeginOutputReadLine();
+            pythonProcess.BeginErrorReadLine();
+            isProcessRunning = true;
+        }
+    }
+
+    private void OnPythonProcessExited(object sender, EventArgs e)
+    {
+        isProcessRunning = false;
+        pythonProcess = null;
+
+        UnityEditor.EditorApplication.delayCall += CountingResults;
+
+        UnityEditor.EditorApplication.delayCall += () => OnPythonProcessEnded?.Invoke();
+    }
+
 
     public void CountingResults()
     {
@@ -107,10 +193,15 @@ public class GenerativeChoice : MonoBehaviour
             //generate buttons
             foreach (FileInfo f in info)
             {
+
+
                 GameObject last = Instantiate(buttonChoice);
 
                 Texture2D tex = new Texture2D(2, 2);
                 tex.LoadImage(File.ReadAllBytes(Application.dataPath + "/GeneratedData/" + folderName + "/" + f.Name));
+
+                last.GetComponent<Button>().onClick.AddListener(() => ChooseImage(Application.dataPath + "/GeneratedData/" + folderName + "/" + f.Name, 
+                                                                                Application.dataPath + "/GeneratedData/" + folderName + req.prompt.Replace(" ", "") + (System.DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds + ".png"));
 
                 last.transform.GetChild(0).GetComponent<RawImage>().texture = tex;
                 last.transform.SetParent(uiContainer.transform);
@@ -131,5 +222,82 @@ public class GenerativeChoice : MonoBehaviour
         }
     }
 
+    public void ChooseImage(string oldPath, string newPath)
+    {
+        uiContainer.transform.parent.gameObject.SetActive(false);
+
+        File.Move(oldPath, newPath);
+
+        Player.Instance.AddImage(newPath);
+    }
+
+    public void SetPrompt(string s)
+    {
+        req.prompt = s;
+    }
+
+    public void SetNegPrompt(string s)
+    {
+        req.negPrompt = s;
+    }
+
+
+    public void SetWidth(float i)
+    {
+        req.width = (int)i;
+    }
+
+    public void SetHeight(float i)
+    {
+        req.height = (int)i;
+    }
+
+
+
+    public void SetWidth(string i)
+    {
+        req.width = int.Parse(i);
+    }
+
+    public void SetHeight(string i)
+    {
+        req.height = int.Parse(i);
+    }
+
+    public void SetWidth(int i)
+    {
+        req.width = i;
+    }
+
+    public void SetHeight(int i)
+    {
+        req.height = i;
+    }
+
+
+
+    public void SetSteps(string i)
+    {
+        req.steps = int.Parse(i);
+    }
+    public void SetCfg(string i)
+    {
+        req.cfgScale = int.Parse(i);
+    }
+    public void SetSeed(string i)
+    {
+        req.seed = int.Parse(i);
+    }
+
+
+
+    public void SetFileName(string s)
+    {
+        req.filename = s;
+    }
+    public void SetDirectory(string s)
+    {
+        req.directory = s;
+    }
 
 }
