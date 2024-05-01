@@ -38,7 +38,7 @@ public class GenerationDatabase : MonoBehaviour
             if (!File.Exists(entry.Value))
                 toRemove.Add(entry.Key);
         }
-        foreach(string remove  in toRemove)
+        foreach(string remove in toRemove)
         {
             assetDatabase.Remove(remove);
         }
