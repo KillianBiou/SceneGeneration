@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(OriginPlacement))]
 public class OriginPlacementEditor : Editor
 {
@@ -16,3 +17,4 @@ public class OriginPlacementEditor : Editor
         }
     }
 }
+#endif

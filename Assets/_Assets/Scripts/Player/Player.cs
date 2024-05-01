@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Unity.RuntimeSceneSerialization;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [Serializable]
@@ -27,7 +25,7 @@ public class Player : MonoBehaviour
 
     [Header("Generation parameters")]
     [SerializeField, Tooltip("Path to input image(s).")]
-    private List<Texture2D> images;
+    private List<string> images;
     [SerializeField]
     private Material generatedMat;
 
@@ -48,8 +46,17 @@ public class Player : MonoBehaviour
     private Transform camera;
     [SerializeField]
     private Transform playgroundHolder;
+    [SerializeField]
+    private Material baseMat;
 
     private Vector3 instanciationPoint;
+
+    public static Player Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -86,7 +93,7 @@ public class Player : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(camera.position, camera.forward, out hit, 100f))
             {
-                string imagePath = AssetDatabase.GetAssetPath(images[0]);
+                string imagePath = images[0]; //AssetDatabase.GetAssetPath(images[0]);
                 instanciationPoint = hit.point;
 
                 generationLock = true;
@@ -212,9 +219,22 @@ public class Player : MonoBehaviour
 
             temp.transform.GetChild(0).position = child.child[0].position;
             temp.transform.GetChild(0).rotation = child.child[0].rotation;
+            temp.transform.GetChild(0).GetComponent<Renderer>().material = baseMat;
         }
 
         Debug.Log("Scene loaded from " + scenePath);
+    }
+
+    public void AddImage(Texture2D imagePath)
+    {
+        //images.Add(imagePath);
+    }
+
+    public void AddImage(string imagePath)
+    {
+        //Texture2D tex = new Texture2D(2, 2);
+        //tex.LoadImage(File.ReadAllBytes(imagePath));
+        images.Add(imagePath);
     }
 
     private void OnDrawGizmos()

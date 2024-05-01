@@ -15,6 +15,10 @@ public class GenerationDatabase : MonoBehaviour
     [SerializeField]
     private SerializedDictionary<string, string> assetDatabase;
 
+    [SerializedDictionary("Material name", "Material Path")]
+    [SerializeField]
+    private SerializedDictionary<string, string> MaterialDatabase;
+
     private void Awake()
     {
         Instance = this;
