@@ -11,6 +11,7 @@ namespace RTS_Cam
 
         private TabsBlock tabs;
 
+
         private void OnEnable()
         {
             tabs = new TabsBlock(new Dictionary<string, System.Action>() 
@@ -31,11 +32,15 @@ namespace RTS_Cam
             if (GUI.changed)
                 camera.lastTab = tabs.curMethodIndex;
             EditorUtility.SetDirty(camera);
+            serializedObject.ApplyModifiedProperties();
         }
 
         private void InteractionTab()
         {
+            SerializedProperty OnShortClick = serializedObject.FindProperty("OnShortClick");
+
             camera.longClickThreshold = EditorGUILayout.FloatField("Long click threshold: ", camera.longClickThreshold);
+            EditorGUILayout.PropertyField(OnShortClick);
         }
 
         private void MovementTab()

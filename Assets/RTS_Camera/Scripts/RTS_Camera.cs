@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace RTS_Cam
 {
@@ -114,12 +116,14 @@ namespace RTS_Cam
         public KeyCode mouseRotationKey = KeyCode.Mouse1;
 
         public float longClickThreshold = 0.1f;
+        public UnityEvent OnShortClick;
 
         private int cursorLockRequest = 0;
         private bool longClick = false;
         private bool hasClicked = false;
         private bool lockPan = false;
         private float totalDownTime = 0f;
+        private bool onUI = false;
 
         private Vector2 KeyboardInput
         {
@@ -205,10 +209,27 @@ namespace RTS_Cam
         /// </summary>
         private void CameraUpdate()
         {
-            if (FollowingTarget)
+
+            /*if (FollowingTarget)
                 FollowTarget();
             else
-                Move();
+                Move();*/
+
+            Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            onUI = false;
+            if (Physics.Raycast(ray, out hit, 100))
+            {
+                if (EventSystem.current.IsPointerOverGameObject())
+                {
+                    onUI = true;
+                }
+            }
+
+            if (onUI)
+                return;
+
+            Move();
 
             HeightCalculation();
             Rotation();
@@ -226,13 +247,12 @@ namespace RTS_Cam
                 hasClicked = true;
             }
 
-            if (hasClicked &&Input.GetMouseButton(0))
+            if (hasClicked && Input.GetMouseButton(0))
             {
                 totalDownTime += Time.deltaTime;
 
                 if (totalDownTime >= longClickThreshold)
                 {
-                    Debug.Log("Long click");
                     longClick = true;
                 }
             }
@@ -240,9 +260,14 @@ namespace RTS_Cam
             if(hasClicked && Input.GetMouseButtonUp(0))
             {
                 if (totalDownTime >= longClickThreshold)
-                    Debug.Log("Short Click");
+                    OnShortClickTrigger();
                 longClick = false;
             }
+        }
+
+        private void OnShortClickTrigger()
+        {
+            OnShortClick.Invoke();
         }
 
         /// <summary>

@@ -178,6 +178,10 @@ MonoBehaviour:
   rotateLeftKey: 122
   useMouseRotation: 1
   mouseRotationKey: 324
+  longClickThreshold: 0.1
+  OnShortClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2163283206053285304
 MonoBehaviour:
   m_ObjectHideFlags: 0

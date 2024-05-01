@@ -68,26 +68,23 @@ public class Player : MonoBehaviour
         if (!debugMode)
             return;
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            GetLookPos();
-        }
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             SaveScene();
         }
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             LoadScene(debugScenePath);
         }
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.Alpha9))
         {
             InstantiationCallback(GenerationDatabase.Instance.GetObject(debugLoadObjectName));
         }
     }
 
-    private void GetLookPos()
+    public void GetLookPos()
     {
+        Debug.Log("EFWF");
         if(images.Count > 0 && !generationLock)
         {
             RaycastHit hit;
