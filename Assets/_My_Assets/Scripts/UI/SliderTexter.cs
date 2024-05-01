@@ -10,6 +10,8 @@ public class SliderTexter : MonoBehaviour
     [SerializeField]
     public TMP_Text text;
 
+    public string prefix, sufix;
+
     private void Start()
     {
         Slider s = null;
@@ -22,6 +24,6 @@ public class SliderTexter : MonoBehaviour
     public void SetText(float i)
     {
         if(text)
-            text.text = i.ToString();
+            text.text = prefix + i + sufix;
     }
 }

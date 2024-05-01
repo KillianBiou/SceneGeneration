@@ -7,6 +7,8 @@ public class RoomMap : MonoBehaviour
 
 
     public bool[,] map;
+    public int size;
+    public List<List<TileObject>> mapObj;
     public GameObject prefab;
 
     // Start is called before the first frame update
@@ -25,24 +27,76 @@ public class RoomMap : MonoBehaviour
         { false, false, false, false, false, false, false, false, false, false }
         };
 
-        for (int i = 1; i < 9; i++)
+
+
+        mapObj = new List<List<TileObject>>();
+
+        for (int i = 0; i < size; i++)
         {
-            for (int j = 1; j < 9; j++)
+            mapObj.Add(new List<TileObject>());
+            for (int j = 0; j < size; j++)
             {
-                if (map[i,j])
-                {
-                    GameObject last = Instantiate(prefab);
-                    last.transform.position = new Vector3(i, 0, j);
-                    last.GetComponent<TileObject>().Init(map[i, j + 1], map[i+1, j], map[i, j - 1], map[i-1, j]);
-                    last.transform.SetParent(gameObject.transform, false);
-                }
+                GameObject last = Instantiate(prefab);
+                last.transform.position = new Vector3(i, 0, j);
+                TileObject t = last.GetComponent<TileObject>();
+
+                t.Init(true, true, true, true, true);
+                t.roomMap = this;
+                last.transform.SetParent(gameObject.transform, false);
+
+                mapObj[i].Add(t);
             }
         }
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public void EnterEdit()
     {
-        
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                mapObj[i][j].ShowButton();
+            }
+        }
+    }
+    public void ExitEdit()
+    {
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                mapObj[i][j].HideButton();
+            }
+        }
+    }
+
+
+    public void Retile(TileObject caller, int x, int y, bool b)
+    {
+        if (!b)
+        {
+            if (!mapObj[x][y+1].isWall)
+                mapObj[x][y+1].openCardinal(Cardinal.SOUTH);
+            if (!mapObj[x+1][y].isWall)
+                mapObj[x+1][y].openCardinal(Cardinal.WEST);
+            if (!mapObj[x][y-1].isWall)
+                mapObj[x][y-1].openCardinal(Cardinal.NORTH);
+            if (!mapObj[x-1][y].isWall)
+                mapObj[x-1][y].openCardinal(Cardinal.EAST);
+        }
+        else
+        {
+            if (!mapObj[x][y+1].isWall)
+                mapObj[x][y+1].closeCardinal(Cardinal.SOUTH);
+            if (!mapObj[x + 1][y].isWall)
+                mapObj[x+1][y].closeCardinal(Cardinal.WEST);
+            if (!mapObj[x][y-1].isWall)
+                mapObj[x][y-1].closeCardinal(Cardinal.NORTH);
+            if (!mapObj[x - 1][y].isWall)
+                mapObj[x-1][y].closeCardinal(Cardinal.EAST);
+        }
+
+        caller.Init(b, mapObj[x][y+1].isWall, mapObj[x+1][y].isWall, mapObj[x][y-1].isWall, mapObj[x-1][y].isWall);
     }
 }

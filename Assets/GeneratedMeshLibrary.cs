@@ -20,10 +20,10 @@ public class GeneratedMeshLibrary : MonoBehaviour
     {
         LoadLibrary();
 
-
+        /*
         StableHandler sdh;
         if ((sdh = FindFirstObjectByType<StableHandler>()) != null)
-            sdh.FinishedGenerating.AddListener(ReloadLibrary);
+            sdh.FinishedGenerating.AddListener(ReloadLibrary);*/
     }
 
     public void ApplyTexture()
