@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using TMPro;
+using Unity.VisualScripting;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 namespace RTS_Cam
 {
@@ -124,6 +127,7 @@ namespace RTS_Cam
         private bool lockPan = false;
         private float totalDownTime = 0f;
         private bool onUI = false;
+        public RectTransform popUp;
 
         private Vector2 KeyboardInput
         {
@@ -237,6 +241,34 @@ namespace RTS_Cam
 
             CheckCursorLock();
             CheckClick();
+            ActionUIHandle();
+        }
+
+        private void ActionUIHandle()
+        {
+            RectTransform canvasRectTransform = popUp.GetComponentInParent<Canvas>().transform as RectTransform;
+            Vector2 canvasPositionCursor;
+            Vector2 canvasPositionUI;
+
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, Input.mousePosition, null, out canvasPositionCursor))
+            {
+                // Convert UI element position to canvas space
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, popUp.position, null, out canvasPositionUI))
+                {
+                    // Calculate the distance between cursor and UI element
+                    // X Axis
+                    if(Mathf.Abs(canvasPositionCursor.x - canvasPositionUI.x) > popUp.rect.width * 1.5f)
+                    {
+                        popUp.gameObject.SetActive(false);
+                    }
+                    // Y Axis
+                    if (Mathf.Abs(canvasPositionCursor.y - canvasPositionUI.y) > popUp.rect.height * 1.5f)
+                    {
+                        popUp.gameObject.SetActive(false);
+                    }
+
+                }
+            }
         }
 
         private void CheckClick()
@@ -259,8 +291,11 @@ namespace RTS_Cam
 
             if(hasClicked && Input.GetMouseButtonUp(0))
             {
-                if (totalDownTime >= longClickThreshold)
+                if (!longClick)
+                {
+                    Debug.Log("Short Click");
                     OnShortClickTrigger();
+                }
                 longClick = false;
             }
         }
@@ -268,6 +303,23 @@ namespace RTS_Cam
         private void OnShortClickTrigger()
         {
             OnShortClick.Invoke();
+        }
+
+        public void SetPopUp()
+        {
+            Debug.Log("FEW");
+            var mousePos = Input.mousePosition;
+
+            popUp.gameObject.SetActive(true);
+
+            RectTransform canvasRectTransform = popUp.GetComponentInParent<Canvas>().transform as RectTransform;
+            Vector2 canvasPosition;
+
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, mousePos, null, out canvasPosition))
+            {
+                // Set the position of the UI element
+                popUp.localPosition = canvasPosition;
+            }
         }
 
         /// <summary>

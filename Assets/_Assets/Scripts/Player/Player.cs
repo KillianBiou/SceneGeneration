@@ -84,7 +84,6 @@ public class Player : MonoBehaviour
 
     public void GetLookPos()
     {
-        Debug.Log("EFWF");
         if(images.Count > 0 && !generationLock)
         {
             RaycastHit hit;
