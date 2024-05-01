@@ -112,6 +112,8 @@ namespace RTS_Cam
         public bool useMouseRotation = true;
         public KeyCode mouseRotationKey = KeyCode.Mouse1;
 
+        private int cursorLockRequest = 0;
+
         private Vector2 KeyboardInput
         {
             get { return useKeyboardInput ? new Vector2(Input.GetAxis(horizontalAxis), Input.GetAxis(verticalAxis)) : Vector2.zero; }
@@ -204,6 +206,8 @@ namespace RTS_Cam
             HeightCalculation();
             Rotation();
             LimitPosition();
+
+            CheckCursorLock();
         }
 
         /// <summary>
@@ -213,6 +217,7 @@ namespace RTS_Cam
         {
             if (useKeyboardInput)
             {
+                Cursor.lockState = CursorLockMode.Locked;
                 Vector3 desiredMove = new Vector3(KeyboardInput.x, 0, KeyboardInput.y);
 
                 desiredMove *= Mathf.Lerp(minKeyboardMovementSpeed, maxKeyboardMovementSpeed, (DistanceToGround() - minHeight) / (maxHeight - minHeight));
@@ -294,13 +299,25 @@ namespace RTS_Cam
 
             if (useMouseRotation && Input.GetKey(mouseRotationKey))
             {
-                Cursor.lockState = CursorLockMode.Locked;
                 m_Transform.Rotate(Vector3.up, -MouseAxis.x * Time.deltaTime * mouseRotationSpeed, Space.World);
             }
-            else
-            {
-                Cursor.lockState = CursorLockMode.None;
-            }
+        }
+
+        private void CheckCursorLock()
+        {
+            // Rotation
+            if (Input.GetKeyDown(mouseRotationKey))
+                cursorLockRequest++;
+            if (Input.GetKeyUp(mouseRotationKey))
+                cursorLockRequest--;
+
+            // Panning
+            if (Input.GetKeyDown(panningKey))
+                cursorLockRequest++;
+            if (Input.GetKeyUp(panningKey))
+                cursorLockRequest--;
+
+            Cursor.lockState = cursorLockRequest > 0 ? CursorLockMode.Locked : CursorLockMode.None;
         }
 
         /// <summary>
