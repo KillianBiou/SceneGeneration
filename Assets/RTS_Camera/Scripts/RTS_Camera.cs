@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 namespace RTS_Cam
 {
@@ -112,7 +113,13 @@ namespace RTS_Cam
         public bool useMouseRotation = true;
         public KeyCode mouseRotationKey = KeyCode.Mouse1;
 
+        public float longClickThreshold = 0.1f;
+
         private int cursorLockRequest = 0;
+        private bool longClick = false;
+        private bool hasClicked = false;
+        private bool lockPan = false;
+        private float totalDownTime = 0f;
 
         private Vector2 KeyboardInput
         {
@@ -208,6 +215,34 @@ namespace RTS_Cam
             LimitPosition();
 
             CheckCursorLock();
+            CheckClick();
+        }
+
+        private void CheckClick()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                totalDownTime = 0;
+                hasClicked = true;
+            }
+
+            if (hasClicked &&Input.GetMouseButton(0))
+            {
+                totalDownTime += Time.deltaTime;
+
+                if (totalDownTime >= longClickThreshold)
+                {
+                    Debug.Log("Long click");
+                    longClick = true;
+                }
+            }
+
+            if(hasClicked && Input.GetMouseButtonUp(0))
+            {
+                if (totalDownTime >= longClickThreshold)
+                    Debug.Log("Short Click");
+                longClick = false;
+            }
         }
 
         /// <summary>
@@ -248,7 +283,7 @@ namespace RTS_Cam
                 m_Transform.Translate(desiredMove, Space.Self);
             }       
         
-            if(usePanning && Input.GetKey(panningKey) && MouseAxis != Vector2.zero)
+            if(usePanning && Input.GetKey(panningKey) && longClick && MouseAxis != Vector2.zero)
             {
                 Vector3 desiredMove = new Vector3(-MouseAxis.x, 0, -MouseAxis.y);
 
@@ -312,10 +347,18 @@ namespace RTS_Cam
                 cursorLockRequest--;
 
             // Panning
-            if (Input.GetKeyDown(panningKey))
+            if (longClick && !lockPan)
+            {
+                lockPan = true;
                 cursorLockRequest++;
-            if (Input.GetKeyUp(panningKey))
+            }
+            if (Input.GetKeyUp(panningKey) && lockPan)
+            {
+                lockPan = false;
                 cursorLockRequest--;
+            }
+
+            Mathf.Clamp(cursorLockRequest,0, Mathf.Infinity);
 
             Cursor.lockState = cursorLockRequest > 0 ? CursorLockMode.Locked : CursorLockMode.None;
         }

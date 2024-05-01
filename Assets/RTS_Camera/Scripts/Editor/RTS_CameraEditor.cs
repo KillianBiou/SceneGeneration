@@ -15,6 +15,7 @@ namespace RTS_Cam
         {
             tabs = new TabsBlock(new Dictionary<string, System.Action>() 
             {
+                {"Interaction", InteractionTab},
                 {"Movement", MovementTab},
                 {"Rotation", RotationTab},
                 {"Height", HeightTab}
@@ -30,6 +31,11 @@ namespace RTS_Cam
             if (GUI.changed)
                 camera.lastTab = tabs.curMethodIndex;
             EditorUtility.SetDirty(camera);
+        }
+
+        private void InteractionTab()
+        {
+            camera.longClickThreshold = EditorGUILayout.FloatField("Long click threshold: ", camera.longClickThreshold);
         }
 
         private void MovementTab()
