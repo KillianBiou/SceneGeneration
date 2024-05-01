@@ -14,6 +14,7 @@ public class GenerativeChoice : MonoBehaviour
 
     public string folderName;
     public GameObject uiContainer, buttonChoice;
+    public Vector3 generationPos;
     [SerializeField]
     private TMP_Text title;
 
@@ -218,6 +219,7 @@ public class GenerativeChoice : MonoBehaviour
 
             pending = false;
             sdh.FinishedGenerating.RemoveListener(CountingResults);
+            gameObject.SetActive(false);
         }
     }
 
@@ -227,7 +229,8 @@ public class GenerativeChoice : MonoBehaviour
 
         File.Move(oldPath, newPath);
 
-        Player.Instance.AddImage(newPath);
+        //Player.Instance.AddImage(newPath);
+        Player.Instance.AddImage(newPath, generationPos);
     }
 
     public void SetPrompt(string s)

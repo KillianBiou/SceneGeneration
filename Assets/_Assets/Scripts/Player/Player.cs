@@ -232,6 +232,13 @@ public class Player : MonoBehaviour
         //tex.LoadImage(File.ReadAllBytes(imagePath));
         images.Add(imagePath);
     }
+    public void AddImage(string imagePath, Vector3 generationPos)
+    {
+        instanciationPoint = generationPos;
+
+        generationLock = true;
+        TripoSRForUnity.Instance.RunTripoSR(InstantiationCallback, imagePath);
+    }
 
     private void OnDrawGizmos()
     {

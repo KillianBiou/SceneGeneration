@@ -731,6 +731,7 @@ GameObject:
   - component: {fileID: 644342726}
   - component: {fileID: 644342725}
   - component: {fileID: 644342724}
+  - component: {fileID: 644342727}
   m_Layer: 5
   m_Name: PopUp
   m_TagString: Untagged
@@ -801,7 +802,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 644342725}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 644342727}
+        m_TargetAssemblyTypeName: GenerationPopUp, Assembly-CSharp
+        m_MethodName: RequestGeneration
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &644342725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -840,6 +853,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 644342722}
   m_CullTransparentMesh: 1
+--- !u!114 &644342727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644342722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49a263c0a4115494e9cb087138846b38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  point: {x: 0, y: 0, z: 0}
+  modelPrompt: {fileID: 8433887608875628105}
 --- !u!1 &832703418
 GameObject:
   m_ObjectHideFlags: 0
@@ -1146,11 +1173,11 @@ MonoBehaviour:
   debugMode: 1
   debugObject: {fileID: 0}
   debugLoadObjectName: 
-  debugScenePath: C:\SceneGeneration\SceneGeneration\Assets\_Assets\ScenePrefab\10\SceneSave.json
+  debugScenePath: C:\SceneGeneration\SceneGeneration\Assets\_Assets\ScenePrefab\13\SceneSave.json
   generationLock: 0
   camera: {fileID: 932573019}
   playgroundHolder: {fileID: 1058023360}
-  baseMat: {fileID: 0}
+  baseMat: {fileID: -876546973899608171, guid: fba9bc3204083104cbce69129c9d0d64, type: 3}
 --- !u!114 &932573014 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974,
@@ -2978,6 +3005,7 @@ MonoBehaviour:
   uiContainer: {fileID: 2584055141132576068}
   buttonChoice: {fileID: 7135418982240320871, guid: 7cb95b6a1f6143a4e9e5a11821899313,
     type: 3}
+  generationPos: {x: 0, y: 0, z: 0}
   title: {fileID: 4216265675033522148}
   req:
     directory: p1
@@ -3074,6 +3102,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162768900368089392, guid: ba8e9f7173748cf41820fe9ec6bdedbe,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6145,7 +6178,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 438.24466, y: -55}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 866.4893, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2233297841308628472
 MonoBehaviour:
@@ -8100,7 +8133,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 75.725, y: -12.29}
-  m_SizeDelta: {x: 151.45, y: 0}
+  m_SizeDelta: {x: 151.45, y: 24.58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4354146783825786992
 CanvasRenderer:
@@ -8763,9 +8796,9 @@ RectTransform:
   - {fileID: 2409749110558446692}
   m_Father: {fileID: 6820909784264700470}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 265.3938, y: -15}
   m_SizeDelta: {x: 27.8876, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &4895288028793855249
@@ -9770,9 +9803,9 @@ RectTransform:
   - {fileID: 5485140733264465749}
   m_Father: {fileID: 2203783507985762075}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 418.39444, y: -15}
   m_SizeDelta: {x: 658.9689, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &5585532762525823455
@@ -10873,7 +10906,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 144.66876, y: -20}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 279.3376, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6868775224499900319
 MonoBehaviour:
@@ -11678,7 +11711,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 41.954987, y: -12.29}
-  m_SizeDelta: {x: 83.91, y: 0}
+  m_SizeDelta: {x: 83.91, y: 24.58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7235321744088081194
 GameObject:
@@ -12863,9 +12896,9 @@ RectTransform:
   - {fileID: 4707834446450690465}
   m_Father: {fileID: 2203783507985762075}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 866.4893, y: -15}
   m_SizeDelta: {x: 113.61041, y: 30}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!224 &8093335693591087992
@@ -13253,7 +13286,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8434915694210030015
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13738,7 +13771,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -521.76, y: 138}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 876.4893, y: 75}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &8769713289608392405
 CanvasRenderer:

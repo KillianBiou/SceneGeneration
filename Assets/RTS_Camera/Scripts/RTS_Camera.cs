@@ -307,18 +307,26 @@ namespace RTS_Cam
 
         public void SetPopUp()
         {
-            Debug.Log("FEW");
-            var mousePos = Input.mousePosition;
+            Vector3 mousePosition = Input.mousePosition;
 
-            popUp.gameObject.SetActive(true);
+            // Create a ray from the mouse position
+            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+            RaycastHit hit;
 
-            RectTransform canvasRectTransform = popUp.GetComponentInParent<Canvas>().transform as RectTransform;
-            Vector2 canvasPosition;
-
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, mousePos, null, out canvasPosition))
+            // Perform the raycast
+            if (Physics.Raycast(ray, out hit))
             {
-                // Set the position of the UI element
-                popUp.localPosition = canvasPosition;
+                popUp.gameObject.SetActive(true);
+                popUp.GetComponent<GenerationPopUp>().point = hit.point;
+
+                RectTransform canvasRectTransform = popUp.GetComponentInParent<Canvas>().transform as RectTransform;
+                Vector2 canvasPosition;
+
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, mousePosition, null, out canvasPosition))
+                {
+                    // Set the position of the UI element
+                    popUp.localPosition = canvasPosition;
+                }
             }
         }
 
