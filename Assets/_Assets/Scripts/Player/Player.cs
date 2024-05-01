@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Unity.RuntimeSceneSerialization;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [Serializable]
@@ -48,6 +46,8 @@ public class Player : MonoBehaviour
     private Transform camera;
     [SerializeField]
     private Transform playgroundHolder;
+    [SerializeField]
+    private Material baseMat;
 
     private Vector3 instanciationPoint;
 
@@ -219,6 +219,7 @@ public class Player : MonoBehaviour
 
             temp.transform.GetChild(0).position = child.child[0].position;
             temp.transform.GetChild(0).rotation = child.child[0].rotation;
+            temp.transform.GetChild(0).GetComponent<Renderer>().material = baseMat;
         }
 
         Debug.Log("Scene loaded from " + scenePath);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(GenerationDatabase))]
 public class GenerationDatabaseEditor : Editor
 {
@@ -21,3 +22,4 @@ public class GenerationDatabaseEditor : Editor
         }
     }
 }
+#endif

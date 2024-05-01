@@ -1033,7 +1033,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneSavePath: _Assets/ScenePrefab
-  images: []
+  images:
+  - C:/SceneGeneration/SceneGeneration/Assets/_Assets/Ref/R1.png
+  - C:/SceneGeneration/SceneGeneration/Assets/_Assets/Ref/R2.png
   generatedMat: {fileID: -876546973899608171, guid: fba9bc3204083104cbce69129c9d0d64,
     type: 3}
   debugMode: 1
@@ -1043,6 +1045,7 @@ MonoBehaviour:
   generationLock: 0
   camera: {fileID: 1322054303}
   playgroundHolder: {fileID: 1058023360}
+  baseMat: {fileID: -876546973899608171, guid: fba9bc3204083104cbce69129c9d0d64, type: 3}
 --- !u!1 &980910825
 GameObject:
   m_ObjectHideFlags: 0
@@ -2529,7 +2532,7 @@ PrefabInstance:
     - target: {fileID: 3884133589274479110, guid: 0633bed2e2396b47fb15e8154b69cc2a,
         type: 3}
       propertyPath: noRemoveBg
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3884133589274479110, guid: 0633bed2e2396b47fb15e8154b69cc2a,
         type: 3}
@@ -2593,15 +2596,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pythonPath: C:\Users\light\AppData\Local\Programs\Python\Python310\python
-  modelFile: {fileID: 0}
-  modelDescription: lelouch figure black suit, code geass
+  modelFile: {fileID: 919132149155446097, guid: a39cfcba15c6be1438ca7fc5f116f376,
+    type: 3}
+  modelDescription: a ramen bowl
   negativeModelDescription: lighting, shadows, grid, dark, mesh
   autoAddMesh: 0
   autoAddPhysicsComponents: 0
   showDebugLogs: 1
   imageModel: Lykon/dreamshaper-8
   steps: 20
-  mapSize: 1024
+  mapSize: 256
   outputDir: output/
 --- !u!114 &1444900062
 MonoBehaviour:
@@ -2621,6 +2625,16 @@ MonoBehaviour:
       Value: Assets\_Assets\Prefab\Playground.prefab
     - Key: gundamfigure,frontview,black1714455788
       Value: Assets/Models\gundamfigure,frontview,black1714455788\gundamfigure,frontview,black1714455788.obj
+    - Key: Gundamfigure,frontview,wings1714456668
+      Value: Assets/Models\Gundamfigure,frontview,wings1714456668\Gundamfigure,frontview,wings1714456668.obj
+    - Key: agundamfigure,frontview1714457077
+      Value: Assets/Models\agundamfigure,frontview1714457077\agundamfigure,frontview1714457077.obj
+    - Key: R1
+      Value: Assets/Models\R1\R1.obj
+    - Key: R2
+      Value: Assets/Models\R2\R2.obj
+  MaterialDatabase:
+    _serializedList: []
 --- !u!1 &1473454241
 GameObject:
   m_ObjectHideFlags: 0
