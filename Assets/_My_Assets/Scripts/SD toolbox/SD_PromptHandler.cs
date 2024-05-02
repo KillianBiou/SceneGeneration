@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -40,9 +41,9 @@ public class SD_PromptHandler : MonoBehaviour
             s = s.Split('_')[0];
             if ()
             request.filename.Replace("","");
-        }
-
-        request.filename = s + ".png";*/
+        }*/
+        
+        request.filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "_T.png";
     }
 
     public void GenX()

@@ -22,6 +22,7 @@ public class TileObject : MonoBehaviour
 
     public RoomMap roomMap;
     public bool isWall = true;
+    public BoxCollider editorCollider;
 
 
 
@@ -157,6 +158,8 @@ public class TileObject : MonoBehaviour
             groundAdd.SetActive(true);
         else
             groundRemove.SetActive(true);
+
+        editorCollider.enabled = true;
     }
 
     public void HideButton()
@@ -165,6 +168,8 @@ public class TileObject : MonoBehaviour
             groundAdd.SetActive(false);
         else
             groundRemove.SetActive(false);
+
+        editorCollider.enabled = false;
     }
 
 

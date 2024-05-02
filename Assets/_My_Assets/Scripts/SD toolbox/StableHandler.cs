@@ -355,10 +355,10 @@ public class StableHandler : StableDiffusionGenerator
 
             while (!webResponse.IsCompleted)
             {
-                /*if (sdc.settings.useAuth && !sdc.settings.user.Equals("") && !sdc.settings.pass.Equals(""))
+                if (sdc.settings.useAuth && !sdc.settings.user.Equals("") && !sdc.settings.pass.Equals(""))
                     UpdateGenerationProgressWithAuth();
                 else
-                    UpdateGenerationProgress();*/
+                    UpdateGenerationProgress();
 
                 yield return new WaitForSeconds(0.5f);
             }
