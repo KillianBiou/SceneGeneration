@@ -79,6 +79,7 @@ public class TripoSRForUnity : MonoBehaviour
     private Process pythonProcess;
     private bool isProcessRunning = false;
     private Func<string, int> memoryCallback;
+    private string currentImagePath = null;
 
     public static event Action OnPythonProcessEnded;
 
@@ -110,6 +111,7 @@ public class TripoSRForUnity : MonoBehaviour
         if (imagePath != null)
         {
             imagePaths[0] = imagePath;
+            currentImagePath = imagePath;
         }
         else
         {
@@ -201,6 +203,8 @@ public class TripoSRForUnity : MonoBehaviour
             if (File.Exists(newPath)) UnityEngine.Debug.LogWarning($"The file '{newPath}' already exists. Please move or rename, then run TripoSR again.");
             else {
                 File.Move(originalPath, newPath);
+                if (currentImagePath != null)
+                    File.Copy(currentImagePath, newPath + ".png");
                 AssetDatabase.Refresh();
 
 
