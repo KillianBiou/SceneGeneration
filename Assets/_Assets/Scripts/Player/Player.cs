@@ -78,7 +78,8 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            InstantiationCallback(GenerationDatabase.Instance.GetObject(debugLoadObjectName));
+            //GenerationDatabase.Instance.GetObject(debugLoadObjectName);
+            Instantiate(Resources.Load<GameObject>(debugLoadObjectName), GameObject.FindGameObjectWithTag("Playground").transform);
         }
     }
 
@@ -145,12 +146,17 @@ public class Player : MonoBehaviour
 
             OriginPlacement OP = meshObj.AddComponent<OriginPlacement>();
             OP.ReplaceOrigin();
+
+            GenerationDatabase.Instance.SaveGeneratedAsset(instantiatedObj, objPath);
         }
 
-        images.RemoveAt(0);
+
+        if(images.Count > 0)
+            images.RemoveAt(0);
         generationLock = false;
         return 0;
     }
+
 
     public void SaveScene()
     {

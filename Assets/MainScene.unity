@@ -1046,56 +1046,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assetDatabase:
     _serializedList:
-    - Key: Playground
-      Value: Assets\_Assets\Prefab\Playground.prefab
-    - Key: gundamfigure,frontview,black1714455788
-      Value: Assets/Models\gundamfigure,frontview,black1714455788\gundamfigure,frontview,black1714455788.obj
-    - Key: Gundamfigure,frontview,wings1714456668
-      Value: Assets/Models\Gundamfigure,frontview,wings1714456668\Gundamfigure,frontview,wings1714456668.obj
-    - Key: agundamfigure,frontview1714457077
-      Value: Assets/Models\agundamfigure,frontview1714457077\agundamfigure,frontview1714457077.obj
-    - Key: R1
-      Value: Assets/Models\R1\R1.obj
-    - Key: R2
-      Value: Assets/Models\R2\R2.obj
-    - Key: awoodenchair,frontview1714526598
-      Value: Assets/Models\awoodenchair,frontview1714526598\awoodenchair,frontview1714526598.obj
-    - Key: awoodentable,frontview1714526651
-      Value: Assets/Models\awoodentable,frontview1714526651\awoodentable,frontview1714526651.obj
-    - Key: test1714540617
-      Value: Assets/Models\test1714540617\test1714540617.obj
-    - Key: gundamfigure1714540719
-      Value: Assets/Models\gundamfigure1714540719\gundamfigure1714540719.obj
-    - Key: awoodentable1714540811
-      Value: Assets/Models\awoodentable1714540811\awoodentable1714540811.obj
-    - Key: awoodenchair1714540865
-      Value: Assets/Models\awoodenchair1714540865\awoodenchair1714540865.obj
-    - Key: ablackboard1714540938
-      Value: Assets/Models\ablackboard1714540938\ablackboard1714540938.obj
-    - Key: test1714541422
-      Value: Assets/Models\test1714541422\test1714541422.obj
-    - Key: test1714541490
-      Value: Assets/Models\test1714541490\test1714541490.obj
-    - Key: bellebiteshinji1714541527
-      Value: Assets/Models\bellebiteshinji1714541527\bellebiteshinji1714541527.obj
-    - Key: test1714545000
-      Value: Assets/Models\test1714545000\test1714545000.obj
-    - Key: test1714545083
-      Value: Assets/Models\test1714545083\test1714545083.obj
-    - Key: test1714545125
-      Value: Assets/Models\test1714545125\test1714545125.obj
-    - Key: test1714545156
-      Value: Assets/Models\test1714545156\test1714545156.obj
-    - Key: test1714545230
-      Value: Assets/Models\test1714545230\test1714545230.obj
-    - Key: acartooncar,frontview1714545271
-      Value: Assets/Models\acartooncar,frontview1714545271\acartooncar,frontview1714545271.obj
-    - Key: donalddick1714545305
-      Value: Assets/Models\donalddick1714545305\donalddick1714545305.obj
-    - Key: sharkfigure1714545478
-      Value: Assets/Models\sharkfigure1714545478\sharkfigure1714545478.obj
-    - Key: gundamfigure,frontview1714545723
-      Value: Assets/Models\gundamfigure,frontview1714545723\gundamfigure,frontview1714545723.obj
+    - Key: gundamfigure,frontview1715143252
+      Value: Assets/Models\gundamfigure,frontview1715143252\gundamfigure,frontview1715143252.json
   MaterialDatabase:
     _serializedList: []
 --- !u!1 &168002031
@@ -4455,7 +4407,7 @@ PrefabInstance:
     - target: {fileID: 2608349639828256996, guid: f8ecee90857fe7a4ab75c12298fb533e,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.0006370157
+      value: 0.00007475837
       objectReference: {fileID: 0}
     - target: {fileID: 2608349639828256996, guid: f8ecee90857fe7a4ab75c12298fb533e,
         type: 3}
@@ -18938,6 +18890,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2025665840}
   m_CullTransparentMesh: 1
+--- !u!1 &2035152380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2035152381}
+  m_Layer: 0
+  m_Name: ObjectInstanciation
+  m_TagString: Playground
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2035152381
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2035152380}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2037986993
 GameObject:
   m_ObjectHideFlags: 0
@@ -25166,3 +25149,4 @@ SceneRoots:
   - {fileID: 1855393474}
   - {fileID: 1883510328}
   - {fileID: 586583752}
+  - {fileID: 2035152381}
