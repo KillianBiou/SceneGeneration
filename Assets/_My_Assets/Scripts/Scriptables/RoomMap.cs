@@ -5,29 +5,15 @@ using UnityEngine;
 public class RoomMap : MonoBehaviour
 {
 
-
-    public bool[,] map;
     public int size;
-    public List<List<TileObject>> mapObj;
+    public List<List<TileObject>> mapObj; // SAVE THIS
     public GameObject prefab;
+    public bool isEditing;
 
     // Start is called before the first frame update
     void Start()
     {
-        map = new bool[10,10]{
-        { false, false, false, false, false, false, false, false, false, false },
-        { false, true, true, true, false, false, false, false, false, false },
-        { false, true, true, true, false, false, false, false, false, false },
-        { false, true, false, true, false, false, false, false, false, false },
-        { false, true, true, true, false, false, false, false, false, false },
-        { false, true, true, true, true, false, false, false, false, false },
-        { false, true, true, true, true, false, false, false, false, false },
-        { false, true, true, true, true, false, false, false, false, false },
-        { false, true, true, true, true, false, false, false, false, false },
-        { false, false, false, false, false, false, false, false, false, false }
-        };
-
-
+        isEditing = false;
 
         mapObj = new List<List<TileObject>>();
 
@@ -52,6 +38,8 @@ public class RoomMap : MonoBehaviour
 
     public void EnterEdit()
     {
+        isEditing = true;
+
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
@@ -62,6 +50,8 @@ public class RoomMap : MonoBehaviour
     }
     public void ExitEdit()
     {
+        isEditing = false;
+
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
