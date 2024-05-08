@@ -33,7 +33,7 @@ public class GenerativeChoice : MonoBehaviour
     public static event Action OnPythonProcessEnded;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         pending = false;
 

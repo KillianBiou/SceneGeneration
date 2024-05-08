@@ -13,6 +13,7 @@ public class GeneratedLibrary : MonoBehaviour
 
     public MatInfo selectedMaterial;
 
+    [HideInInspector]
     public Texture2D texture, normal;
 
     // Start is called before the first frame update
@@ -38,7 +39,7 @@ public class GeneratedLibrary : MonoBehaviour
 
     public void ReloadLibrary()
     {
-        for (int i = transform.childCount; i > 0; i--)
+        for (int i = transform.childCount; i > 1; i--)
         {
             Destroy(transform.GetChild(i - 1).gameObject);
         }
@@ -49,6 +50,9 @@ public class GeneratedLibrary : MonoBehaviour
 
     public void LoadLibrary()
     {
+        if (!Directory.Exists(Application.dataPath + libraryName))
+            return;
+
         DirectoryInfo dir = new DirectoryInfo(Application.dataPath + libraryName);
         FileInfo[] info = dir.GetFiles("*_T.png");
         foreach (FileInfo f in info)

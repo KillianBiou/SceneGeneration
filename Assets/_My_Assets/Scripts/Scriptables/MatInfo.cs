@@ -20,7 +20,7 @@ public struct MaterialInformations
 
 
 
-[CreateAssetMenu(fileName = "MatInfo", menuName = "Infos")]
+[CreateAssetMenu(fileName = "MatInfo", menuName = "Infos/matinfo")]
 public class MatInfo : ScriptableObject
 {
 

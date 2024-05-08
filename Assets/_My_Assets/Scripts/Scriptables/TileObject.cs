@@ -17,7 +17,12 @@ public class TileObject : MonoBehaviour
 {
 
     [SerializeField]
-    public GameObject northWall, eastWall, southWall, westWall;
+    public GameObject ground, northWall, eastWall, southWall, westWall;
+    public GameObject groundAdd, groundRemove;
+
+    public RoomMap roomMap;
+    public bool isWall = true;
+    public BoxCollider editorCollider;
 
 
 
@@ -78,30 +83,6 @@ public class TileObject : MonoBehaviour
         switch (c)
         {
             case Cardinal.NORTH:
-                northWall.SetActive(true);
-                break;
-
-            case Cardinal.EAST:
-                eastWall.SetActive(false);
-                break;
-
-            case Cardinal.SOUTH:
-                southWall.SetActive(true);
-                break;
-
-            case Cardinal.WEST:
-                westWall.SetActive(true);
-                break;
-
-        }
-        return;
-    }
-
-    public void closeCardinal(Cardinal c)
-    {
-        switch (c)
-        {
-            case Cardinal.NORTH:
                 northWall.SetActive(false);
                 break;
 
@@ -121,8 +102,45 @@ public class TileObject : MonoBehaviour
         return;
     }
 
-    public void Init(bool n, bool e, bool s, bool w)
+    public void closeCardinal(Cardinal c)
     {
+        switch (c)
+        {
+            case Cardinal.NORTH:
+                northWall.SetActive(true);
+                break;
+
+            case Cardinal.EAST:
+                eastWall.SetActive(true);
+                break;
+
+            case Cardinal.SOUTH:
+                southWall.SetActive(true);
+                break;
+
+            case Cardinal.WEST:
+                westWall.SetActive(true);
+                break;
+
+        }
+        return;
+    }
+
+    public void Init(bool me, bool n, bool e, bool s, bool w)
+    {
+        isWall = me;
+
+        if (isWall)
+        {
+            openCardinal(Cardinal.NORTH);
+            openCardinal(Cardinal.EAST);
+            openCardinal(Cardinal.SOUTH);
+            openCardinal(Cardinal.WEST);
+            ground.SetActive(false);
+            return;
+        }
+
+        ground.SetActive(true);
         if (n)
             closeCardinal(Cardinal.NORTH);
         if (e)
@@ -131,5 +149,45 @@ public class TileObject : MonoBehaviour
             closeCardinal(Cardinal.SOUTH);
         if (w)
             closeCardinal(Cardinal.WEST);
+    }
+
+
+    public void ShowButton()
+    {
+        if (isWall)
+            groundAdd.SetActive(true);
+        else
+            groundRemove.SetActive(true);
+
+        editorCollider.enabled = true;
+    }
+
+    public void HideButton()
+    {
+        if (isWall)
+            groundAdd.SetActive(false);
+        else
+            groundRemove.SetActive(false);
+
+        editorCollider.enabled = false;
+    }
+
+
+    public void TileClick()
+    {
+        if (isWall)
+        {
+            isWall = false;
+            groundAdd.SetActive(false);
+            groundRemove.SetActive(true);
+        }
+        else
+        {
+            isWall = true;
+            groundRemove.SetActive(false);
+            groundAdd.SetActive(true);
+        }
+
+        roomMap.Retile(this, (int)gameObject.transform.position.x, (int)gameObject.transform.position.z, isWall);
     }
 }

@@ -20,11 +20,11 @@ public struct SdRequest
 {
     public string directory, filename;
 
-    public string prompt, negPrompt;
+    public string prompt, negPrompt, hiddenPrompt;
     public int width, height, steps, cfgScale, seed;
     public bool tilling, tileX, tileY;
 
-    public SdRequest(string dir, string fn, string p, string np, int w, int h, int s, int cfg, int sid, bool t, bool tx, bool ty)
+    public SdRequest(string dir, string fn, string p, string np, int w, int h, int s, int cfg, int sid, bool t, bool tx, bool ty, string hdp)
     {
         directory = dir;
         filename = fn;
@@ -38,6 +38,8 @@ public struct SdRequest
         tilling = t;
         tileX = tx;
         tileY = ty;
+
+        hiddenPrompt = hdp;
     }
 }
 
@@ -111,7 +113,7 @@ public class StableHandler : StableDiffusionGenerator
             StartCoroutine(GenerateAsync());
         else if (generateStart && generating)
         {
-            requests.Enqueue(new SdRequest(directory, filename, prompt, negPrompt, width, height, steps, cfgScale, seed, tilling, tileX, tileY));
+            requests.Enqueue(new SdRequest(directory, filename, prompt, negPrompt, width, height, steps, cfgScale, seed, tilling, tileX, tileY, ""));
             generateStart = false;
         }
 
@@ -318,7 +320,10 @@ public class StableHandler : StableDiffusionGenerator
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
                 SDParamsInTxt2Img sd = new SDParamsInTxt2Img();
-                sd.prompt = rq.prompt;
+                if(rq.hiddenPrompt != "")
+                    sd.prompt = rq.prompt + "," + rq.hiddenPrompt;
+                else
+                    sd.prompt = rq.prompt;
                 sd.negative_prompt = rq.negPrompt;
                 sd.steps = rq.steps;
                 sd.cfg_scale = rq.cfgScale;
@@ -350,10 +355,10 @@ public class StableHandler : StableDiffusionGenerator
 
             while (!webResponse.IsCompleted)
             {
-                /*if (sdc.settings.useAuth && !sdc.settings.user.Equals("") && !sdc.settings.pass.Equals(""))
+                if (sdc.settings.useAuth && !sdc.settings.user.Equals("") && !sdc.settings.pass.Equals(""))
                     UpdateGenerationProgressWithAuth();
                 else
-                    UpdateGenerationProgress();*/
+                    UpdateGenerationProgress();
 
                 yield return new WaitForSeconds(0.5f);
             }

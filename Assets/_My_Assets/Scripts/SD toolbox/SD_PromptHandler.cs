@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +12,11 @@ public class SD_PromptHandler : MonoBehaviour
 
     public bool preserve;
 
-    private void Start()
+    public GenerativeChoice genChoice;
+
+    int n = 4;
+
+    private void Awake()
     {
         handler = FindFirstObjectByType<StableHandler>();
     }
@@ -36,12 +41,19 @@ public class SD_PromptHandler : MonoBehaviour
             s = s.Split('_')[0];
             if ()
             request.filename.Replace("","");
-        }
-
-        request.filename = s + ".png";*/
+        }*/
+        
+        request.filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "_T.png";
     }
 
-
+    public void GenX()
+    {
+        if (genChoice != null)
+        {
+            genChoice.req = request;
+            genChoice.Test(n);
+        }
+    }
 
 
     public void SetPrompt(string s)
@@ -97,6 +109,18 @@ public class SD_PromptHandler : MonoBehaviour
     {
         request.cfgScale = int.Parse(i);
     }
+    public void SetSteps(float i)
+    {
+        request.steps = (int)i;
+    }
+    public void SetCfg(float i)
+    {
+        request.cfgScale = (int)i;
+    }
+
+
+
+
     public void SetSeed(string i)
     {
         request.seed = int.Parse(i);
@@ -112,4 +136,48 @@ public class SD_PromptHandler : MonoBehaviour
     {
         request.directory = s;
     }
+
+
+    public void SetTile(bool b)
+    {
+        request.tilling = b;
+    }
+    public void SetTileX(bool b)
+    {
+        request.tileX = b;
+    }
+    public void SetTileY(bool b)
+    {
+        request.tileY = b;
+    }
+
+
+    public void SetHiddenPrompt(int i)
+    {
+        switch(i)
+        {
+            case 0:
+                request.hiddenPrompt = "realistic";
+                break;
+            case 1:
+                request.hiddenPrompt = "stylized";
+                break;
+            case 2:
+                request.hiddenPrompt = "fantasy";
+                break;
+            case 3:
+                request.hiddenPrompt = "science fiction";
+                break;
+            case 4:
+                request.hiddenPrompt = "abstract";
+                break;
+            case 5:
+                request.hiddenPrompt = "modern";
+                break;
+            default:
+                request.hiddenPrompt = "";
+                break;
+        }
+    }
+
 }
