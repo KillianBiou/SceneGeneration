@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MouseGenerative3D : MonoBehaviour
 {
@@ -18,6 +20,19 @@ public class MouseGenerative3D : MonoBehaviour
     void Update()
     {
 
+        Ray rayOne = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitOne;
+        bool onUI = false;
+        if (Physics.Raycast(rayOne, out hitOne, 100))
+        {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                onUI = true;
+            }
+        }
+
+        if (onUI)
+            return;
 
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

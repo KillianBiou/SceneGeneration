@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 11488424}
   - component: {fileID: 11455738}
   - component: {fileID: 2163283206053285304}
+  - component: {fileID: 8029784812882174412}
   m_Layer: 0
   m_Name: RTS_Camera
   m_TagString: MainCamera
@@ -111,7 +112,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 120296}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20048c13a5d194941bac6cd566a5e468, type: 3}
   m_Name: 
@@ -149,10 +150,10 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 55
-  maxHeight: 25
-  minHeight: 2
-  maxHeightCameraAngle: 90
-  minHeightCameraAngle: 15
+  maxHeight: 15
+  minHeight: 1
+  maxHeightCameraAngle: 65
+  minHeightCameraAngle: 25
   heightDampening: 5
   keyboardZoomingSensitivity: 2
   scrollWheelZoomingSensitivity: 50
@@ -178,10 +179,35 @@ MonoBehaviour:
   rotateLeftKey: 122
   useMouseRotation: 1
   mouseRotationKey: 324
-  longClickThreshold: 0.1
+  longClickThreshold: 0.15
   OnShortClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8029784812882174412}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: GetLookPos
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11455738}
+        m_TargetAssemblyTypeName: RTS_Cam.RTS_Camera, Assembly-CSharp
+        m_MethodName: SetPopUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  popUp: {fileID: 0}
 --- !u!114 &2163283206053285304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,3 +252,27 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &8029784812882174412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5949cd3507c5ee542a04afde534bf9f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneSavePath: _Assets/ScenePrefab
+  images: []
+  generatedMat: {fileID: -876546973899608171, guid: fba9bc3204083104cbce69129c9d0d64,
+    type: 3}
+  debugMode: 1
+  debugObject: {fileID: 0}
+  debugLoadObjectName: 
+  debugScenePath: C:\SceneGeneration\SceneGeneration\Assets\_Assets\ScenePrefab\15\SceneSave.json
+  generationLock: 0
+  camera: {fileID: 459968}
+  playgroundHolder: {fileID: 0}
+  baseMat: {fileID: -876546973899608171, guid: fba9bc3204083104cbce69129c9d0d64, type: 3}

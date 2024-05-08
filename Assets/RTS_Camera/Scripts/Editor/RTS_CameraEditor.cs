@@ -37,12 +37,20 @@ namespace RTS_Cam
 
         private void InteractionTab()
         {
-            SerializedProperty OnShortClick = serializedObject.FindProperty("OnShortClick");
+            SerializedProperty OnShortClickRoom = serializedObject.FindProperty("OnShortClickRoom");
+            SerializedProperty OnShortClick2D = serializedObject.FindProperty("OnShortClick2D");
+            SerializedProperty OnShortClick3D = serializedObject.FindProperty("OnShortClick3D");
             SerializedProperty PopUp = serializedObject.FindProperty("popUp");
 
-            camera.longClickThreshold = EditorGUILayout.FloatField("Long click threshold: ", camera.longClickThreshold);
+            GUILayout.Label("Short Click Trigger", EditorStyles.boldLabel);
 
-            EditorGUILayout.PropertyField(OnShortClick);
+            EditorGUILayout.PropertyField(OnShortClickRoom);
+            EditorGUILayout.PropertyField(OnShortClick2D);
+            EditorGUILayout.PropertyField(OnShortClick3D);
+
+            GUILayout.Label("Interaction References", EditorStyles.boldLabel);
+
+            camera.longClickThreshold = EditorGUILayout.FloatField("Long click threshold: ", camera.longClickThreshold);
             EditorGUILayout.PropertyField(PopUp);
         }
 

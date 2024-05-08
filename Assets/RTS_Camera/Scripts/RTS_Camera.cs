@@ -119,7 +119,9 @@ namespace RTS_Cam
         public KeyCode mouseRotationKey = KeyCode.Mouse1;
 
         public float longClickThreshold = 0.1f;
-        public UnityEvent OnShortClick;
+        public UnityEvent OnShortClickRoom;
+        public UnityEvent OnShortClick2D;
+        public UnityEvent OnShortClick3D;
 
         private int cursorLockRequest = 0;
         private bool longClick = false;
@@ -302,7 +304,21 @@ namespace RTS_Cam
 
         private void OnShortClickTrigger()
         {
-            OnShortClick.Invoke();
+            // DIFFERENCIATE FROM SELECTION MODE
+            switch (ToolMenu.Instance.currentState)
+            {
+                case ToolSelectionState.MODE_ROOM:
+                    OnShortClickRoom.Invoke();
+                    break;
+                case ToolSelectionState.MODE_2D:
+                    OnShortClick2D.Invoke();
+                    break;
+                case ToolSelectionState.MODE_3D:
+                    OnShortClick3D.Invoke();
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void SetPopUp()
