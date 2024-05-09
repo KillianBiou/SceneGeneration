@@ -4,8 +4,6 @@ using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Unity.VisualScripting.Dependencies.Sqlite;
-using UnityEditor.PackageManager;
 
 public class MouseGenerative2D : MonoBehaviour
 {

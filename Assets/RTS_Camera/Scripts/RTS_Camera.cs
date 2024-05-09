@@ -5,7 +5,6 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using TMPro;
 using Unity.VisualScripting;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 namespace RTS_Cam
 {
