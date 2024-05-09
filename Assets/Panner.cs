@@ -11,7 +11,16 @@ public class Panner : MonoBehaviour
     private Vector3 lastMousePosition;
 
     public GameObject camera;
+    private Vector3 originPos;
+    private Quaternion originRot;
 
+
+
+    private void Awake()
+    {
+        originPos = camera.transform.position;
+        originRot = camera.transform.rotation;
+    }
 
 
     void Update()
@@ -37,5 +46,14 @@ public class Panner : MonoBehaviour
             // Update the last mouse position for the next frame
             lastMousePosition = Input.mousePosition;
         }
+
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            camera.transform.position = originPos;
+            camera.transform.rotation = originRot;
+        }
+
+        camera.transform.position += camera.transform.forward * Input.mouseScrollDelta.y * 1;
+
     }
 }
