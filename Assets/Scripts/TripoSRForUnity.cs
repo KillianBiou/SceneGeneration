@@ -4,6 +4,8 @@ using UnityEditor;
 using System.IO;
 using System.Globalization;
 using System;
+using AsImpL;
+using static UnityEditor.PackageManager.UI.Sample;
 
 public enum TripoState
 {
@@ -115,11 +117,13 @@ public class TripoSRForUnity : MonoBehaviour
         }
         else
         {
+#if UNITY_EDITOR
             for (int i = 0; i < images.Length; i++)
             {
                 string path = AssetDatabase.GetAssetPath(images[i]);
                 imagePaths[i] = Path.GetFullPath(path);
             }
+#endif
         }
 
         string args = $"\"{string.Join("\" \"", imagePaths)}\" --device {device} " +
@@ -205,7 +209,7 @@ public class TripoSRForUnity : MonoBehaviour
                 File.Move(originalPath, newPath);
                 if (currentImagePath != null)
                     File.Copy(currentImagePath, newPath + ".png");
-                AssetDatabase.Refresh();
+                //AssetDatabase.Refresh();
 
                 UnityEngine.Debug.Log($"Moved and renamed mesh to path: {newPath}");
             }
@@ -221,17 +225,19 @@ public class TripoSRForUnity : MonoBehaviour
     {        
         string objPath = path ?? "Assets/TripoSR/" + outputDir + "0/mesh.obj";
 
-        AssetDatabase.Refresh();
+        /*AssetDatabase.Refresh();
         AssetDatabase.ImportAsset(objPath, ImportAssetOptions.ForceUpdate);
 
-        GameObject importedObj = AssetDatabase.LoadAssetAtPath<GameObject>(objPath);
+        GameObject importedObj = AssetDatabase.LoadAssetAtPath<GameObject>(objPath);*/
 
-        if (importedObj != null)
+
+        if (File.Exists(objPath))
         {
-            GameObject instantiatedObj = Instantiate(importedObj);
-            instantiatedObj.name = importedObj.name;
+            AsImpL.ImportOptions importOptions = new AsImpL.ImportOptions();
 
-            UnityEngine.Debug.Log("Instantiated GameObject prefab: " + instantiatedObj.name);
+            ObjectImporter.Instance.ImportModelAsync(Path.GetFileNameWithoutExtension(path), objPath, null, new AsImpL.ImportOptions());
+
+            /*UnityEngine.Debug.Log("Instantiated GameObject prefab: " + instantiatedObj.name);
 
             if (autoFixRotation) instantiatedObj.transform.GetChild(0).rotation = Quaternion.Euler(new Vector3(-90f, -90f, 0f));
 
@@ -241,7 +247,7 @@ public class TripoSRForUnity : MonoBehaviour
                 MeshCollider mc = meshObj.AddComponent<MeshCollider>();
                 mc.convex = true;
                 meshObj.AddComponent<Rigidbody>();
-            }
+            }*/
         }
         else UnityEngine.Debug.LogError("Failed to load the mesh at path: " + objPath);
     }

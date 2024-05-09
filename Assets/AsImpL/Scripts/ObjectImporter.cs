@@ -32,6 +32,7 @@ namespace AsImpL
         protected bool allLoaded = false;
         protected ImportOptions buildOptions;
         protected List<Loader> loaderList;
+        public static ObjectImporter Instance;
 
 #if UNITY_EDITOR
         // raw subdivision in percentages of the import phases (empirically computed importing a large sample OBJ file)
@@ -156,6 +157,11 @@ namespace AsImpL
 
                 return string.Empty;
             }
+        }
+
+        private void Awake()
+        {
+            Instance = this;
         }
 
 
@@ -462,6 +468,7 @@ namespace AsImpL
             if (CreatedModel != null)
             {
                 CreatedModel(obj, absolutePath);
+                Debug.Log("ETWR");
             }
         }
 

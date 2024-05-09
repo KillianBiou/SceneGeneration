@@ -1002,6 +1002,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 151891679}
+    - targetCorrespondingSourceObject: {fileID: 958493935533882903, guid: 0633bed2e2396b47fb15e8154b69cc2a,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 151891683}
   m_SourcePrefab: {fileID: 100100000, guid: 0633bed2e2396b47fb15e8154b69cc2a, type: 3}
 --- !u!1 &151891678 stripped
 GameObject:
@@ -1050,6 +1054,20 @@ MonoBehaviour:
       Value: Assets/Models\gundamfigure,frontview1715143252\gundamfigure,frontview1715143252.json
   MaterialDatabase:
     _serializedList: []
+--- !u!114 &151891683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151891678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aa7bdf849241b242afe32648ecd25c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  importAssets: 0
+  importAssetPath: _ImportedOBJ
 --- !u!1 &168002031
 GameObject:
   m_ObjectHideFlags: 0
@@ -4138,6 +4156,11 @@ PrefabInstance:
       propertyPath: OnShortClick3D.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 8029784812882174412, guid: 407bd5cbe8c43334bb1b25c0f3826974,
+        type: 3}
+      propertyPath: playgroundHolder
+      value: 
+      objectReference: {fileID: 953250959}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4407,7 +4430,7 @@ PrefabInstance:
     - target: {fileID: 2608349639828256996, guid: f8ecee90857fe7a4ab75c12298fb533e,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000031160303
+      value: -0.00001335144
       objectReference: {fileID: 0}
     - target: {fileID: 2608349639828256996, guid: f8ecee90857fe7a4ab75c12298fb533e,
         type: 3}
@@ -7182,6 +7205,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 952763120}
   m_CullTransparentMesh: 1
+--- !u!4 &953250959 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7001323900043369568, guid: ba8e9f7173748cf41820fe9ec6bdedbe,
+    type: 3}
+  m_PrefabInstance: {fileID: 317804250}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &969756253
 GameObject:
   m_ObjectHideFlags: 0

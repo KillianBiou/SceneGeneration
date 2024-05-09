@@ -1,11 +1,10 @@
+using AsImpL;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Unity.RuntimeSceneSerialization;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 [Serializable]
 public class GameObjectSerializable
@@ -127,7 +126,17 @@ public class Player : MonoBehaviour
 
     public int InstantiationCallback(string objPath)
     {
-        GameObject importedObj = AssetDatabase.LoadAssetAtPath<GameObject>(objPath);
+        GameObject parent = Instantiate(new GameObject(Path.GetFileNameWithoutExtension(objPath)), instanciationPoint + Vector3.up, Quaternion.identity, playgroundHolder);
+
+        ImportOptions importOptions = new ImportOptions();
+        importOptions.buildColliders = true;
+        importOptions.colliderConvex = true;
+
+        ObjectImporter.Instance.ImportModelAsync(Path.GetFileNameWithoutExtension(objPath), objPath, parent.transform, importOptions);
+
+        StartCoroutine(ReplacementCoroutine(parent.transform, objPath));
+
+        /*GameObject importedObj = AssetDatabase.LoadAssetAtPath<GameObject>(objPath);
 
         if (importedObj != null)
         {
@@ -148,13 +157,23 @@ public class Player : MonoBehaviour
             OP.ReplaceOrigin();
 
             GenerationDatabase.Instance.SaveGeneratedAsset(instantiatedObj, objPath);
-        }
+        }*/
 
 
-        if(images.Count > 0)
+        if (images.Count > 0)
             images.RemoveAt(0);
         generationLock = false;
         return 0;
+    }
+
+    public IEnumerator ReplacementCoroutine(Transform parent, string objPath)
+    {
+        while(parent.childCount == 0)
+            yield return new WaitForSeconds(0.1f);
+
+        OriginPlacement OP = parent.GetChild(0).gameObject.AddComponent<OriginPlacement>();
+        OP.ReplaceOrigin();
+        GenerationDatabase.Instance.SaveGeneratedAsset(parent.gameObject, objPath);
     }
 
 
