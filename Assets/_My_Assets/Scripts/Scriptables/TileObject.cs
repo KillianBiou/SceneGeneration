@@ -18,7 +18,7 @@ public class TileObject : MonoBehaviour
 
     [SerializeField]
     public GameObject ground, northWall, eastWall, southWall, westWall;
-    public GameObject groundAdd, groundRemove;
+    public GameObject groundAdd, groundRemove, selected;
 
     public RoomMap roomMap;
     public bool isWall = true;
@@ -154,6 +154,8 @@ public class TileObject : MonoBehaviour
 
     public void ShowButton()
     {
+        selected.SetActive(false);
+
         if (isWall)
             groundAdd.SetActive(true);
         else
@@ -175,6 +177,7 @@ public class TileObject : MonoBehaviour
 
     public void TileClick()
     {
+
         if (isWall)
         {
             isWall = false;
@@ -188,6 +191,18 @@ public class TileObject : MonoBehaviour
             groundAdd.SetActive(true);
         }
 
-        roomMap.Retile(this, (int)gameObject.transform.position.x, (int)gameObject.transform.position.z, isWall);
+        roomMap.Retile((int)gameObject.transform.position.x, (int)gameObject.transform.position.z, isWall);
+    }
+
+    public void ShowSelected()
+    {
+        groundAdd.SetActive(false);
+        selected.SetActive(true);
+    }
+
+    public void HideSelected()
+    {
+        groundAdd.SetActive(true);
+        selected.SetActive(false);
     }
 }

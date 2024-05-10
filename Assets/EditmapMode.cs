@@ -32,6 +32,9 @@ public class EditmapMode : MonoBehaviour
     private GameObject lightGizmo;
     private List<GameObject> llights; //SAVE THIS
 
+    private GameObject selStart, selEnd;
+    private List<TileObject> selection;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +43,9 @@ public class EditmapMode : MonoBehaviour
         lightGizmo.SetActive(false);
 
         lightInspector.SetActive(false);
+
+
+        selection = new List<TileObject>();
     }
 
     // Update is called once per frame
@@ -71,10 +77,84 @@ public class EditmapMode : MonoBehaviour
                 {
                     if (hit.collider.gameObject.GetComponent<TileObject>() != null)
                     {
-                        hit.collider.gameObject.GetComponent<TileObject>().TileClick();
+                        selStart = hit.collider.gameObject;
+                        selEnd = hit.collider.gameObject;
+                        selection.Clear();
+                        selection.Add(selStart.GetComponent<TileObject>());
+
+                        hit.collider.GetComponent<TileObject>().ShowSelected();
                     }
                 }
             }
+
+            if(Input.GetMouseButtonUp(0))
+            {
+                if (Physics.Raycast(ray, out hit, 100))
+                {
+                    if (hit.collider.gameObject.GetComponent<TileObject>() != null)
+                    {
+                        GameObject last = hit.collider.gameObject;
+                        if(selStart == last)
+                        {
+                            selStart.GetComponent<TileObject>().TileClick();
+                            selStart.GetComponent<TileObject>().ShowButton();
+                            selStart = null;
+                            selEnd = null;
+                            return;
+                        }
+
+
+                        /*
+                        for (int i = (int)Mathf.Min(selectedTile.transform.position.x, last.transform.position.x); i <= (int)Mathf.Max(selectedTile.transform.position.x, last.transform.position.x); i++)
+                        {
+                            for (int j = (int)Mathf.Min(selectedTile.transform.position.z, last.transform.position.z); j <= (int)Mathf.Max(selectedTile.transform.position.z, last.transform.position.z); j++)
+                            {
+                                roomMap.Retile(i, j, false);
+                            }
+                        }*/
+
+                        foreach (TileObject t in selection)
+                            roomMap.Retile((int)t.transform.position.x, (int)t.transform.position.z, false);
+
+                        foreach (TileObject t in selection)
+                            t.ShowButton();
+
+
+                        selStart = null;
+                        selEnd = null;
+                        return;
+                    }
+                }
+            }
+
+            if (selStart == null)
+                return;
+
+
+            if (Physics.Raycast(ray, out hit, 100))
+            {
+                if (hit.collider.gameObject.GetComponent<TileObject>() != null)
+                {
+                    if (selEnd == hit.collider.gameObject)
+                        return;
+
+
+                    //Debug.Log("fff : " + selection.Count);
+
+                    foreach (TileObject t in selection)
+                        t.HideSelected();
+
+                    selection = roomMap.GetTiles(selection, selStart.gameObject.transform.position, hit.collider.transform.position);
+
+                    foreach (TileObject t in selection)
+                        t.ShowSelected();
+
+                    selEnd = hit.collider.gameObject;
+
+                }
+            }
+
+            return;
         }
 
         if (state == EDIT_STATE.LIGHT)
@@ -116,6 +196,7 @@ public class EditmapMode : MonoBehaviour
                 else
                     lightGizmo.SetActive(false);
             }
+            return;
         }
 
 

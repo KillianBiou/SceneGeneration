@@ -352,7 +352,7 @@ public class StableHandler : StableDiffusionGenerator
         {
             // Wait that the generation is complete before procedding
             Task<WebResponse> webResponse = httpWebRequest.GetResponseAsync();
-
+            /*
             while (!webResponse.IsCompleted)
             {
                 if (sdc.settings.useAuth && !sdc.settings.user.Equals("") && !sdc.settings.pass.Equals(""))
@@ -361,7 +361,7 @@ public class StableHandler : StableDiffusionGenerator
                     UpdateGenerationProgress();
 
                 yield return new WaitForSeconds(0.5f);
-            }
+            }*/
 
             // Stream the result from the server
             var httpResponse = webResponse.Result;

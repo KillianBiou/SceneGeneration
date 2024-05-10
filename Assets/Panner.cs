@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Panner : MonoBehaviour
 {
@@ -25,6 +26,9 @@ public class Panner : MonoBehaviour
 
     void Update()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (Input.GetMouseButtonDown(2)) // Check for middle mouse button press
         {
             isPanning = true;
@@ -37,13 +41,9 @@ public class Panner : MonoBehaviour
 
         if (isPanning)
         {
-            // Calculate the difference in mouse position since last frame
             Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
 
-            // Adjust the camera's position based on mouse movement
             camera.transform.Translate(-mouseDelta * panSpeed * Time.deltaTime);
-
-            // Update the last mouse position for the next frame
             lastMousePosition = Input.mousePosition;
         }
 
