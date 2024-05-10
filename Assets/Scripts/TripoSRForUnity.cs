@@ -5,7 +5,6 @@ using System.IO;
 using System.Globalization;
 using System;
 using AsImpL;
-using static UnityEditor.PackageManager.UI.Sample;
 
 public enum TripoState
 {

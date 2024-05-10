@@ -1050,8 +1050,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assetDatabase:
     _serializedList:
-    - Key: gundamfigure,frontview1715143252
-      Value: Assets/Models\gundamfigure,frontview1715143252\gundamfigure,frontview1715143252.json
+    - Key: kaylefigure,frontview,leagueoflegend1715312242
+      Value: Assets/Models\kaylefigure,frontview,leagueoflegend1715312242\kaylefigure,frontview,leagueoflegend1715312242.json
+    - Key: dsf1715312464
+      Value: Assets/Models\dsf1715312464\dsf1715312464.json
+    - Key: fdsfsd1715315567
+      Value: Models\fdsfsd1715315567\fdsfsd1715315567.json
   MaterialDatabase:
     _serializedList: []
 --- !u!114 &151891683
@@ -4161,6 +4165,11 @@ PrefabInstance:
       propertyPath: playgroundHolder
       value: 
       objectReference: {fileID: 953250959}
+    - target: {fileID: 8029784812882174412, guid: 407bd5cbe8c43334bb1b25c0f3826974,
+        type: 3}
+      propertyPath: debugLoadObjectName
+      value: khazixfigure,frontview,leagueoflegend1715313324
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4430,7 +4439,7 @@ PrefabInstance:
     - target: {fileID: 2608349639828256996, guid: f8ecee90857fe7a4ab75c12298fb533e,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00001335144
+      value: 17.48048
       objectReference: {fileID: 0}
     - target: {fileID: 2608349639828256996, guid: f8ecee90857fe7a4ab75c12298fb533e,
         type: 3}
@@ -18919,37 +18928,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2025665840}
   m_CullTransparentMesh: 1
---- !u!1 &2035152380
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2035152381}
-  m_Layer: 0
-  m_Name: ObjectInstanciation
-  m_TagString: Playground
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2035152381
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2035152380}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2037986993
 GameObject:
   m_ObjectHideFlags: 0
@@ -25178,4 +25156,3 @@ SceneRoots:
   - {fileID: 1855393474}
   - {fileID: 1883510328}
   - {fileID: 586583752}
-  - {fileID: 2035152381}

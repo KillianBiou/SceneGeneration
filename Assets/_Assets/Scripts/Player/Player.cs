@@ -77,8 +77,8 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            //GenerationDatabase.Instance.GetObject(debugLoadObjectName);
-            Instantiate(Resources.Load<GameObject>(debugLoadObjectName), GameObject.FindGameObjectWithTag("Playground").transform);
+            GenerationDatabase.Instance.GetObject(debugLoadObjectName);
+            //Instantiate(Resources.Load<GameObject>(debugLoadObjectName), GameObject.FindGameObjectWithTag("Playground").transform);
         }
     }
 
@@ -126,7 +126,11 @@ public class Player : MonoBehaviour
 
     public int InstantiationCallback(string objPath)
     {
-        GameObject parent = Instantiate(new GameObject(Path.GetFileNameWithoutExtension(objPath)), instanciationPoint + Vector3.up, Quaternion.identity, playgroundHolder);
+        Debug.Log(objPath);
+        GameObject parent = new GameObject(Path.GetFileNameWithoutExtension(objPath));
+        parent.transform.parent = playgroundHolder;
+        parent.transform.position = instanciationPoint + Vector3.up;
+        parent.transform.rotation = Quaternion.identity;
 
         ImportOptions importOptions = new ImportOptions();
         importOptions.buildColliders = true;
@@ -173,7 +177,8 @@ public class Player : MonoBehaviour
 
         OriginPlacement OP = parent.GetChild(0).gameObject.AddComponent<OriginPlacement>();
         OP.ReplaceOrigin();
-        GenerationDatabase.Instance.SaveGeneratedAsset(parent.gameObject, objPath);
+        Debug.Log("sent ÅF " + objPath.Substring("Assets/".Length));
+        GenerationDatabase.Instance.SaveGeneratedAsset(parent.gameObject, objPath.Substring("Assets/".Length));
     }
 
 

@@ -258,7 +258,9 @@ public class StableHandler : StableDiffusionGenerator
                 }
 
                 FinishedGenerating.Invoke();
+#if UNITY_EDITOR
                 EditorUtility.ClearProgressBar();
+#endif
             }
         }
         generating = false;
