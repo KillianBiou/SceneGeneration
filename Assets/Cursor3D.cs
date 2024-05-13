@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Cursor3D : MonoBehaviour
 {
@@ -11,6 +12,32 @@ public class Cursor3D : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        gameObject.SetActive(false);
+    }
+
+
+
+    private void Update()
+    {
+
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (Physics.Raycast(ray, out hit, 100))
+            {
+                if (hit.collider.gameObject.GetComponent<Renderer>() != null)
+                {
+                    SetTransform(hit.point, hit.normal);
+                }
+            }
+        }
+
     }
 
 
