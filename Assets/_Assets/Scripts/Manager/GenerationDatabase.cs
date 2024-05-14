@@ -76,6 +76,7 @@ public class GenerationDatabase : MonoBehaviour
                 {
                     instanciatedParent.transform.GetChild(i).position = parentSerializable.child[i].position;
                     instanciatedParent.transform.GetChild(i).rotation = parentSerializable.child[i].rotation;
+                    instanciatedParent.transform.GetChild(i).tag = "3D Generated";
                 }
                 Debug.Log("Setup object concluded");
 

@@ -139,6 +139,7 @@ public class Player : MonoBehaviour
 
 
             GameObject meshObj = instantiatedObj.transform.GetChild(0).gameObject;
+            meshObj.tag = "3D generated";
             meshObj.GetComponent<Renderer>().material = generatedMat;
 
             MeshCollider mc = meshObj.AddComponent<MeshCollider>();

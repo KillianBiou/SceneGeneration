@@ -361,7 +361,6 @@ public class StableHandler : StableDiffusionGenerator
                     UpdateGenerationProgress();*/
 
                 yield return new WaitForSeconds(0.5f);
-            }*/
 
             // Stream the result from the server
             var httpResponse = webResponse.Result;

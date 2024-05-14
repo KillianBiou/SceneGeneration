@@ -15,11 +15,6 @@ public enum D_EDIT_STATE
     GEN = 4
 }
 
-
-
-
-
-
 public class triD_toolset : MonoBehaviour
 {
 
@@ -30,6 +25,13 @@ public class triD_toolset : MonoBehaviour
     public MoveGizmo3D moveGizmo;
     public ScaleGizmo3D scaleGizmo;
 
+    public static triD_toolset Instance;
+
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()

@@ -37,16 +37,18 @@ namespace RTS_Cam
 
         private void InteractionTab()
         {
-            SerializedProperty OnShortClickRoom = serializedObject.FindProperty("OnShortClickRoom");
-            SerializedProperty OnShortClick2D = serializedObject.FindProperty("OnShortClick2D");
-            SerializedProperty OnShortClick3D = serializedObject.FindProperty("OnShortClick3D");
+            SerializedProperty OnMoveState = serializedObject.FindProperty("OnMoveState");
+            SerializedProperty OnScaleState = serializedObject.FindProperty("OnScaleState");
+            SerializedProperty OnRotateState = serializedObject.FindProperty("OnRotateState");
+            SerializedProperty OnGenState = serializedObject.FindProperty("OnGenState");
             SerializedProperty PopUp = serializedObject.FindProperty("popUp");
 
             GUILayout.Label("Short Click Trigger", EditorStyles.boldLabel);
 
-            EditorGUILayout.PropertyField(OnShortClickRoom);
-            EditorGUILayout.PropertyField(OnShortClick2D);
-            EditorGUILayout.PropertyField(OnShortClick3D);
+            EditorGUILayout.PropertyField(OnMoveState);
+            EditorGUILayout.PropertyField(OnScaleState);
+            EditorGUILayout.PropertyField(OnRotateState);
+            EditorGUILayout.PropertyField(OnGenState);
 
             GUILayout.Label("Interaction References", EditorStyles.boldLabel);
 
