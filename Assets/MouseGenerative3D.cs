@@ -7,14 +7,13 @@ using UnityEngine.EventSystems;
 public class MouseGenerative3D : MonoBehaviour
 {
 
-    public GameObject cursor;
-
     public bool positionLocked;
 
-    private void Start()
+    private void OnEnable()
     {
         positionLocked = false;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -43,7 +42,7 @@ public class MouseGenerative3D : MonoBehaviour
             {
                 if (hit.collider.gameObject.GetComponent<Renderer>() != null)
                 {
-                    cursor.transform.position = hit.point;
+                    Cursor3D.instance.SetTransform(hit.point, hit.normal);
                 }
             }
             positionLocked = true;
@@ -56,7 +55,7 @@ public class MouseGenerative3D : MonoBehaviour
         {
             if (hit.collider.gameObject.GetComponent<Renderer>() != null)
             {
-                cursor.transform.position = hit.point;
+                Cursor3D.instance.SetTransform(hit.point, hit.normal);
             }
         }
     }

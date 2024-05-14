@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
 using UnityEditor;
+using Unity.VisualScripting.Dependencies.Sqlite;
 
 public class GeneratedLibrary : MonoBehaviour
 {
@@ -68,13 +69,10 @@ public class GeneratedLibrary : MonoBehaviour
                 Texture2D norm = new Texture2D(2, 2);
                 norm.LoadImage(File.ReadAllBytes((Application.dataPath + libraryName + f.Name).Replace("_T.png", "_N.png")));
 
-                last.transform.GetChild(1).gameObject.SetActive(true);
-                last.GetComponent<MaterialSetter>().norm = norm;
+                last.GetComponent<MaterialSetter>().SetupButton(selectedMaterial, tex, norm);
             }
-            last.GetComponent<MaterialSetter>().tex = tex;
-            last.GetComponent<MaterialSetter>().matInfo = selectedMaterial;
-
-            last.transform.GetChild(0).GetComponent<RawImage>().texture = tex;
+            else
+                last.GetComponent<MaterialSetter>().SetupButton(selectedMaterial, tex, null);
 
             last.transform.SetParent(transform, false);
         }

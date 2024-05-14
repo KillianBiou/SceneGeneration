@@ -4,8 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - CinemachineTarget
-  - Playground
+  - 3D generated
   layers:
   - Default
   - TransparentFX
@@ -13,7 +12,7 @@ TagManager:
   - 
   - Water
   - UI
-  - Temp
+  - 
   - 
   - 
   - 

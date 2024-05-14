@@ -571,6 +571,7 @@ MonoBehaviour:
   text: {fileID: 9010790499703836071}
   prefix: 
   sufix: 
+  decimals: 2
 --- !u!1 &588155589999548979
 GameObject:
   m_ObjectHideFlags: 0
@@ -4878,6 +4879,7 @@ MonoBehaviour:
   text: {fileID: 4672812492829085280}
   prefix: 
   sufix: 
+  decimals: 2
 --- !u!1 &2809401860958101932
 GameObject:
   m_ObjectHideFlags: 0
@@ -8373,6 +8375,7 @@ MonoBehaviour:
   text: {fileID: 885912375647782090}
   prefix: 
   sufix: 
+  decimals: 2
 --- !u!1 &5218951757118214946
 GameObject:
   m_ObjectHideFlags: 0
@@ -10990,6 +10993,7 @@ MonoBehaviour:
   text: {fileID: 2330410967655702206}
   prefix: 
   sufix: 
+  decimals: 2
 --- !u!1 &7130212686100926094
 GameObject:
   m_ObjectHideFlags: 0
@@ -13593,7 +13597,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: eebee4e8fb9ee42438d4ebb17b964bea, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13602,7 +13606,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 5
 --- !u!114 &1836946299747497478
 MonoBehaviour:
   m_ObjectHideFlags: 0

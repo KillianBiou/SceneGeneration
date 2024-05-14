@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class SliderTexter : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class SliderTexter : MonoBehaviour
     public TMP_Text text;
 
     public string prefix, sufix;
+    public int decimals = 2;
 
     private void Start()
     {
@@ -24,6 +26,6 @@ public class SliderTexter : MonoBehaviour
     public void SetText(float i)
     {
         if(text)
-            text.text = prefix + i + sufix;
+            text.text = prefix + (float)Math.Round((double)i, decimals) + sufix;
     }
 }

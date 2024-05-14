@@ -5,29 +5,15 @@ using UnityEngine;
 public class RoomMap : MonoBehaviour
 {
 
-
-    public bool[,] map;
     public int size;
-    public List<List<TileObject>> mapObj;
+    public List<List<TileObject>> mapObj; // SAVE THIS
     public GameObject prefab;
+    public bool isEditing;
 
     // Start is called before the first frame update
     void Start()
     {
-        map = new bool[10,10]{
-        { false, false, false, false, false, false, false, false, false, false },
-        { false, true, true, true, false, false, false, false, false, false },
-        { false, true, true, true, false, false, false, false, false, false },
-        { false, true, false, true, false, false, false, false, false, false },
-        { false, true, true, true, false, false, false, false, false, false },
-        { false, true, true, true, true, false, false, false, false, false },
-        { false, true, true, true, true, false, false, false, false, false },
-        { false, true, true, true, true, false, false, false, false, false },
-        { false, true, true, true, true, false, false, false, false, false },
-        { false, false, false, false, false, false, false, false, false, false }
-        };
-
-
+        isEditing = false;
 
         mapObj = new List<List<TileObject>>();
 
@@ -52,6 +38,8 @@ public class RoomMap : MonoBehaviour
 
     public void EnterEdit()
     {
+        isEditing = true;
+
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
@@ -62,6 +50,8 @@ public class RoomMap : MonoBehaviour
     }
     public void ExitEdit()
     {
+        isEditing = false;
+
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
@@ -72,7 +62,7 @@ public class RoomMap : MonoBehaviour
     }
 
 
-    public void Retile(TileObject caller, int x, int y, bool b)
+    public void Retile(int x, int y, bool b)
     {
         if (!b)
         {
@@ -97,6 +87,23 @@ public class RoomMap : MonoBehaviour
                 mapObj[x-1][y].closeCardinal(Cardinal.EAST);
         }
 
-        caller.Init(b, mapObj[x][y+1].isWall, mapObj[x+1][y].isWall, mapObj[x][y-1].isWall, mapObj[x-1][y].isWall);
+        mapObj[x][y].Init(b, mapObj[x][y + 1].isWall, mapObj[x + 1][y].isWall, mapObj[x][y - 1].isWall, mapObj[x - 1][y].isWall);
+        //caller.Init(b, mapObj[x][y+1].isWall, mapObj[x+1][y].isWall, mapObj[x][y-1].isWall, mapObj[x-1][y].isWall);
+    }
+
+
+    public List<TileObject> GetTiles(List<TileObject> l, Vector3 v1, Vector3 v2)
+    {
+        l.Clear();
+        
+        for (int i = (int)Mathf.Min(v1.x, v2.x); i <= (int)Mathf.Max(v1.x, v2.x); i++)
+        {
+            for (int j = (int)Mathf.Min(v1.z, v2.z); j <= (int)Mathf.Max(v1.z, v2.z); j++)
+            {
+                l.Add(mapObj[i][j]);
+            }
+        }
+
+        return l;
     }
 }
