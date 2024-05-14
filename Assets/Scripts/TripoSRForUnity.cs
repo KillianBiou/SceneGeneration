@@ -207,7 +207,7 @@ public class TripoSRForUnity : MonoBehaviour
             else {
                 File.Move(originalPath, newPath);
                 if (currentImagePath != null)
-                    File.Copy(currentImagePath, newPath + ".png");
+                    File.Copy(currentImagePath, newPath.Replace(".obj", ".png"));
                 //AssetDatabase.Refresh();
 
                 UnityEngine.Debug.Log($"Moved and renamed mesh to path: {newPath}");

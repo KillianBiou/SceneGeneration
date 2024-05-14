@@ -1,8 +1,10 @@
 using AsImpL;
 using AYellowpaper.SerializedCollections;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using UnityEditor;
 using UnityEngine;
@@ -19,6 +21,8 @@ public class GenerationDatabase : MonoBehaviour
     [SerializedDictionary("Material name", "Material Path")]
     [SerializeField]
     private SerializedDictionary<string, string> MaterialDatabase;
+
+    public static event Action OnDatabaseUpdated;
 
     private void Awake()
     {
@@ -157,8 +161,8 @@ public class GenerationDatabase : MonoBehaviour
         {
             GameObjectSerializable childTemp = new GameObjectSerializable();
             childTemp.assetName = child.name;
-            childTemp.position = child.transform.position;
-            childTemp.rotation = child.transform.rotation;
+            childTemp.position = child.transform.localPosition;
+            childTemp.rotation = child.transform.localRotation;
 
             parentSerializable.child[i] = childTemp;
             i++;
@@ -176,6 +180,7 @@ public class GenerationDatabase : MonoBehaviour
 
         Debug.Log("Object pose saved");
         AddEntry(gameobject.name, fullSavingPath);
+        OnDatabaseUpdated.Invoke();
     }
 
     public void SaveDatabase()
@@ -197,5 +202,25 @@ public class GenerationDatabase : MonoBehaviour
             File.Create(DatabaseLocation);
         }
         assetDatabase = JsonUtility.FromJson<SerializedDictionary<string, string>>(File.ReadAllText(DatabaseLocation));
+    }
+
+    public List<(string, string)> GetAssetsDict()
+    {
+        List<(string, string)> fullPaths = new List<(string, string)>();
+        foreach (KeyValuePair<string, string> path in assetDatabase)
+        {
+            fullPaths.Add((path.Key, Path.Combine(Application.dataPath, path.Value)));
+        }
+        return fullPaths;
+    }
+
+    public List<string> GetAssetsFullPaths()
+    {
+        List<string> fullPaths = new List<string>();
+        foreach(string path in assetDatabase.Values)
+        {
+            fullPaths.Add(Path.Combine(Application.dataPath, path));
+        }
+        return fullPaths;
     }
 }

@@ -448,7 +448,7 @@ namespace RTS_Cam
                 cursorLockRequest--;
 
             // Panning
-            if (longClick && !lockPan)
+            /*if (longClick && !lockPan)
             {
                 lockPan = true;
                 cursorLockRequest++;
@@ -457,7 +457,7 @@ namespace RTS_Cam
             {
                 lockPan = false;
                 cursorLockRequest--;
-            }
+            }*/
 
             Mathf.Clamp(cursorLockRequest,0, Mathf.Infinity);
 
