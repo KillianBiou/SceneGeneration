@@ -23,6 +23,7 @@ public class GenerationDatabase : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
         if (!File.Exists(DatabaseLocation))
         {
             File.Create(DatabaseLocation);
@@ -44,7 +45,10 @@ public class GenerationDatabase : MonoBehaviour
             assetDatabase.Remove(remove);
         }
         SaveDatabase();*/
+    }
 
+    private void Start()
+    {
         CheckGenerationEntry();
     }
 
@@ -105,14 +109,36 @@ public class GenerationDatabase : MonoBehaviour
     {
         DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(Application.dataPath, "Models"));
 
-        foreach(DirectoryInfo info in directoryInfo.GetDirectories())
+        // Remove phantom entry
+        List<string> toRemove = new List<string>();
+        foreach (string assetName in assetDatabase.Keys)
         {
-            Debug.Log(info.Name);
+            if (!Directory.Exists(Path.Combine(directoryInfo.FullName, assetName)))
+            {
+                Debug.Log(assetName + " missing, removing !");
+                //assetDatabase.Remove(assetName);
+                toRemove.Add(assetName);
+            }
         }
+        foreach (string assetName in toRemove)
+            assetDatabase.Remove(assetName);
 
-        foreach (KeyValuePair<string, string> entry in assetDatabase)
+
+        // Add Missing
+        List<(string, string)> toAdd = new List<(string, string)>();
+        foreach (DirectoryInfo info in directoryInfo.GetDirectories())
         {
+            string targetFullPath = Path.Combine(info.FullName, info.Name + ".json");
+            if (!assetDatabase.ContainsKey(info.Name) && File.Exists(targetFullPath))
+            {
+                Debug.Log("Found " + info.Name + " unregistered, adding to db");
+                toAdd.Add((info.Name, targetFullPath));
+            }
         }
+        foreach ((string, string) assetName in toAdd)
+            assetDatabase.Add(assetName.Item1, assetName.Item2);
+
+        SaveDatabase();
     }
 
     public void SaveGeneratedAsset(GameObject gameobject, string path)

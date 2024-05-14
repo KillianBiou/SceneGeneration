@@ -303,8 +303,9 @@ namespace RTS_Cam
 
         private void OnShortClickTrigger()
         {
+            OnShortClick3D.Invoke();
             // DIFFERENCIATE FROM SELECTION MODE
-            switch (ToolMenu.Instance.currentState)
+            /*switch (ToolMenu.Instance.currentState)
             {
                 case ToolSelectionState.MODE_ROOM:
                     OnShortClickRoom.Invoke();
@@ -317,7 +318,7 @@ namespace RTS_Cam
                     break;
                 default:
                     break;
-            }
+            }*/
         }
 
         public void SetPopUp()
