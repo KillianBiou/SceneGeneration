@@ -7,7 +7,7 @@ public class ScaleGizmo3D : MonoBehaviour
     public GameObject target;
 
     [SerializeField]
-    private GameObject X, Y, Z;
+    private GameObject X, Y, Z, W;
     private bool rx, ry, rz = false;
     private Vector3 mousePos, targetScale;
 
@@ -29,10 +29,18 @@ public class ScaleGizmo3D : MonoBehaviour
                 
                 if (hit.collider.gameObject == Y)
                     ry = true;
-                
+
                 if (hit.collider.gameObject == Z)
                     rz = true;
-                
+
+                if (hit.collider.gameObject == W)
+                {
+                    rx = true;
+                    ry = true;
+                    rz = true;
+                }
+
+
                 mousePos = Input.mousePosition;
                 targetScale = target.transform.localScale;
             }
@@ -65,6 +73,13 @@ public class ScaleGizmo3D : MonoBehaviour
         }
 
         Vector2 diff = Input.mousePosition - mousePos;
+
+        if(rx && ry && rz)
+        {
+            target.transform.localScale = targetScale + new Vector3(.01f * -diff.x, .01f * -diff.x, .01f * -diff.x);
+            return;
+        }
+
         if (rx)
         {
             target.transform.localScale = targetScale + new Vector3(.01f * -diff.x, 0, 0);
@@ -95,6 +110,7 @@ public class ScaleGizmo3D : MonoBehaviour
         X.SetActive(false);
         Y.SetActive(false);
         Z.SetActive(false);
+        W.SetActive(false);
     }
 
     public void ShowGizmos()
@@ -102,5 +118,6 @@ public class ScaleGizmo3D : MonoBehaviour
         X.SetActive(true);
         Y.SetActive(true);
         Z.SetActive(true);
+        W.SetActive(true);
     }
 }
