@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,6 +15,32 @@ public enum EDIT_STATE
     LIGHT = 2,
     EDITLIGHT = 3,
     SKY = 4
+}
+
+
+
+[System.Serializable]
+public struct LightPlace
+{
+    [SerializeField]
+    public float intensity, range, height;
+    [SerializeField]
+    public Vector3 position;
+
+    public LightPlace(float i, float r, float h, Vector3 p)
+    {
+        intensity = i;
+        range = r;
+        height = h;
+        position = p;
+    }
+}
+
+
+public struct LightsData
+{
+    [SerializeField]
+    public List<LightPlace> lights;
 }
 
 
@@ -293,5 +320,45 @@ public class EditmapMode : MonoBehaviour
         state = EDIT_STATE.EDITLIGHT;
     }
 
+
+
+    public LightsData GetLightsSaveData()
+    {
+        LightsData ld = new LightsData();
+        ld.lights = new List<LightPlace>();
+
+        foreach (GameObject l in llights)
+        {
+            Light linfo = l.GetComponent<Light>();
+            ld.lights.Add(new LightPlace(linfo.intensity, linfo.range, l.transform.position.y, l.transform.parent.position));
+        }
+        return ld;
+    }
+
+
+    public void DeleteAllLights()
+    {
+        foreach (GameObject l in llights)
+            Destroy(l);
+        llights.Clear();
+    }
+
+
+    public void LoadLightsData(LightsData data)
+    {
+        DeleteAllLights();
+
+        foreach (LightPlace l in data.lights)
+        {
+            GameObject last = Instantiate(lightPrefab);
+            last.transform.position = l.position;
+            Light li = last.transform.GetChild(0).transform.GetComponent<Light>();
+            li.transform.position = new Vector3(0, l.height, 0);
+            li.intensity = l.intensity;
+            li.range = l.range;
+
+            llights.Add(last);
+        }
+    }
 
 }

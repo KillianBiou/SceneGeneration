@@ -20,13 +20,19 @@ public class MaterialSetter : MonoBehaviour
         norm = n;
 
         texture.texture = tex;
-        if(norm != null)
+        if (norm != null)
         {
             normal.texture = norm;
             normal.gameObject.SetActive(true);
         }
         else
             normal.gameObject.SetActive(false);
+    }
+
+    public void SetupButton(Texture2D t)
+    {
+        tex = t;
+        texture.texture = tex;
     }
 
 
@@ -45,5 +51,12 @@ public class MaterialSetter : MonoBehaviour
             matInfo.materials[matInfo.selectedId].SetFloat("_use_normal", 0);
 
         matInfo.Changed.Invoke();
+    }
+
+    public void ApplySky()
+    {
+        RenderSettings.skybox.SetTexture("_MainTex", tex);
+        DynamicGI.UpdateEnvironment();
+        FindAnyObjectByType<ReflectionProbe>().RenderProbe();
     }
 }

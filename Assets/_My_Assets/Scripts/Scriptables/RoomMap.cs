@@ -37,8 +37,7 @@ public struct ShaderValues
 }
 
 
-
-[System.Serializable]
+    [System.Serializable]
 public struct TileMat
 {
     [SerializeField]
@@ -183,7 +182,15 @@ public class RoomMap : MonoBehaviour
     }
 
 
-    public void SaveMap(string path)
+    public void SaveMapToFile(string path)
+    {
+        string json = JsonUtility.ToJson(GetSaveMapData());
+
+        File.WriteAllText(Path.Combine(Application.dataPath, path, nameOfMap + ".json"), json);
+    }
+
+
+    public MapData GetSaveMapData()
     {
         MapData data = new MapData();
         data.name = nameOfMap;
@@ -199,7 +206,7 @@ public class RoomMap : MonoBehaviour
                 wl.list.Add(mapObj[i][j].isWall);
 
                 if (!mapObj[i][j].isWall)
-                { 
+                {
                     TileMat tm = new TileMat();
                     tm.gnd = new ShaderValues();
 
@@ -211,28 +218,18 @@ public class RoomMap : MonoBehaviour
                     tm.e2 = new ShaderValues(mapObj[i][j].eastWall.transform.GetChild(0).GetComponent<Renderer>().material);
                     tm.s1 = new ShaderValues(mapObj[i][j].southWall.GetComponent<Renderer>().material);
                     tm.s2 = new ShaderValues(mapObj[i][j].southWall.transform.GetChild(0).GetComponent<Renderer>().material);
-                    tm.w1= new ShaderValues(mapObj[i][j].westWall.GetComponent<Renderer>().material);
+                    tm.w1 = new ShaderValues(mapObj[i][j].westWall.GetComponent<Renderer>().material);
                     tm.w2 = new ShaderValues(mapObj[i][j].westWall.transform.GetChild(0).GetComponent<Renderer>().material);
-
-                    /*
-                    tm.gnd.t = mapObj[i][j].ground.GetComponent<Renderer>().material.GetTexture("_Texture2D").name;
-                    tm.gnd.p = mapObj[i][j].ground.GetComponent<Renderer>().material.GetVector("_position_offset");
-                    tm.gnd.s = mapObj[i][j].ground.GetComponent<Renderer>().material.GetVector("_Scaling");
-                    tm.gnd.r = mapObj[i][j].ground.GetComponent<Renderer>().material.GetVector("_Rotation");
-                    tm.gnd.bN = mapObj[i][j].ground.GetComponent<Renderer>().material.GetFloat("_use_normal") == 1.0f;
-                    tm.gnd.n = mapObj[i][j].ground.GetComponent<Renderer>().material.GetTexture("_Normal_Map").name;
-                    */
 
                     data.tileMats.Add(tm);
                 }
             }
             data.map.Add(wl);
         }
-
-        string json = JsonUtility.ToJson(data);
-
-        File.WriteAllText(Path.Combine(Application.dataPath, path, nameOfMap + ".json"), json);
+        return data;
     }
+
+
 
     public void DropCurrentMap()
     {
@@ -249,7 +246,7 @@ public class RoomMap : MonoBehaviour
 
 
 
-    public void LoadMap(string path)
+    public void LoadMapFromFile(string path)
     {
         if (!File.Exists(Path.Combine(Application.dataPath, path)))
             return;
@@ -259,6 +256,12 @@ public class RoomMap : MonoBehaviour
         MapData data = new MapData();
         data = JsonUtility.FromJson<MapData>(File.ReadAllText(Path.Combine(Application.dataPath, path)));
 
+        LoadMap(data);
+    }
+
+
+    public void LoadMap(MapData data)
+    {
         size = data.map.Count;
 
         for (int i = 0; i < size; i++)
@@ -289,7 +292,7 @@ public class RoomMap : MonoBehaviour
 
 
 
-        foreach(TileMat tm in data.tileMats)
+        foreach (TileMat tm in data.tileMats)
         {
             ApplyShaderValues(mapObj[(int)tm.pos.x][(int)tm.pos.z].ground, tm.gnd);
 
@@ -319,7 +322,7 @@ public class RoomMap : MonoBehaviour
     {
         Material m = go.GetComponent<Renderer>().material;
 
-        if(sv.t != "default")
+        if (sv.t != "default")
         {
             Texture2D tex = null;
             tex = new Texture2D(2, 2);
@@ -327,11 +330,18 @@ public class RoomMap : MonoBehaviour
             m.SetTexture("_Texture2D", tex);
         }
 
+        if (sv.n != "none")
+        {
+            Texture2D tex = null;
+            tex = new Texture2D(2, 2);
+            tex.LoadImage(System.IO.File.ReadAllBytes(Path.Combine(Application.dataPath, "GeneratedData", sv.n)));
+            m.SetTexture("_Normal_Map", tex);
+        }
+
         m.SetVector("_position_offset", sv.p);
         m.SetVector("_Scaling", sv.s);
         m.SetVector("_Rotation", sv.r);
         m.SetFloat("_use_normal", sv.bN ? 1.0f : 0.0f);
-        //m.SetTexture("_Normal_Map", sv.p);
     }
 
 }

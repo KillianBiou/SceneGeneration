@@ -7,6 +7,7 @@ public class TileLight : MonoBehaviour
 {
 
     public float lightHeight, lightIntensity;
+    public Light lightRef;
 
 
     public GameObject remover, editGizmo, lightObj;
