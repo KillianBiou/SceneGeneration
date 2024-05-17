@@ -62,6 +62,7 @@ public class GeneratedLibrary : MonoBehaviour
 
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(File.ReadAllBytes(Application.dataPath + libraryName + f.Name));
+            tex.name = f.Name;
 
             last.GetComponent<MaterialSetter>().tex = tex;
             if (File.Exists((Application.dataPath + libraryName + f.Name).Replace("_T.png", "_N.png")))
