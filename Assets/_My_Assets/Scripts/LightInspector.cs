@@ -10,6 +10,9 @@ public class LightInspector : MonoBehaviour
     [SerializeField]
     private Slider intensity, range, height;
 
+    [SerializeField]
+    private EditableColor picker;
+
 
     public void Inspect(GameObject l)
     {
@@ -17,6 +20,7 @@ public class LightInspector : MonoBehaviour
         intensity.value = lightObj.GetComponent<Light>().intensity;
         range.value = lightObj.GetComponent<Light>().range;
         height.value = lightObj.transform.position.y;
+        picker.ColorHook.AddListener(SetColor);
     }
 
 
@@ -35,4 +39,8 @@ public class LightInspector : MonoBehaviour
         lightObj.transform.position = new Vector3(lightObj.transform.position.x, f, lightObj.transform.position.z);
     }
 
+    public void SetColor(Color c)
+    {
+        lightObj.GetComponent<Light>().color = c;
+    }
 }

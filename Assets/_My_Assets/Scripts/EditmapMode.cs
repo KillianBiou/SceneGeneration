@@ -87,9 +87,6 @@ public class EditmapMode : MonoBehaviour
             return;
 
 
-
-
-
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -124,7 +121,7 @@ public class EditmapMode : MonoBehaviour
                         if(selStart == last)
                         {
                             selStart.GetComponent<TileObject>().TileClick();
-                            selStart.GetComponent<TileObject>().ShowButton();
+                            selStart.GetComponent<TileObject>().ShowGizmoEditGround();
                             selStart = null;
                             selEnd = null;
                             return;
@@ -144,7 +141,7 @@ public class EditmapMode : MonoBehaviour
                             roomMap.Retile((int)t.transform.position.x, (int)t.transform.position.z, false);
 
                         foreach (TileObject t in selection)
-                            t.ShowButton();
+                            t.ShowGizmoEditGround();
 
 
                         selStart = null;

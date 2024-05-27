@@ -304,7 +304,6 @@ GameObject:
   - component: {fileID: 6292467376182037993}
   - component: {fileID: 9124717220637979663}
   - component: {fileID: 1784367696105882773}
-  - component: {fileID: 2738967680568625825}
   - component: {fileID: 5485833212508941398}
   - component: {fileID: 8938433757024943984}
   m_Layer: 5
@@ -413,37 +412,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
---- !u!114 &2738967680568625825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2525356168897796715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38a0d9e021728714fbdc70b4953cf3f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  folderName: ChoicePicker
-  uiContainer: {fileID: 2584055140658719107}
-  buttonChoice: {fileID: 7135418982240320871, guid: 7cb95b6a1f6143a4e9e5a11821899313,
-    type: 3}
-  title: {fileID: 4216265675096531747}
-  req:
-    directory: p1
-    filename: choicetest.png
-    prompt: cheese
-    negPrompt: 
-    hiddenPrompt: 
-    width: 512
-    height: 512
-    steps: 20
-    cfgScale: 7
-    seed: -1
-    tilling: 0
-    tileX: 0
-    tileY: 0
 --- !u!114 &5485833212508941398
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -152,7 +152,7 @@ public class TileObject : MonoBehaviour
     }
 
 
-    public void ShowButton()
+    public void ShowGizmoEditGround()
     {
         selected.SetActive(false);
 
@@ -162,6 +162,18 @@ public class TileObject : MonoBehaviour
             groundRemove.SetActive(true);
 
         editorCollider.enabled = true;
+
+        northWall.GetComponent<Collider>().enabled = false;
+        northWall.transform.GetChild(0).GetComponent<Collider>().enabled = false;
+
+        eastWall.GetComponent<Collider>().enabled = false;
+        eastWall.transform.GetChild(0).GetComponent<Collider>().enabled = false;
+
+        southWall.GetComponent<Collider>().enabled = false;
+        southWall.transform.GetChild(0).GetComponent<Collider>().enabled = false;
+
+        westWall.GetComponent<Collider>().enabled = false;
+        westWall.transform.GetChild(0).GetComponent<Collider>().enabled = false;
     }
 
     public void HideButton()
@@ -172,6 +184,18 @@ public class TileObject : MonoBehaviour
             groundRemove.SetActive(false);
 
         editorCollider.enabled = false;
+
+        northWall.GetComponent<Collider>().enabled = true;
+        northWall.transform.GetChild(0).GetComponent<Collider>().enabled = true;
+
+        eastWall.GetComponent<Collider>().enabled = true;
+        eastWall.transform.GetChild(0).GetComponent<Collider>().enabled = true;
+
+        southWall.GetComponent<Collider>().enabled = true;
+        southWall.transform.GetChild(0).GetComponent<Collider>().enabled = true;
+
+        westWall.GetComponent<Collider>().enabled = true;
+        westWall.transform.GetChild(0).GetComponent<Collider>().enabled = true;
     }
 
 

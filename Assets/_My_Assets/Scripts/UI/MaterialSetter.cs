@@ -57,6 +57,7 @@ public class MaterialSetter : MonoBehaviour
     {
         RenderSettings.skybox.SetTexture("_MainTex", tex);
         DynamicGI.UpdateEnvironment();
-        FindAnyObjectByType<ReflectionProbe>().RenderProbe();
+        if(FindAnyObjectByType<ReflectionProbe>() != null)
+            FindAnyObjectByType<ReflectionProbe>().RenderProbe();
     }
 }

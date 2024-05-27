@@ -73,12 +73,19 @@ public struct wrapList
 
 public class RoomMap : MonoBehaviour
 {
+    public static RoomMap instance;
+
 
     public int size;
     public List<List<TileObject>> mapObj; // SAVE THIS
     public string nameOfMap;
     public GameObject prefab;
     public bool isEditing;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -114,7 +121,7 @@ public class RoomMap : MonoBehaviour
         {
             for (int j = 1; j < size-1; j++)
             {
-                mapObj[i][j].ShowButton();
+                mapObj[i][j].ShowGizmoEditGround();
             }
         }
     }
@@ -251,8 +258,6 @@ public class RoomMap : MonoBehaviour
         if (!File.Exists(Path.Combine(Application.dataPath, path)))
             return;
 
-        DropCurrentMap();
-
         MapData data = new MapData();
         data = JsonUtility.FromJson<MapData>(File.ReadAllText(Path.Combine(Application.dataPath, path)));
 
@@ -262,6 +267,9 @@ public class RoomMap : MonoBehaviour
 
     public void LoadMap(MapData data)
     {
+
+        DropCurrentMap();
+
         size = data.map.Count;
 
         for (int i = 0; i < size; i++)

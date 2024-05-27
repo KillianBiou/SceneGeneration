@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            LoadScene(debugScenePath);
+            LoadSceneFromFile(debugScenePath);
         }
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
@@ -161,8 +161,22 @@ public class Player : MonoBehaviour
 
     public void SaveScene()
     {
+        if (!Directory.Exists(sceneSavePath)) Directory.CreateDirectory(sceneSavePath);
+
+        string savePath = Path.Combine(sceneSavePath, Directory.GetDirectories(sceneSavePath).Length.ToString());
+
+        Directory.CreateDirectory(savePath);
+
+        File.WriteAllText(Path.Combine(savePath, "SceneSave.json"), JsonUtility.ToJson(GetGameObjectSaveData()));
+
+        Debug.Log("Scene saved at " +  savePath);
+    }
+
+    public GameObjectSerializable GetGameObjectSaveData()
+    {
+
         GameObject parent = GameObject.FindGameObjectWithTag("Playground");
-        
+
         GameObjectSerializable parentSerializable = new GameObjectSerializable();
         parentSerializable.assetName = parent.name;
         parentSerializable.position = parent.transform.position;
@@ -198,24 +212,26 @@ public class Player : MonoBehaviour
         parentSerializable.childNumber = parent.transform.childCount;
 
 
-        if (!Directory.Exists(sceneSavePath)) Directory.CreateDirectory(sceneSavePath);
-
-        string savePath = Path.Combine(sceneSavePath, Directory.GetDirectories(sceneSavePath).Length.ToString());
-
-        Directory.CreateDirectory(savePath);
-
-        File.WriteAllText(Path.Combine(savePath, "SceneSave.json"), JsonUtility.ToJson(parentSerializable));
-
-        Debug.Log("Scene saved at " +  savePath);
+        return parentSerializable;
     }
 
-    public void LoadScene(string scenePath)
+
+
+
+    public void LoadSceneFromFile(string scenePath)
     {
         if (!File.Exists(scenePath))
             return;
 
         GameObjectSerializable parentSerializable = JsonUtility.FromJson<GameObjectSerializable>(File.ReadAllText(scenePath));
 
+        LoadScene(parentSerializable);
+
+        Debug.Log("Scene loaded from " + scenePath);
+    }
+
+    public void LoadScene(GameObjectSerializable parentSerializable)
+    {
         foreach (GameObjectSerializable child in parentSerializable.child)
         {
             GameObject temp = Instantiate(GenerationDatabase.Instance.GetObject(child.assetName), child.position, child.rotation, GameObject.FindGameObjectWithTag("Playground").transform);
@@ -224,9 +240,8 @@ public class Player : MonoBehaviour
             temp.transform.GetChild(0).rotation = child.child[0].rotation;
             temp.transform.GetChild(0).GetComponent<Renderer>().material = baseMat;
         }
-
-        Debug.Log("Scene loaded from " + scenePath);
     }
+
 
     public void AddImage(Texture2D imagePath)
     {

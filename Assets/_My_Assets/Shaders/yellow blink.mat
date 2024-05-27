@@ -41,6 +41,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _blink_speed: 10
+    - _min: 0.2
     m_Colors:
     - _Color: {r: 0.81960785, g: 0.7636269, b: 0.40784314, a: 0}
   m_BuildTextureStacks: []
