@@ -19,6 +19,11 @@ public class ModelLibraryUIHandler : MonoBehaviour
 
     private ModelLibraryDragDropHandler dragDropHandler;
 
+    private void OnEnable()
+    {
+        DatabaseUpdatedReceiver();
+    }
+
     private void Start()
     {
         GenerationDatabase.OnDatabaseUpdated += DatabaseUpdatedReceiver;
