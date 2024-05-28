@@ -118,10 +118,9 @@ namespace RTS_Cam
         public KeyCode mouseRotationKey = KeyCode.Mouse1;
 
         public float longClickThreshold = 0.1f;
-        public UnityEvent OnMoveState;
-        public UnityEvent OnScaleState;
-        public UnityEvent OnRotateState;
-        public UnityEvent OnGenState;
+        public UnityEvent OnShortClickRoom;
+        public UnityEvent OnShortClick2D;
+        public UnityEvent OnShortClick3D;
 
         private int cursorLockRequest = 0;
         private bool longClick = false;
@@ -130,8 +129,6 @@ namespace RTS_Cam
         private float totalDownTime = 0f;
         private bool onUI = false;
         public RectTransform popUp;
-
-        public bool usePopup = false;
 
         private Vector2 KeyboardInput
         {
@@ -306,24 +303,22 @@ namespace RTS_Cam
 
         private void OnShortClickTrigger()
         {
+            OnShortClick3D.Invoke();
             // DIFFERENCIATE FROM SELECTION MODE
-            switch (triD_toolset.Instance.state)
+            /*switch (ToolMenu.Instance.currentState)
             {
-                case D_EDIT_STATE.MOVE:
-                    OnMoveState.Invoke();
+                case ToolSelectionState.MODE_ROOM:
+                    OnShortClickRoom.Invoke();
                     break;
-                case D_EDIT_STATE.SCALE:
-                    OnScaleState.Invoke();
+                case ToolSelectionState.MODE_2D:
+                    OnShortClick2D.Invoke();
                     break;
-                case D_EDIT_STATE.ROTATE:
-                    OnRotateState.Invoke();
-                    break;
-                case D_EDIT_STATE.GEN:
-                    OnGenState.Invoke();
+                case ToolSelectionState.MODE_3D:
+                    OnShortClick3D.Invoke();
                     break;
                 default:
                     break;
-            }
+            }*/
         }
 
         public void SetPopUp()
@@ -387,14 +382,13 @@ namespace RTS_Cam
                 desiredMove = m_Transform.InverseTransformDirection(desiredMove);
 
                 m_Transform.Translate(desiredMove, Space.Self);
-            }
-            if(usePanning && Input.GetKey(panningKey) && MouseAxis != Vector2.zero)
+            }       
+        
+            if(usePanning && Input.GetKey(panningKey) && longClick && MouseAxis != Vector2.zero)
             {
                 Vector3 desiredMove = new Vector3(-MouseAxis.x, 0, -MouseAxis.y);
 
                 desiredMove *= panningSpeed;
-                Debug.Log(desiredMove);
-                Debug.Log( "Speed :" +  panningSpeed);
                 desiredMove *= Time.deltaTime;
                 desiredMove = Quaternion.Euler(new Vector3(0f, transform.eulerAngles.y, 0f)) * desiredMove;
                 desiredMove = m_Transform.InverseTransformDirection(desiredMove);
@@ -408,9 +402,6 @@ namespace RTS_Cam
         /// </summary>
         private void HeightCalculation()
         {
-            if (Input.GetKey(panningKey))
-                return;
-
             float distanceToGround = DistanceToGround();
             if(useScrollwheelZooming)
                 zoomPos += ScrollWheel * Time.deltaTime * scrollWheelZoomingSensitivity;
@@ -457,12 +448,6 @@ namespace RTS_Cam
                 cursorLockRequest--;
 
             // Panning
-
-            /*if (Input.GetKeyDown(panningKey))
-                cursorLockRequest++;
-            if (Input.GetKeyUp(panningKey))
-                cursorLockRequest--;
-*/
             /*if (longClick && !lockPan)
             {
                 lockPan = true;

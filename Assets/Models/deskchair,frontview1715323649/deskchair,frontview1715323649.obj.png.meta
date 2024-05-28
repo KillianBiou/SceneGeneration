@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Models/deskchair,frontview1715323649/deskchair,frontview1715323649.obj.png.meta
 guid: 2fa4cc241e4426543bd2d1688a376248
+========
+guid: cd96abe55ffee984bbcceb098d50960b
+>>>>>>>> ReworkAssetDatabase:Assets/GeneratedData/ChoicePicker/gundamfigure,frontview1715931583.07385.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

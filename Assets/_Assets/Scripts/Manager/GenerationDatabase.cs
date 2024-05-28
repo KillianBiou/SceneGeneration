@@ -1,7 +1,10 @@
+using AsImpL;
 using AYellowpaper.SerializedCollections;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using UnityEditor;
 using UnityEngine;
@@ -19,9 +22,12 @@ public class GenerationDatabase : MonoBehaviour
     [SerializeField]
     private SerializedDictionary<string, string> MaterialDatabase;
 
+    public static event Action OnDatabaseUpdated;
+
     private void Awake()
     {
         Instance = this;
+
         if (!File.Exists(DatabaseLocation))
         {
             File.Create(DatabaseLocation);
@@ -31,7 +37,7 @@ public class GenerationDatabase : MonoBehaviour
             LoadDatabase();
         }
 
-        List<string> toRemove = new List<string>();
+        /*List<string> toRemove = new List<string>();
 
         foreach(KeyValuePair<string, string> entry in assetDatabase)
         {
@@ -42,8 +48,11 @@ public class GenerationDatabase : MonoBehaviour
         {
             assetDatabase.Remove(remove);
         }
-        SaveDatabase();
+        SaveDatabase();*/
+    }
 
+    private void Start()
+    {
         CheckGenerationEntry();
     }
 
@@ -57,20 +66,36 @@ public class GenerationDatabase : MonoBehaviour
 
     public GameObject GetObject(string key)
     {
+        Debug.Log("Try Load");
+        Debug.Log(key);
         if (assetDatabase.ContainsKey(key))
         {
             try
             {
-                GameObjectSerializable parentSerializable = JsonUtility.FromJson<GameObjectSerializable>(File.ReadAllText(assetDatabase[key]));
-                Debug.Log("Loaded JSON");
+                string fullPath = Path.Combine(Application.dataPath, assetDatabase[key]);
+                string objFullPath = Path.Combine(Application.dataPath, assetDatabase[key].Replace(".json", ".obj"));
 
-                GameObject loadedAsset = Resources.Load<GameObject>(Path.Combine(Application.dataPath, assetDatabase[key].Replace("json", "obj")));
-                Debug.Log("Loaded Asset");
-                Debug.Log(Path.Combine(Application.dataPath, assetDatabase[key].Replace("json", "obj")));
-                GameObject instanciatedParent = Instantiate(loadedAsset, GameObject.FindGameObjectWithTag("Playground").transform);
-                Debug.Log("Instanciated Asset");
-                instanciatedParent.transform.position = parentSerializable.position;
-                instanciatedParent.transform.rotation = parentSerializable.rotation;
+                GameObjectSerializable parentSerializable = JsonUtility.FromJson<GameObjectSerializable>(File.ReadAllText(fullPath));
+                Debug.Log("Loaded JSON");
+                Debug.Log(parentSerializable);
+
+                //GameObject loadedAsset = Resources.Load<GameObject>(Path.Combine(Application.dataPath, assetDatabase[key].Replace("json", "obj")));
+                //Debug.Log("Loaded Asset");
+
+                GameObject parent = new GameObject(key);
+                parent.transform.parent = GameObject.FindGameObjectWithTag("Playground").transform;
+                parent.transform.position = parentSerializable.position;
+                parent.transform.rotation = parentSerializable.rotation;
+
+                ImportOptions options = new ImportOptions();
+                options.buildColliders = true;
+                options.colliderConvex = true;
+                options.localPosition = parentSerializable.child[0].position;
+                options.localEulerAngles = parentSerializable.child[0].rotation.eulerAngles;
+
+
+                ObjectImporter.Instance.ImportModelAsync(key, objFullPath, parent.transform, options);
+
 
                 for(int i = 0; i < instanciatedParent.transform.childCount; i++)
                 {
@@ -80,7 +105,7 @@ public class GenerationDatabase : MonoBehaviour
                 }
                 Debug.Log("Setup object concluded");
 
-                return instanciatedParent;
+                return parent;
             }
             catch
             {
@@ -94,14 +119,36 @@ public class GenerationDatabase : MonoBehaviour
     {
         DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(Application.dataPath, "Models"));
 
-        foreach(DirectoryInfo info in directoryInfo.GetDirectories())
+        // Remove phantom entry
+        List<string> toRemove = new List<string>();
+        foreach (string assetName in assetDatabase.Keys)
         {
-            Debug.Log(info.Name);
+            if (!Directory.Exists(Path.Combine(directoryInfo.FullName, assetName)))
+            {
+                Debug.Log(assetName + " missing, removing !");
+                //assetDatabase.Remove(assetName);
+                toRemove.Add(assetName);
+            }
         }
+        foreach (string assetName in toRemove)
+            assetDatabase.Remove(assetName);
 
-        foreach (KeyValuePair<string, string> entry in assetDatabase)
+
+        // Add Missing
+        List<(string, string)> toAdd = new List<(string, string)>();
+        foreach (DirectoryInfo info in directoryInfo.GetDirectories())
         {
+            string targetFullPath = Path.Combine(info.FullName, info.Name + ".json");
+            if (!assetDatabase.ContainsKey(info.Name) && File.Exists(targetFullPath))
+            {
+                Debug.Log("Found " + info.Name + " unregistered, adding to db");
+                toAdd.Add((info.Name, targetFullPath));
+            }
         }
+        foreach ((string, string) assetName in toAdd)
+            assetDatabase.Add(assetName.Item1, assetName.Item2);
+
+        SaveDatabase();
     }
 
     public void SaveGeneratedAsset(GameObject gameobject, string path)
@@ -120,8 +167,8 @@ public class GenerationDatabase : MonoBehaviour
         {
             GameObjectSerializable childTemp = new GameObjectSerializable();
             childTemp.assetName = child.name;
-            childTemp.position = child.transform.position;
-            childTemp.rotation = child.transform.rotation;
+            childTemp.position = child.transform.localPosition;
+            childTemp.rotation = child.transform.localRotation;
 
             parentSerializable.child[i] = childTemp;
             i++;
@@ -134,11 +181,12 @@ public class GenerationDatabase : MonoBehaviour
         if (!Directory.Exists(savingPath)) Debug.Log("ERROR FOLDER DOES NOT EXIST");
 
         string fullSavingPath = Path.Combine(savingPath, gameobject.name + ".json");
-
-        File.WriteAllText(fullSavingPath, JsonUtility.ToJson(parentSerializable));
+        Debug.Log("FULL SAVING PATH : " + fullSavingPath);
+        File.WriteAllText(Path.Combine(Application.dataPath, fullSavingPath), JsonUtility.ToJson(parentSerializable));
 
         Debug.Log("Object pose saved");
         AddEntry(gameobject.name, fullSavingPath);
+        OnDatabaseUpdated.Invoke();
     }
 
     public void SaveDatabase()
@@ -160,5 +208,25 @@ public class GenerationDatabase : MonoBehaviour
             File.Create(DatabaseLocation);
         }
         assetDatabase = JsonUtility.FromJson<SerializedDictionary<string, string>>(File.ReadAllText(DatabaseLocation));
+    }
+
+    public List<(string, string)> GetAssetsDict()
+    {
+        List<(string, string)> fullPaths = new List<(string, string)>();
+        foreach (KeyValuePair<string, string> path in assetDatabase)
+        {
+            fullPaths.Add((path.Key, Path.Combine(Application.dataPath, path.Value)));
+        }
+        return fullPaths;
+    }
+
+    public List<string> GetAssetsFullPaths()
+    {
+        List<string> fullPaths = new List<string>();
+        foreach(string path in assetDatabase.Values)
+        {
+            fullPaths.Add(Path.Combine(Application.dataPath, path));
+        }
+        return fullPaths;
     }
 }
