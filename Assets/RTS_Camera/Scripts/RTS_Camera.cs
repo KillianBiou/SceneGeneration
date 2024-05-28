@@ -118,9 +118,10 @@ namespace RTS_Cam
         public KeyCode mouseRotationKey = KeyCode.Mouse1;
 
         public float longClickThreshold = 0.1f;
-        public UnityEvent OnShortClickRoom;
-        public UnityEvent OnShortClick2D;
-        public UnityEvent OnShortClick3D;
+        public UnityEvent OnMoveState;
+        public UnityEvent OnScaleState;
+        public UnityEvent OnRotateState;
+        public UnityEvent OnGenState;
 
         private int cursorLockRequest = 0;
         private bool longClick = false;
@@ -303,22 +304,24 @@ namespace RTS_Cam
 
         private void OnShortClickTrigger()
         {
-            OnShortClick3D.Invoke();
             // DIFFERENCIATE FROM SELECTION MODE
-            /*switch (ToolMenu.Instance.currentState)
+            switch (triD_toolset.Instance.state)
             {
-                case ToolSelectionState.MODE_ROOM:
-                    OnShortClickRoom.Invoke();
+                case D_EDIT_STATE.MOVE:
+                    OnMoveState.Invoke();
                     break;
-                case ToolSelectionState.MODE_2D:
-                    OnShortClick2D.Invoke();
+                case D_EDIT_STATE.SCALE:
+                    OnScaleState.Invoke();
                     break;
-                case ToolSelectionState.MODE_3D:
-                    OnShortClick3D.Invoke();
+                case D_EDIT_STATE.ROTATE:
+                    OnRotateState.Invoke();
+                    break;
+                case D_EDIT_STATE.GEN:
+                    OnGenState.Invoke();
                     break;
                 default:
                     break;
-            }*/
+            }
         }
 
         public void SetPopUp()
