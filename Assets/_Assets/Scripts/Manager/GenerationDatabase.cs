@@ -53,6 +53,7 @@ public class GenerationDatabase : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("STATIC INSTANCE :" + Instance.name);
         CheckGenerationEntry();
     }
 
@@ -97,12 +98,6 @@ public class GenerationDatabase : MonoBehaviour
                 ObjectImporter.Instance.ImportModelAsync(key, objFullPath, parent.transform, options);
 
 
-                for(int i = 0; i < instanciatedParent.transform.childCount; i++)
-                {
-                    instanciatedParent.transform.GetChild(i).position = parentSerializable.child[i].position;
-                    instanciatedParent.transform.GetChild(i).rotation = parentSerializable.child[i].rotation;
-                    instanciatedParent.transform.GetChild(i).tag = "3D Generated";
-                }
                 Debug.Log("Setup object concluded");
 
                 return parent;

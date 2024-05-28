@@ -44,6 +44,9 @@ public class ModelLibraryUIHandler : MonoBehaviour
         // Clear View (Not optimal, but sufficient for now as they wont be more than 20 models)
         ClearView();
 
+        if (!GenerationDatabase.Instance)
+            return;
+
         foreach((string, string) path in GenerationDatabase.Instance.GetAssetsDict())
         {
             AddEntry(path.Item1, path.Item2);
