@@ -14,7 +14,5 @@ public class VR_GizmoTranslator : MonoBehaviour
     {
         translator.controller =  gameObject.GetComponent<XRSimpleInteractable>().interactorsSelecting[0].transform.gameObject;
         translator.Grabbing(X, Y, Z);
-
-        //translator.target
     }
 }

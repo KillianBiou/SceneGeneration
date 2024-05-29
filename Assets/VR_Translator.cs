@@ -13,15 +13,6 @@ public class VR_Translator : MonoBehaviour
 
     private Vector3 offset;
 
-
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -34,17 +25,17 @@ public class VR_Translator : MonoBehaviour
 
         if (X)
         {
-            newPos.x = controller.transform.position.x - offset.x;
+            newPos.x = controller.transform.position.x + offset.x;
         }
 
         if (Y)
         {
-            newPos.y = controller.transform.position.y - offset.y;
+            newPos.y = controller.transform.position.y + offset.y;
         }
 
         if (Z)
         {
-            newPos.z = controller.transform.position.z - offset.z;
+            newPos.z = controller.transform.position.z + offset.z;
         }
 
 
