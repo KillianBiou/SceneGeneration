@@ -97,6 +97,7 @@ public class GenerationDatabase : MonoBehaviour
 
                 ObjectImporter.Instance.ImportModelAsync(key, objFullPath, parent.transform, options);
 
+                parent.AddComponent<ParentCheck>();
 
                 Debug.Log("Setup object concluded");
 

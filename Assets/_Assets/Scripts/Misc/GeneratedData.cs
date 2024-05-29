@@ -1,0 +1,18 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GeneratedData : MonoBehaviour
+{
+    public Transform moveTransform;
+    public Transform rotateTransform;
+    public Transform scaleTransform;
+
+    private void Start()
+    {
+        transform.tag = "3D generated";
+        moveTransform = transform.parent;
+        rotateTransform = transform;
+        scaleTransform = transform.parent;
+    }
+}
