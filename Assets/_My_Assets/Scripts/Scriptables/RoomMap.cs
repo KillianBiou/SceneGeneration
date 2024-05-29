@@ -73,7 +73,7 @@ public struct wrapList
 
 public class RoomMap : MonoBehaviour
 {
-    public static RoomMap instance;
+    public static RoomMap Instance;
 
 
     public int size;
@@ -84,7 +84,7 @@ public class RoomMap : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     // Start is called before the first frame update

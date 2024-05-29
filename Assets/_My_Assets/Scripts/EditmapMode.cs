@@ -50,6 +50,8 @@ public class EditmapMode : MonoBehaviour
     [HideInInspector]
     public EDIT_STATE state;
 
+    static public EditmapMode Instance;
+
 
     public RoomMap roomMap;
 
@@ -61,6 +63,12 @@ public class EditmapMode : MonoBehaviour
 
     private GameObject selStart, selEnd;
     private List<TileObject> selection;
+
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()

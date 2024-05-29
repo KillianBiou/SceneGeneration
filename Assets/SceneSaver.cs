@@ -18,7 +18,7 @@ public struct SceneDescription
 
     public class SceneSaver : MonoBehaviour
 {
-    public string mapName;
+    public string fileName;
 
 
     private RoomMap rm;
@@ -29,7 +29,8 @@ public struct SceneDescription
     // Start is called before the first frame update
     void Start()
     {
-        rm = RoomMap.instance;
+        rm = RoomMap.Instance;
+        le = EditmapMode.Instance;
         p = Player.Instance;
     }
 
@@ -43,11 +44,11 @@ public struct SceneDescription
         saveData.goData = p.GetGameObjectSaveData();
 
 
-        if (File.Exists(Path.Combine(Application.dataPath, path, rm.nameOfMap + ".json")))
+        if (File.Exists(Path.Combine(Application.dataPath, path, fileName + ".json")))
             Debug.Log("File already exist, overwritting...");
 
 
-        File.WriteAllText(Path.Combine(Application.dataPath, path, rm.nameOfMap + ".json"), JsonUtility.ToJson(saveData));
+        File.WriteAllText(Path.Combine(Application.dataPath, path, fileName + ".json"), JsonUtility.ToJson(saveData));
     }
 
     public void LoadScene(string path)
@@ -68,7 +69,7 @@ public struct SceneDescription
 
     public void SetMapName(string s)
     {
-        mapName = s;
+        fileName = s;
     }
 
     public void QuitApp()
