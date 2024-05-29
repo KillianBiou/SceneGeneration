@@ -68,8 +68,9 @@ public class StableDiffusionGenerator : MonoBehaviour
             // Deserialize the response to a class
             SDProgress sdp = JsonConvert.DeserializeObject<SDProgress>(modelInfoRequest.downloadHandler.text);
             progress = sdp.progress;
-
+#if UNITY_EDITOR
             EditorUtility.DisplayProgressBar("Generation in progress", progress * 100 + "%", progress);
+#endif
         }
 
         _updateProgressRunning = null;

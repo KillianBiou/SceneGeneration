@@ -131,8 +131,6 @@ namespace RTS_Cam
         private bool onUI = false;
         public RectTransform popUp;
 
-        public bool usePopup = false;
-
         private Vector2 KeyboardInput
         {
             get { return useKeyboardInput ? new Vector2(Input.GetAxis(horizontalAxis), Input.GetAxis(verticalAxis)) : Vector2.zero; }
@@ -387,14 +385,13 @@ namespace RTS_Cam
                 desiredMove = m_Transform.InverseTransformDirection(desiredMove);
 
                 m_Transform.Translate(desiredMove, Space.Self);
-            }
-            if(usePanning && Input.GetKey(panningKey) && MouseAxis != Vector2.zero)
+            }       
+        
+            if(usePanning && Input.GetKey(panningKey) && longClick && MouseAxis != Vector2.zero)
             {
                 Vector3 desiredMove = new Vector3(-MouseAxis.x, 0, -MouseAxis.y);
 
                 desiredMove *= panningSpeed;
-                Debug.Log(desiredMove);
-                Debug.Log( "Speed :" +  panningSpeed);
                 desiredMove *= Time.deltaTime;
                 desiredMove = Quaternion.Euler(new Vector3(0f, transform.eulerAngles.y, 0f)) * desiredMove;
                 desiredMove = m_Transform.InverseTransformDirection(desiredMove);
@@ -408,9 +405,6 @@ namespace RTS_Cam
         /// </summary>
         private void HeightCalculation()
         {
-            if (Input.GetKey(panningKey))
-                return;
-
             float distanceToGround = DistanceToGround();
             if(useScrollwheelZooming)
                 zoomPos += ScrollWheel * Time.deltaTime * scrollWheelZoomingSensitivity;
@@ -457,12 +451,6 @@ namespace RTS_Cam
                 cursorLockRequest--;
 
             // Panning
-
-            /*if (Input.GetKeyDown(panningKey))
-                cursorLockRequest++;
-            if (Input.GetKeyUp(panningKey))
-                cursorLockRequest--;
-*/
             /*if (longClick && !lockPan)
             {
                 lockPan = true;

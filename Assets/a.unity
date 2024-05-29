@@ -1092,6 +1092,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
+      propertyPath: OnShortClick3D.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: OnShortClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
@@ -1108,6 +1112,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 932573014}
     - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
+      propertyPath: OnShortClick3D.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
+      propertyPath: OnShortClick3D.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 932573011}
+    - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: OnShortClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -1122,6 +1134,10 @@ PrefabInstance:
     - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: OnShortClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: SetPopUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
+      propertyPath: OnShortClick3D.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: OnShortClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -2509,167 +2525,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1131909913}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1319316113
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.38
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.571
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_Name
-      value: awoodentable,frontview1715041647
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.24750945
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.70065045
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7047231
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.06779817
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.08864384
-      objectReference: {fileID: 0}
-    - target: {fileID: 1151388028547126963, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -74.82
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8164078558771037576, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1319316116}
-    - targetCorrespondingSourceObject: {fileID: 8164078558771037576, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1319316115}
-  m_SourcePrefab: {fileID: 100100000, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3, type: 3}
---- !u!1 &1319316114 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8164078558771037576, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1319316113}
-  m_PrefabAsset: {fileID: 0}
---- !u!64 &1319316115
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1319316114}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: 0e80f1e87d7064d40b1af9ec0ce67cb3, type: 3}
---- !u!114 &1319316116
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1319316114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 089ee405057317647a0304b82fef80dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1322054303 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5126527961139664760, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
@@ -2937,56 +2792,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assetDatabase:
     _serializedList:
-    - Key: Playground
-      Value: Assets\_Assets\Prefab\Playground.prefab
-    - Key: gundamfigure,frontview,black1714455788
-      Value: Assets/Models\gundamfigure,frontview,black1714455788\gundamfigure,frontview,black1714455788.obj
-    - Key: Gundamfigure,frontview,wings1714456668
-      Value: Assets/Models\Gundamfigure,frontview,wings1714456668\Gundamfigure,frontview,wings1714456668.obj
-    - Key: agundamfigure,frontview1714457077
-      Value: Assets/Models\agundamfigure,frontview1714457077\agundamfigure,frontview1714457077.obj
-    - Key: R1
-      Value: Assets/Models\R1\R1.obj
-    - Key: R2
-      Value: Assets/Models\R2\R2.obj
-    - Key: awoodenchair,frontview1714526598
-      Value: Assets/Models\awoodenchair,frontview1714526598\awoodenchair,frontview1714526598.obj
-    - Key: awoodentable,frontview1714526651
-      Value: Assets/Models\awoodentable,frontview1714526651\awoodentable,frontview1714526651.obj
-    - Key: test1714540617
-      Value: Assets/Models\test1714540617\test1714540617.obj
-    - Key: gundamfigure1714540719
-      Value: Assets/Models\gundamfigure1714540719\gundamfigure1714540719.obj
-    - Key: awoodentable1714540811
-      Value: Assets/Models\awoodentable1714540811\awoodentable1714540811.obj
-    - Key: awoodenchair1714540865
-      Value: Assets/Models\awoodenchair1714540865\awoodenchair1714540865.obj
-    - Key: ablackboard1714540938
-      Value: Assets/Models\ablackboard1714540938\ablackboard1714540938.obj
-    - Key: test1714541422
-      Value: Assets/Models\test1714541422\test1714541422.obj
-    - Key: test1714541490
-      Value: Assets/Models\test1714541490\test1714541490.obj
-    - Key: bellebiteshinji1714541527
-      Value: Assets/Models\bellebiteshinji1714541527\bellebiteshinji1714541527.obj
-    - Key: test1714545000
-      Value: Assets/Models\test1714545000\test1714545000.obj
-    - Key: test1714545083
-      Value: Assets/Models\test1714545083\test1714545083.obj
-    - Key: test1714545125
-      Value: Assets/Models\test1714545125\test1714545125.obj
-    - Key: test1714545156
-      Value: Assets/Models\test1714545156\test1714545156.obj
-    - Key: test1714545230
-      Value: Assets/Models\test1714545230\test1714545230.obj
-    - Key: acartooncar,frontview1714545271
-      Value: Assets/Models\acartooncar,frontview1714545271\acartooncar,frontview1714545271.obj
-    - Key: donalddick1714545305
-      Value: Assets/Models\donalddick1714545305\donalddick1714545305.obj
-    - Key: sharkfigure1714545478
-      Value: Assets/Models\sharkfigure1714545478\sharkfigure1714545478.obj
-    - Key: gundamfigure,frontview1714545723
-      Value: Assets/Models\gundamfigure,frontview1714545723\gundamfigure,frontview1714545723.obj
+    - Key: kaylefigure,frontview,leagueoflegend1715312242
+      Value: Assets/Models\kaylefigure,frontview,leagueoflegend1715312242\kaylefigure,frontview,leagueoflegend1715312242.json
+    - Key: dsf1715312464
+      Value: Assets/Models\dsf1715312464\dsf1715312464.json
+    - Key: fdsfsd1715315567
+      Value: Models\fdsfsd1715315567\fdsfsd1715315567.json
+    - Key: morganafigure,frontview,leagueoflegend1715316331
+      Value: Models\morganafigure,frontview,leagueoflegend1715316331\morganafigure,frontview,leagueoflegend1715316331.json
   MaterialDatabase:
     _serializedList: []
 --- !u!1 &1473454241
@@ -3219,6 +3032,7 @@ MonoBehaviour:
     filename: choicetest.png
     prompt: gundam, robot, mecha
     negPrompt: nsfw, girl
+    hiddenPrompt: 
     width: 512
     height: 512
     steps: 20
@@ -4536,6 +4350,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 4672812491239692584}
+  prefix: 
+  sufix: 
 --- !u!114 &767806085051610026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6082,6 +5898,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 885912376238904194}
+  prefix: 
+  sufix: 
 --- !u!114 &1836946299155816782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14381,4 +14199,3 @@ SceneRoots:
   - {fileID: 1680381505}
   - {fileID: 832703422}
   - {fileID: 1311946305}
-  - {fileID: 1319316113}

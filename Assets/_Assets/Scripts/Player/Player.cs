@@ -1,11 +1,10 @@
+using AsImpL;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Unity.RuntimeSceneSerialization;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 [Serializable]
 public class GameObjectSerializable
@@ -78,8 +77,8 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            //GenerationDatabase.Instance.GetObject(debugLoadObjectName);
-            Instantiate(Resources.Load<GameObject>(debugLoadObjectName), GameObject.FindGameObjectWithTag("Playground").transform);
+            GenerationDatabase.Instance.GetObject(debugLoadObjectName);
+            //Instantiate(Resources.Load<GameObject>(debugLoadObjectName), GameObject.FindGameObjectWithTag("Playground").transform);
         }
     }
 
@@ -127,7 +126,21 @@ public class Player : MonoBehaviour
 
     public int InstantiationCallback(string objPath)
     {
-        GameObject importedObj = AssetDatabase.LoadAssetAtPath<GameObject>(objPath);
+        Debug.Log(objPath);
+        GameObject parent = new GameObject(Path.GetFileNameWithoutExtension(objPath));
+        parent.transform.parent = playgroundHolder;
+        parent.transform.position = instanciationPoint + Vector3.up;
+        parent.transform.rotation = Quaternion.identity;
+
+        ImportOptions importOptions = new ImportOptions();
+        importOptions.buildColliders = true;
+        importOptions.colliderConvex = true;
+
+        ObjectImporter.Instance.ImportModelAsync(Path.GetFileNameWithoutExtension(objPath), objPath, parent.transform, importOptions);
+
+        StartCoroutine(ReplacementCoroutine(parent.transform, objPath));
+
+        /*GameObject importedObj = AssetDatabase.LoadAssetAtPath<GameObject>(objPath);
 
         if (importedObj != null)
         {
@@ -149,13 +162,24 @@ public class Player : MonoBehaviour
             OP.ReplaceOrigin();
 
             GenerationDatabase.Instance.SaveGeneratedAsset(instantiatedObj, objPath);
-        }
+        }*/
 
 
-        if(images.Count > 0)
+        if (images.Count > 0)
             images.RemoveAt(0);
         generationLock = false;
         return 0;
+    }
+
+    public IEnumerator ReplacementCoroutine(Transform parent, string objPath)
+    {
+        while(parent.childCount == 0)
+            yield return new WaitForSeconds(0.1f);
+
+        OriginPlacement OP = parent.GetChild(0).gameObject.AddComponent<OriginPlacement>();
+        OP.ReplaceOrigin();
+        Debug.Log("sent ÅF " + objPath.Substring("Assets/".Length));
+        GenerationDatabase.Instance.SaveGeneratedAsset(parent.gameObject, objPath.Substring("Assets/".Length));
     }
 
 
