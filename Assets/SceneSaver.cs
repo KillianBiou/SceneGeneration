@@ -25,6 +25,14 @@ public struct SceneDescription
     private EditmapMode le;
     private Player p;
 
+    public string debugPath;
+
+    public static SceneSaver Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +42,14 @@ public struct SceneDescription
         p = Player.Instance;
     }
 
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            LoadScene(debugPath);
+        }
+    }
 
     public void SaveScene(string path)
     {

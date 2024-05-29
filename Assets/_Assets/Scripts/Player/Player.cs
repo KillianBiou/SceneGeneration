@@ -258,11 +258,11 @@ public class Player : MonoBehaviour
     {
         foreach (GameObjectSerializable child in parentSerializable.child)
         {
-            GameObject temp = Instantiate(GenerationDatabase.Instance.GetObject(child.assetName), child.position, child.rotation, GameObject.FindGameObjectWithTag("Playground").transform);
+            GenerationDatabase.Instance.GetObject(child.assetName, child.position);
 
-            temp.transform.GetChild(0).position = child.child[0].position;
+            /*temp.transform.GetChild(0).position = child.child[0].position;
             temp.transform.GetChild(0).rotation = child.child[0].rotation;
-            temp.transform.GetChild(0).GetComponent<Renderer>().material = baseMat;
+            temp.transform.GetChild(0).GetComponent<Renderer>().material = baseMat;*/
         }
     }
 

@@ -36,7 +36,7 @@ public struct LightPlace
     }
 }
 
-
+[System.Serializable]
 public struct LightsData
 {
     [SerializeField]
@@ -334,8 +334,8 @@ public class EditmapMode : MonoBehaviour
 
         foreach (GameObject l in llights)
         {
-            Light linfo = l.GetComponent<Light>();
-            ld.lights.Add(new LightPlace(linfo.intensity, linfo.range, l.transform.position.y, l.transform.parent.position));
+            Light linfo = l.GetComponent<TileLight>().lightObj.GetComponent<Light>();
+            ld.lights.Add(new LightPlace(linfo.intensity, linfo.range, linfo.transform.position.y, linfo.transform.parent.position));
         }
         return ld;
     }
@@ -357,11 +357,11 @@ public class EditmapMode : MonoBehaviour
         {
             GameObject last = Instantiate(lightPrefab);
             last.transform.position = l.position;
-            Light li = last.transform.GetChild(0).transform.GetComponent<Light>();
-            li.transform.position = new Vector3(0, l.height, 0);
+            Light li = last.GetComponent<TileLight>().lightObj.GetComponent<Light>();
+            li.transform.localPosition = new Vector3(0, l.height, 0);
             li.intensity = l.intensity;
             li.range = l.range;
-
+            last.GetComponent<TileLight>().DeactivateEdit();
             llights.Add(last);
         }
     }
