@@ -13,6 +13,9 @@ public class LightInspector : MonoBehaviour
     [SerializeField]
     private EditableColor picker;
 
+    [SerializeField]
+    private Image colorIcon;
+
 
     public void Inspect(GameObject l)
     {
@@ -20,6 +23,7 @@ public class LightInspector : MonoBehaviour
         intensity.value = lightObj.GetComponent<Light>().intensity;
         range.value = lightObj.GetComponent<Light>().range;
         height.value = lightObj.transform.position.y;
+        picker.GetComponent<Image>().color = lightObj.GetComponent<Light>().color;
         picker.ColorHook.AddListener(SetColor);
     }
 
@@ -42,5 +46,6 @@ public class LightInspector : MonoBehaviour
     public void SetColor(Color c)
     {
         lightObj.GetComponent<Light>().color = c;
+        colorIcon.color = c;
     }
 }

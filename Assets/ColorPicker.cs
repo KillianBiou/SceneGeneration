@@ -28,6 +28,13 @@ public class ColorPicker : MonoBehaviour
     }
 
 
+    public void InitColor(Color c)
+    {
+        Color.RGBToHSV(c, out h, out s, out v);
+        UpdateColor();
+    }
+
+
     private void UpdateColor()
     {
         color = Color.HSVToRGB(h, s, v);
