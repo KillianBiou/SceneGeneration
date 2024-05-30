@@ -179,6 +179,7 @@ public class Player : MonoBehaviour
         OriginPlacement OP = parent.GetChild(0).gameObject.AddComponent<OriginPlacement>();
         OP.ReplaceOrigin();
         Debug.Log("sent ÅF " + objPath.Substring("Assets/".Length));
+        GlobalVariables.Instance.EndOfGen();
         GenerationDatabase.Instance.SaveGeneratedAsset(parent.gameObject, objPath.Substring("Assets/".Length));
     }
 

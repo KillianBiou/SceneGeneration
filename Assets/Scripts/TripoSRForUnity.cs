@@ -158,18 +158,27 @@ public class TripoSRForUnity : MonoBehaviour
 
         pythonProcess.ErrorDataReceived += (sender, e) => 
         {
-            if (showDebugLogs && !string.IsNullOrEmpty(e.Data))
+            if (e.Data.Contains("Initializing"))
             {
-                if (e.Data.Contains("Initializing"))
-                    currentState = TripoState.INITIALIZATION;
-                if (e.Data.Contains("Processing"))
-                    currentState = TripoState.PROCESSING;
-                if (e.Data.Contains("Running"))
-                    currentState = TripoState.RUNNING;
-                if (e.Data.Contains("Exporting"))
-                    currentState = TripoState.EXPORTING;
-                UnityEngine.Debug.Log(e.Data);
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_INIT);
+                currentState = TripoState.INITIALIZATION;
             }
+            if (e.Data.Contains("Processing"))
+            {
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_PROCESSING);
+                currentState = TripoState.PROCESSING;
+            }
+            if (e.Data.Contains("Running"))
+            {
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_RUNNING);
+                currentState = TripoState.RUNNING;
+            }
+            if (e.Data.Contains("Exporting"))
+            {
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_EXPORT);
+                currentState = TripoState.EXPORTING;
+            }
+            UnityEngine.Debug.Log(e.Data);
         };
 
         pythonProcess.Start();
@@ -217,7 +226,10 @@ public class TripoSRForUnity : MonoBehaviour
         }
         else UnityEngine.Debug.Log($"File @ {originalPath} does not exist - cannot move and rename.");
         if (memoryCallback != null)
+        {
+            GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.MODEL_IMPORT);
             memoryCallback(newAssetPath);
+        }
     }
 
     private void AddMeshToScene(string path = null)

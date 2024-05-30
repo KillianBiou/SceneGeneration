@@ -87,6 +87,8 @@ public class GenerativeChoice : MonoBehaviour
         if (!sdh)
             return;
 
+        GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.ZERO_IMAGE);
+
         ClearPicker();
 
         uiContainer.transform.parent.gameObject.SetActive(true);
@@ -126,6 +128,23 @@ public class GenerativeChoice : MonoBehaviour
         DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/GeneratedData/" + folderName);
         FileInfo[] info = dir.GetFiles("*.png");
 
+        // Progress Bar Notification
+        switch (info.Length)
+        {
+            case 1:
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.ONE_IMAGE);
+                break;
+            case 2:
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TWO_IMAGE);
+                break;
+            case 3:
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.THREE_IMAGE);
+                break;
+            case 4:
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.FOUR_IMAGE);
+                break;
+        }
+
         if (info.Length >= amount)
         {
             string[] names = new string[info.Length];
@@ -147,7 +166,7 @@ public class GenerativeChoice : MonoBehaviour
                 CreateNoWindow = true
             };
 
-
+            GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.BACKGROUND_REMOVING);
 
             pythonProcess = new Process { StartInfo = start };
             pythonProcess.StartInfo = start;
@@ -220,6 +239,8 @@ public class GenerativeChoice : MonoBehaviour
             pending = false;
             sdh.FinishedGenerating.RemoveListener(CountingResults);
             gameObject.SetActive(false);
+
+            GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.USER_SELECTION);
         }
     }
 
