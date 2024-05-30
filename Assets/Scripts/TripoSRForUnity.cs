@@ -89,6 +89,14 @@ public class TripoSRForUnity : MonoBehaviour
         Instance = this;
     }
 
+    private void Update()
+    {
+        if (isProcessRunning)
+        {
+            SetTripoState();
+        }
+    }
+
     public void RunTripoSR(Func<string, int> callback = null, string imagePath = null)
     {
         memoryCallback = callback;
@@ -160,26 +168,25 @@ public class TripoSRForUnity : MonoBehaviour
         {
             if (e.Data.Contains("Initializing"))
             {
-                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_INIT);
                 currentState = TripoState.INITIALIZATION;
             }
             if (e.Data.Contains("Processing"))
             {
-                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_PROCESSING);
                 currentState = TripoState.PROCESSING;
             }
             if (e.Data.Contains("Running"))
             {
-                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_RUNNING);
                 currentState = TripoState.RUNNING;
             }
             if (e.Data.Contains("Exporting"))
             {
-                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_EXPORT);
                 currentState = TripoState.EXPORTING;
             }
+
             UnityEngine.Debug.Log(e.Data);
         };
+
+        // External set because it cause an unkown bug either way
 
         pythonProcess.Start();
         pythonProcess.BeginOutputReadLine();
@@ -229,6 +236,25 @@ public class TripoSRForUnity : MonoBehaviour
         {
             GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.MODEL_IMPORT);
             memoryCallback(newAssetPath);
+        }
+    }
+
+    private void SetTripoState()
+    {
+        switch (currentState)
+        {
+            case TripoState.INITIALIZATION:
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_INIT);
+                break;
+            case TripoState.PROCESSING:
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_PROCESSING);
+                break;
+            case TripoState.RUNNING:
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_RUNNING);
+                break;
+            case TripoState.EXPORTING:
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_EXPORT);
+                break;
         }
     }
 

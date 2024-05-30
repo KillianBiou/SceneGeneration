@@ -37,7 +37,7 @@ public class GlobalVariables : MonoBehaviour
     [SerializeField]
     private ApplicationState currentApplicationState;
     [SerializeField]
-    private ApplicationStatePhase currenPhase;
+    private ApplicationStatePhase currentPhase;
 
     [Header("References")]
     [SerializeField]
@@ -64,17 +64,17 @@ public class GlobalVariables : MonoBehaviour
 
     public void SetCurrentPhase(ApplicationStatePhase newState)
     {
-        if(newState != currenPhase)
+        if(newState != currentPhase)
         {
-            currenPhase = newState;
-            progressBar.NotifyPhaseChange(currenPhase);
+            currentPhase = newState;
+            progressBar.NotifyPhaseChange(currentPhase);
         }
     }
 
     public void EndOfGen()
     {
         currentApplicationState = ApplicationState.IDLE;
-        currenPhase = ApplicationStatePhase.NONE;
+        currentPhase = ApplicationStatePhase.NONE;
         progressBar.StopProcedure();
     }
 }

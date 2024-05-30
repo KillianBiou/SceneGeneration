@@ -17,7 +17,9 @@ public class GlobalProgressBar : MonoBehaviour
 
     [Header("References")]
     [SerializeField]
-    private TMP_Text txt;
+    private TMP_Text stateText;
+    [SerializeField]
+    private TMP_Text percentText;
     [SerializeField]
     private Slider progressBar;
 
@@ -40,14 +42,17 @@ public class GlobalProgressBar : MonoBehaviour
 
         // Set text
         SetProgressText(currentProcedureList[0]);
+        percentText.text = "0 %";
     }
 
     public void NotifyPhaseChange(ApplicationStatePhase newPhase)
     {
         // Advancement value
         int currentAdvancement = currentProcedureList.IndexOf(newPhase);
-        // Set slider at current percentage (advancement - 1 for correct mapping)
-        progressBar.value = currentAdvancement - 1;
+        // Set slider at current percentage (advancement for correct mapping)
+        progressBar.value = currentAdvancement;
+
+        percentText.text = Mathf.Ceil(((float)currentAdvancement / currentProcedureList.Count) * 100) +  " %";
 
         SetProgressText(newPhase);
     }
@@ -57,60 +62,60 @@ public class GlobalProgressBar : MonoBehaviour
         switch (phase)
         {
             case ApplicationStatePhase.NONE:
-                txt.text = "Idle";
-                txt.color = longPhaseColor;
+                stateText.text = "Idle";
+                stateText.color = longPhaseColor;
                 break;
             case ApplicationStatePhase.PROMPT_INPUT:
-                txt.text = "Enter your prompt";
-                txt.color = userInputPhaseColor;
+                stateText.text = "Enter your prompt";
+                stateText.color = userInputPhaseColor;
                 break;
             case ApplicationStatePhase.ZERO_IMAGE:
-                txt.text = "Generation first image";
-                txt.color = longPhaseColor;
+                stateText.text = "Generation first image";
+                stateText.color = longPhaseColor;
                 break;
             case ApplicationStatePhase.ONE_IMAGE:
-                txt.text = "Generation second image";
-                txt.color = longPhaseColor;
+                stateText.text = "Generation second image";
+                stateText.color = longPhaseColor;
                 break;
             case ApplicationStatePhase.TWO_IMAGE:
-                txt.text = "Generation third image";
-                txt.color = longPhaseColor;
+                stateText.text = "Generation third image";
+                stateText.color = longPhaseColor;
                 break;
             case ApplicationStatePhase.THREE_IMAGE:
-                txt.text = "Generation forth image";
-                txt.color = longPhaseColor;
+                stateText.text = "Generation forth image";
+                stateText.color = longPhaseColor;
                 break;
             case ApplicationStatePhase.FOUR_IMAGE:
-                txt.text = "All Image generated";
-                txt.color = shortPhaseColor;
+                stateText.text = "All Image generated";
+                stateText.color = shortPhaseColor;
                 break;
             case ApplicationStatePhase.BACKGROUND_REMOVING:
-                txt.text = "Removing background";
-                txt.color = longPhaseColor;
+                stateText.text = "Removing background";
+                stateText.color = longPhaseColor;
                 break;
             case ApplicationStatePhase.USER_SELECTION:
-                txt.text = "Select an image";
-                txt.color = userInputPhaseColor;
+                stateText.text = "Select an image";
+                stateText.color = userInputPhaseColor;
                 break;
             case ApplicationStatePhase.TRIPOSR_INIT:
-                txt.text = "Initializing TripoSR";
-                txt.color = shortPhaseColor;
+                stateText.text = "Initializing TripoSR";
+                stateText.color = shortPhaseColor;
                 break;
             case ApplicationStatePhase.TRIPOSR_PROCESSING:
-                txt.text = "Processing Image";
-                txt.color = shortPhaseColor;
+                stateText.text = "Processing Image";
+                stateText.color = shortPhaseColor;
                 break;
             case ApplicationStatePhase.TRIPOSR_RUNNING:
-                txt.text = "Generating model";
-                txt.color = shortPhaseColor;
+                stateText.text = "Generating model";
+                stateText.color = shortPhaseColor;
                 break;
             case ApplicationStatePhase.TRIPOSR_EXPORT:
-                txt.text = "Generating 3D Mesh";
-                txt.color = longPhaseColor;
+                stateText.text = "Generating 3D Mesh";
+                stateText.color = longPhaseColor;
                 break;
             case ApplicationStatePhase.MODEL_IMPORT:
-                txt.text = "Import mesh into the scene";
-                txt.color = shortPhaseColor;
+                stateText.text = "Import mesh into the scene";
+                stateText.color = shortPhaseColor;
                 break;
         }
     }
