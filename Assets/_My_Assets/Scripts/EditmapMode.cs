@@ -288,6 +288,24 @@ public class EditmapMode : MonoBehaviour
     }
 
 
+    public void ToggleMode(int i)
+    {
+        Debug.Log("mais oui !" + i);
+        switch (i)
+        {
+            case 0:
+                EnterGroundEdit();
+                break;
+            case 1:
+                EnterLightEdit();
+                break;
+            case 2:
+                EnterLightInspector();
+                break;
+
+        }
+    }
+
     public void EnterGroundEdit()
     {
         ExitPrevious();
