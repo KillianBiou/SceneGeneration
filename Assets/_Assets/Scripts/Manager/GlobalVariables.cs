@@ -42,6 +42,8 @@ public class GlobalVariables : MonoBehaviour
     [Header("References")]
     [SerializeField]
     private GlobalProgressBar progressBar;
+    [SerializeField]
+    private Material meshBaseMaterial;
 
     public static GlobalVariables Instance;
 
@@ -76,5 +78,10 @@ public class GlobalVariables : MonoBehaviour
         currentApplicationState = ApplicationState.IDLE;
         currentPhase = ApplicationStatePhase.NONE;
         progressBar.StopProcedure();
+    }
+
+    public Material GetBaseMaterial()
+    {
+        return meshBaseMaterial;
     }
 }
