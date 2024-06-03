@@ -338,7 +338,7 @@ public class RoomMap : MonoBehaviour
             m.SetTexture("_Texture2D", tex);
         }
 
-        if (sv.n != "none")
+        if (sv.n != "NormalMap")
         {
             Texture2D tex = null;
             tex = new Texture2D(2, 2);

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
@@ -67,8 +68,14 @@ public class GenerationDatabase : MonoBehaviour
 
     public GameObject GetObject(string key)
     {
+        return GetObject(key, Vector3.zero);
+    }
+
+    public GameObject GetObject(string key, Vector3 basePos)
+    {
         Debug.Log("Try Load");
         Debug.Log(key);
+        Debug.Log(basePos);
         if (assetDatabase.ContainsKey(key))
         {
             try
@@ -87,6 +94,8 @@ public class GenerationDatabase : MonoBehaviour
                 parent.transform.parent = GameObject.FindGameObjectWithTag("Playground").transform;
                 parent.transform.position = parentSerializable.position;
                 parent.transform.rotation = parentSerializable.rotation;
+                if(!(basePos.magnitude == 0))
+                    parent.transform.position = basePos;
 
                 ImportOptions options = new ImportOptions();
                 options.buildColliders = true;
@@ -97,6 +106,7 @@ public class GenerationDatabase : MonoBehaviour
 
                 ObjectImporter.Instance.ImportModelAsync(key, objFullPath, parent.transform, options);
 
+                parent.AddComponent<ParentCheck>();
 
                 Debug.Log("Setup object concluded");
 

@@ -89,6 +89,14 @@ public class TripoSRForUnity : MonoBehaviour
         Instance = this;
     }
 
+    private void Update()
+    {
+        if (isProcessRunning)
+        {
+            SetTripoState();
+        }
+    }
+
     public void RunTripoSR(Func<string, int> callback = null, string imagePath = null)
     {
         memoryCallback = callback;
@@ -158,19 +166,27 @@ public class TripoSRForUnity : MonoBehaviour
 
         pythonProcess.ErrorDataReceived += (sender, e) => 
         {
-            if (showDebugLogs && !string.IsNullOrEmpty(e.Data))
+            if (e.Data.Contains("Initializing"))
             {
-                if (e.Data.Contains("Initializing"))
-                    currentState = TripoState.INITIALIZATION;
-                if (e.Data.Contains("Processing"))
-                    currentState = TripoState.PROCESSING;
-                if (e.Data.Contains("Running"))
-                    currentState = TripoState.RUNNING;
-                if (e.Data.Contains("Exporting"))
-                    currentState = TripoState.EXPORTING;
-                UnityEngine.Debug.Log(e.Data);
+                currentState = TripoState.INITIALIZATION;
             }
+            if (e.Data.Contains("Processing"))
+            {
+                currentState = TripoState.PROCESSING;
+            }
+            if (e.Data.Contains("Running"))
+            {
+                currentState = TripoState.RUNNING;
+            }
+            if (e.Data.Contains("Exporting"))
+            {
+                currentState = TripoState.EXPORTING;
+            }
+
+            UnityEngine.Debug.Log(e.Data);
         };
+
+        // External set because it cause an unkown bug either way
 
         pythonProcess.Start();
         pythonProcess.BeginOutputReadLine();
@@ -217,7 +233,29 @@ public class TripoSRForUnity : MonoBehaviour
         }
         else UnityEngine.Debug.Log($"File @ {originalPath} does not exist - cannot move and rename.");
         if (memoryCallback != null)
+        {
+            GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.MODEL_IMPORT);
             memoryCallback(newAssetPath);
+        }
+    }
+
+    private void SetTripoState()
+    {
+        switch (currentState)
+        {
+            case TripoState.INITIALIZATION:
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_INIT);
+                break;
+            case TripoState.PROCESSING:
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_PROCESSING);
+                break;
+            case TripoState.RUNNING:
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_RUNNING);
+                break;
+            case TripoState.EXPORTING:
+                GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.TRIPOSR_EXPORT);
+                break;
+        }
     }
 
     private void AddMeshToScene(string path = null)

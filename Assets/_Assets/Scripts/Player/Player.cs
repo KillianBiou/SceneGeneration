@@ -179,6 +179,7 @@ public class Player : MonoBehaviour
         OriginPlacement OP = parent.GetChild(0).gameObject.AddComponent<OriginPlacement>();
         OP.ReplaceOrigin();
         Debug.Log("sent ÅF " + objPath.Substring("Assets/".Length));
+        GlobalVariables.Instance.EndOfGen();
         GenerationDatabase.Instance.SaveGeneratedAsset(parent.gameObject, objPath.Substring("Assets/".Length));
     }
 
@@ -258,11 +259,11 @@ public class Player : MonoBehaviour
     {
         foreach (GameObjectSerializable child in parentSerializable.child)
         {
-            GameObject temp = Instantiate(GenerationDatabase.Instance.GetObject(child.assetName), child.position, child.rotation, GameObject.FindGameObjectWithTag("Playground").transform);
+            GenerationDatabase.Instance.GetObject(child.assetName, child.position);
 
-            temp.transform.GetChild(0).position = child.child[0].position;
+            /*temp.transform.GetChild(0).position = child.child[0].position;
             temp.transform.GetChild(0).rotation = child.child[0].rotation;
-            temp.transform.GetChild(0).GetComponent<Renderer>().material = baseMat;
+            temp.transform.GetChild(0).GetComponent<Renderer>().material = baseMat;*/
         }
     }
 

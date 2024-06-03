@@ -62,7 +62,7 @@ public class TextureGenerator : MonoBehaviour
         string modelPath = AssetDatabase.GetAssetPath(modelFile);
         string args = $"\"{modelPath}\" \"{modelDescription}\" " +
                       $"--image-model {imageModel} --steps {steps} " +
-                      $"--output-dir {Path.Combine(Application.dataPath, "triposr-texture-gen/" + outputDir)} --size {mapSize} --negative \"{negativeModelDescription}\"";
+                      $"--output-dir {Path.Combine(Application.dataPath, "triposr-texture-gen/" + outputDir)}";// --size {mapSize} ";//--negative \"{negativeModelDescription}\"";
 
         ProcessStartInfo start = new ProcessStartInfo
         {

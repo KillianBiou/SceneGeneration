@@ -9,9 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2093829567159734765}
+  - component: {fileID: 5803896714166878449}
   - component: {fileID: 3748685818764298624}
   - component: {fileID: 3884133589274479110}
   - component: {fileID: 8397522931490761217}
+  - component: {fileID: 444752386454945137}
+  - component: {fileID: 7749214084198205039}
   m_Layer: 0
   m_Name: TripoSR
   m_TagString: Untagged
@@ -34,6 +37,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5803896714166878449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958493935533882903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e46261dcf2c66449b3495c3f8fc8d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentApplicationState: 0
+  currentPhase: 0
+  progressBar: {fileID: 0}
 --- !u!114 &3748685818764298624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,7 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 017d21c0f4b3ae432a2c87dcc41f49a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pythonPath: C:\Users\light\AppData\Local\Programs\Python\Python310\python
+  pythonPath: C:\Users\light\AppData\Local\Programs\Python\Python310\python.exe
   autoAddMesh: 0
   autoAddPhysicsComponents: 0
   autoFixRotation: 1
@@ -106,3 +124,40 @@ MonoBehaviour:
   steps: 20
   mapSize: 1024
   outputDir: output/
+--- !u!114 &444752386454945137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958493935533882903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34872fcf6432777d2a0c5144ada5af56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pythonPath: C:\Users\light\AppData\Local\Programs\Python\Python310\python
+  modelFile: {fileID: 0}
+  modelDescription: lelouch figure black suit, code geass
+  negativeModelDescription: lighting, shadows, grid, dark, mesh
+  autoAddMesh: 0
+  autoAddPhysicsComponents: 0
+  showDebugLogs: 1
+  imageModel: Lykon/dreamshaper-8
+  steps: 20
+  mapSize: 1024
+  outputDir: output/
+--- !u!114 &7749214084198205039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958493935533882903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aa7bdf849241b242afe32648ecd25c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  importAssets: 0
+  importAssetPath: _ImportedOBJ
