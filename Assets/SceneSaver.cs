@@ -42,15 +42,6 @@ public struct SceneDescription
         p = Player.Instance;
     }
 
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            LoadScene(debugPath);
-        }
-    }
-
     public void SaveScene(string path)
     {
         SceneDescription saveData = new SceneDescription();
@@ -59,12 +50,18 @@ public struct SceneDescription
         saveData.lightData = le.GetLightsSaveData();
         saveData.goData = p.GetGameObjectSaveData();
 
+        string fullPath = Path.Combine(Application.dataPath, path, fileName + ".json");
 
-        if (File.Exists(Path.Combine(Application.dataPath, path, fileName + ".json")))
+
+        if (File.Exists(fullPath))
+        {
             Debug.Log("File already exist, overwritting...");
+            File.Delete(fullPath);
+        }
 
 
-        File.WriteAllText(Path.Combine(Application.dataPath, path, fileName + ".json"), JsonUtility.ToJson(saveData));
+        File.WriteAllText(fullPath, JsonUtility.ToJson(saveData));
+        Debug.Log("File successfully saved at : " + fullPath);
     }
 
     public void LoadScene(string path)
@@ -82,6 +79,12 @@ public struct SceneDescription
         else
             Debug.Log("Loading '" + path + "' - File does not exist.");
     }
+
+    private void OnEnable()
+    {
+        transform.GetChild(0).gameObject.SetActive(true);
+    }
+
 
     public void SetMapName(string s)
     {
