@@ -35,6 +35,11 @@ public class MaterialSetter : MonoBehaviour
         texture.texture = tex;
     }
 
+    public void PickTexture()
+    {
+        matInfo.texture = tex;
+        matInfo.Changed.Invoke();
+    }
 
     public void ApplyTexture()
     {
