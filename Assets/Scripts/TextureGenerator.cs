@@ -7,8 +7,6 @@ using System;
 public class TextureGenerator : MonoBehaviour
 {
     [Header("General Settings")]
-    [SerializeField, Tooltip("Path to your Python executable")]
-    private string pythonPath = "/usr/bin/python";
 
     [SerializeField, Tooltip("Path to the 3D model file.")]
     private UnityEngine.Object modelFile;
@@ -66,7 +64,7 @@ public class TextureGenerator : MonoBehaviour
 
         ProcessStartInfo start = new ProcessStartInfo
         {
-            FileName = pythonPath,
+            FileName = GlobalVariables.Instance.GetPythonPath(),
             Arguments = $"{Path.Combine(Application.dataPath, "triposr-texture-gen/text2texture.py")} {args}",
             UseShellExecute = false,
             RedirectStandardOutput = true,

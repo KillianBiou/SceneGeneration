@@ -19,8 +19,6 @@ public enum TripoState
 public class TripoSRForUnity : MonoBehaviour
 {
     [Header("General Settings")]
-    [SerializeField, Tooltip("Path to your Python executable")]
-    public string pythonPath = "/usr/bin/python";
     
     [SerializeField, Tooltip("If true, automatically adds the generated mesh to the scene.")]
     private bool autoAddMesh = true;
@@ -143,7 +141,7 @@ public class TripoSRForUnity : MonoBehaviour
 
         ProcessStartInfo start = new ProcessStartInfo
         {
-            FileName = pythonPath,
+            FileName = GlobalVariables.Instance.GetPythonPath(),
             Arguments = $"{Path.Combine(Application.dataPath, "TripoSR/run.py")} {args}",
             UseShellExecute = false,
             RedirectStandardOutput = true,
