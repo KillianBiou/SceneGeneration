@@ -9,6 +9,8 @@ using System.Xml;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
+using System.Threading.Tasks;
 
 public class GenerationDatabase : MonoBehaviour
 {
@@ -24,6 +26,8 @@ public class GenerationDatabase : MonoBehaviour
     private SerializedDictionary<string, string> MaterialDatabase;
 
     public static event Action OnDatabaseUpdated;
+
+    public UnityEvent<GameObject> StartLoadingOBJ;
 
     private void Awake()
     {
@@ -71,6 +75,11 @@ public class GenerationDatabase : MonoBehaviour
         return GetObject(key, Vector3.zero);
     }
 
+    public async void GetObjectEvent(string key)
+    {
+        StartLoadingOBJ.Invoke(GetObject(key, Vector3.zero));
+    }
+
     public GameObject GetObject(string key, Vector3 basePos)
     {
         Debug.Log("Try Load");
@@ -94,7 +103,7 @@ public class GenerationDatabase : MonoBehaviour
                 parent.transform.parent = GameObject.FindGameObjectWithTag("Playground").transform;
                 parent.transform.position = parentSerializable.position;
                 parent.transform.rotation = parentSerializable.rotation;
-                if(!(basePos.magnitude == 0))
+                if (!(basePos.magnitude == 0))
                     parent.transform.position = basePos;
 
                 ImportOptions options = new ImportOptions();
@@ -109,6 +118,7 @@ public class GenerationDatabase : MonoBehaviour
                 parent.AddComponent<ParentCheck>();
 
                 Debug.Log("Setup object concluded");
+
 
                 return parent;
             }

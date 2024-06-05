@@ -384,7 +384,7 @@ namespace AsImpL
         /// <param name="filePath"></param>
         /// <param name="parentObj"></param>
         /// <param name="options"></param>
-        public void ImportModelAsync(string objName, string filePath, Transform parentObj, ImportOptions options)
+        public async void ImportModelAsync(string objName, string filePath, Transform parentObj, ImportOptions options)
         {
             if (loaderList == null)
             {
