@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VRpicker : MonoBehaviour
+public class VRPicker : MonoBehaviour
 {
 
 
