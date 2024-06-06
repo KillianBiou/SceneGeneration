@@ -55,7 +55,7 @@ public class GlobalVariables : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        pythonPath = GetPythonPath();
+        pythonPath = GetPythonPathFromRegistry();
         EndOfGen();
     }
 
