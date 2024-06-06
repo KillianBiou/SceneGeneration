@@ -15,7 +15,7 @@ public class WheelUIController : MonoBehaviour
     [HideInInspector]
     public UnityEvent<int> ChoiceDone;
 
-    private int nChoices;
+    private int nChoices, currentChoice;
 
     private bool isChoosing;
 
@@ -34,16 +34,29 @@ public class WheelUIController : MonoBehaviour
     {
         cursor.transform.localPosition = input * (transform as RectTransform).rect.width/2 * 0.8f;
 
+        int newChoice = Choosed();
 
         if (input.magnitude > 0.5)
-            isChoosing = true;
+        {
+            if (!isChoosing)
+            {
+                isChoosing = true;
+                currentChoice = newChoice;
+                content.transform.GetChild(currentChoice).GetComponent<WheelUiButton>().Hover();
+            }
+            if(currentChoice != newChoice)
+            {
+                content.transform.GetChild(currentChoice).GetComponent<WheelUiButton>().EndHover();
+                currentChoice = newChoice;
+                content.transform.GetChild(currentChoice).GetComponent<WheelUiButton>().Hover();
+            }
+        }
 
         if (!isChoosing)
             return;
 
         if (input.magnitude < 0.5)
             gameObject.SetActive(false);
-
     }
 
     private void OnDisable()
@@ -72,7 +85,6 @@ public class WheelUIController : MonoBehaviour
     {
         if(!isChoosing)
             return -1;
-
 
 
         float angle = Vector2.SignedAngle(Vector2.up, input);

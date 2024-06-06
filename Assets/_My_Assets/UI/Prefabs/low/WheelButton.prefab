@@ -171,6 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visual: {fileID: 8866183208152309856}
+  hoveredColor: {r: 1, g: 0.95428866, b: 0.6367924, a: 1}
 --- !u!1 &5205307483535060564
 GameObject:
   m_ObjectHideFlags: 0
