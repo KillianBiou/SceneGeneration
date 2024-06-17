@@ -91,7 +91,7 @@ public class RotateGizmo3D : MonoBehaviour
 
     public void AssignTarget(GameObject t)
     {
-        target = t;
+        target = t.GetComponent<GeneratedData>().rotateTransform.gameObject;
         gameObject.transform.position = target.transform.position;
     }
 

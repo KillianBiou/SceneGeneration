@@ -204,8 +204,8 @@ public class Player : MonoBehaviour
 
         GameObjectSerializable parentSerializable = new GameObjectSerializable();
         parentSerializable.assetName = parent.name;
-        parentSerializable.position = parent.transform.position;
-        parentSerializable.rotation = parent.transform.rotation;
+        parentSerializable.position = parent.transform.localPosition;
+        parentSerializable.rotation = parent.transform.localRotation;
         parentSerializable.childNumber = parent.transform.childCount;
         parentSerializable.child = new GameObjectSerializable[parent.transform.childCount];
 
@@ -214,15 +214,15 @@ public class Player : MonoBehaviour
         {
             GameObjectSerializable childTemp = new GameObjectSerializable();
             childTemp.assetName = child.name;
-            childTemp.position = child.transform.position;
-            childTemp.rotation = child.transform.rotation;
+            childTemp.position = child.transform.localPosition;
+            childTemp.rotation = child.transform.localRotation;
             childTemp.childNumber = 1;
 
             //
             GameObjectSerializable mesh = new GameObjectSerializable();
             mesh.assetName = child.GetChild(0).name;
-            mesh.position = child.GetChild(0).transform.position;
-            mesh.rotation = child.GetChild(0).transform.rotation;
+            mesh.position = child.GetChild(0).transform.localPosition;
+            mesh.rotation = child.GetChild(0).transform.localRotation;
             mesh.childNumber = 0;
             mesh.child = null;
             //
@@ -259,7 +259,7 @@ public class Player : MonoBehaviour
     {
         foreach (GameObjectSerializable child in parentSerializable.child)
         {
-            GenerationDatabase.Instance.GetObject(child.assetName, child.position);
+            GenerationDatabase.Instance.GetObject(child.assetName, child.position, child.rotation, Vector3.one);
 
             /*temp.transform.GetChild(0).position = child.child[0].position;
             temp.transform.GetChild(0).rotation = child.child[0].rotation;

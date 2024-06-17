@@ -84,7 +84,7 @@ public class MoveGizmo3D : MonoBehaviour
 
     public void AssignTarget(GameObject t)
     {
-        target = t;
+        target = t.GetComponent<GeneratedData>().moveTransform.gameObject;
         gameObject.transform.position = target.transform.position;
     }
 

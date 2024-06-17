@@ -9,6 +9,12 @@ public class ScaleGizmo3D : Gizmo3D
         target.transform.localScale = Vector3.one;
     }
 
+    public override void AssignTarget(GameObject t)
+    {
+        target = t.GetComponent<GeneratedData>().scaleTransform.gameObject;
+        gameObject.transform.position = target.transform.position;
+    }
+
     public override void Treatment()
     {
         Vector2 diff = Input.mousePosition - mousePos;

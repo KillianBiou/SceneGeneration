@@ -334,17 +334,18 @@ public class RoomMap : MonoBehaviour
         {
             Texture2D tex = null;
             tex = new Texture2D(2, 2);
-            tex.LoadImage(System.IO.File.ReadAllBytes(Path.Combine(Application.dataPath, "GeneratedData", sv.t)));
+            if(File.Exists(Path.Combine(Application.dataPath, "GeneratedData", sv.t)))
+                tex.LoadImage(System.IO.File.ReadAllBytes(Path.Combine(Application.dataPath, "GeneratedData", sv.t)));
             m.SetTexture("_Texture2D", tex);
         }
 
-        if (sv.n != "NormalMap")
+        /*if (sv.n != "NormalMap")
         {
             Texture2D tex = null;
             tex = new Texture2D(2, 2);
             tex.LoadImage(System.IO.File.ReadAllBytes(Path.Combine(Application.dataPath, "GeneratedData", sv.n)));
             m.SetTexture("_Normal_Map", tex);
-        }
+        }*/
 
         m.SetVector("_position_offset", sv.p);
         m.SetVector("_Scaling", sv.s);

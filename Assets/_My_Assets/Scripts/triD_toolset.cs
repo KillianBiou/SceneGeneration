@@ -102,8 +102,7 @@ public class triD_toolset : MonoBehaviour
 
     public void EnterGen()
     {
-        if (!GlobalVariables.Instance.SetCurrentApplicationState(ApplicationState.GENERATION3D))
-            return;
+        GlobalVariables.Instance.SetCurrentApplicationState(ApplicationState.GENERATION3D);
         GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.PROMPT_INPUT);
 
         ExitPrevious();

@@ -12,7 +12,7 @@ public class GeneratedData : MonoBehaviour
     {
         transform.tag = "3D generated";
         moveTransform = transform.parent;
-        rotateTransform = transform;
+        rotateTransform = transform.parent;
         scaleTransform = transform.parent;
         StartCoroutine(DelaySet());
     }
@@ -22,5 +22,6 @@ public class GeneratedData : MonoBehaviour
         yield return new WaitForSeconds(.1f);
         GetComponent<MeshFilter>().mesh.RecalculateNormals();
         GetComponent<MeshRenderer>().material = GlobalVariables.Instance.GetBaseMaterial();
+        //transform.GetChild(0).GetComponent<MeshCollider>().sharedMesh = transform.GetChild(0).GetComponent<MeshFilter>().mesh;
     }
 }

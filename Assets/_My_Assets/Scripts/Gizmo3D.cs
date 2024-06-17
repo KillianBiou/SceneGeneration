@@ -79,7 +79,8 @@ public abstract class Gizmo3D : MonoBehaviour
         Treatment();
     }
 
-    public void AssignTarget(GameObject t)
+    
+    public virtual void AssignTarget(GameObject t)
     {
         target = t;
         gameObject.transform.position = target.transform.position;

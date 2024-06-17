@@ -68,10 +68,10 @@ public class GenerationDatabase : MonoBehaviour
 
     public GameObject GetObject(string key)
     {
-        return GetObject(key, Vector3.zero);
+        return GetObject(key, Vector3.zero, Quaternion.identity, Vector3.zero);
     }
 
-    public GameObject GetObject(string key, Vector3 basePos)
+    public GameObject GetObject(string key, Vector3 basePos, Quaternion baseRot, Vector3 baseScale)
     {
         Debug.Log("Try Load");
         Debug.Log(key);
@@ -94,8 +94,19 @@ public class GenerationDatabase : MonoBehaviour
                 parent.transform.parent = GameObject.FindGameObjectWithTag("Playground").transform;
                 parent.transform.position = parentSerializable.position;
                 parent.transform.rotation = parentSerializable.rotation;
+
+                // Set predefined param
+                // Position
                 if(!(basePos.magnitude == 0))
                     parent.transform.position = basePos;
+
+                // Rotation
+                if (!(baseRot == Quaternion.identity))
+                    parent.transform.rotation = baseRot;
+
+                // Scale
+                if (!(baseScale.magnitude == 0))
+                    parent.transform.localScale = baseScale;
 
                 ImportOptions options = new ImportOptions();
                 options.buildColliders = true;
