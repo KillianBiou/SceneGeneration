@@ -3,24 +3,21 @@ using System.Diagnostics;
 using System.IO;
 using UnityEngine;
 
+[Serializable]
+public struct StableCompleteRequest
+{
+    public SdRequest request;
+    public string imagesModels;
+    public int nbImages;
+    public string device;
+}
+
 public class TestStableTerminal : MonoBehaviour
 {
 
     [Header("Generation Parameters")]
     [SerializeField]
-    private string prompt;
-    [SerializeField]
-    private string outputPath;
-    [SerializeField]
-    private string imagesModels;
-    [SerializeField]
-    [Range(10, 50)]
-    private int steps;
-    [SerializeField]
-    [Range(1, 16)]
-    private int nbImages;
-    [SerializeField]
-    private string devices;
+    private StableCompleteRequest stableRequest;
 
     private Process pythonProcess;
     private bool isProcessRunning = false;
@@ -30,11 +27,11 @@ public class TestStableTerminal : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            RequestGeneration();
+            RequestGeneration(stableRequest);
         }
     }
 
-    private void RequestGeneration()
+    private void RequestGeneration(StableCompleteRequest requestDetail)
     {
         UnityEngine.Debug.Log("GENERATION STARTED");
 
@@ -52,11 +49,24 @@ public class TestStableTerminal : MonoBehaviour
             isProcessRunning = false;
         }
 
-        string args = $"--nbImages {nbImages} " +
-                      $"{(imagesModels == "" ? "" : "--image-model " + imagesModels)} " +
-                      $"--steps {steps}" +
-                      $" \"{prompt}\" {Path.Combine(Application.dataPath, outputPath)} ";
+        string args = $"{(requestDetail.request.negPrompt == "" ? "" : "--nprompt \"" + requestDetail.request.negPrompt + "\"")} " +
+                      $"{(requestDetail.request.hiddenPrompt == "" ? "" : "--hprompt \"" + requestDetail.request.hiddenPrompt + "\"")} " +
+                      $"--width {requestDetail.request.width} " +
+                      $"--height {requestDetail.request.height} " +
+                      $"{(requestDetail.imagesModels == "" ? "" : "--image-model \"" + requestDetail.imagesModels + "\"")} " +
+                      $"--steps {requestDetail.request.steps} " +
+                      $"--cfg {requestDetail.request.cfgScale} " +
+                      $"--seed {requestDetail.request.seed} " +
+                      $"{(requestDetail.request.tilling ? "--tilling" : "")} " +
+                      $"{(requestDetail.request.tileX ? "--tileX" : "")} " +
+                      $"{(requestDetail.request.tileY ? "--tileY" : "")} " +
+                      $"--nbImages {requestDetail.nbImages} " +
+                      $"{(requestDetail.device == "" ? "" : "--device \"" + requestDetail.device + "\"")} " +
+                      $"--output_path \"{Path.Combine(Application.dataPath, requestDetail.request.directory)}\" " +
+                      $"--file_name \"{requestDetail.request.filename}\" " +
+                      $" \"{requestDetail.request.prompt}\" ";
 
+        // {Path.Combine(Application.dataPath, outputPath)}
         ProcessStartInfo start = new ProcessStartInfo
         {
             FileName = GlobalVariables.Instance.GetPythonPath(),

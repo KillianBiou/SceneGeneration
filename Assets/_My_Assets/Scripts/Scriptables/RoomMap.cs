@@ -330,12 +330,14 @@ public class RoomMap : MonoBehaviour
     {
         Material m = go.GetComponent<Renderer>().material;
 
+        Debug.Log(sv.t);
         if (sv.t != "default")
         {
             Texture2D tex = null;
             tex = new Texture2D(2, 2);
+            Debug.Log(Path.Combine(Application.dataPath, "GeneratedData", sv.t));
             if(File.Exists(Path.Combine(Application.dataPath, "GeneratedData", sv.t)))
-                tex.LoadImage(System.IO.File.ReadAllBytes(Path.Combine(Application.dataPath, "GeneratedData", sv.t)));
+                tex.LoadImage(File.ReadAllBytes(Path.Combine(Application.dataPath, "GeneratedData", sv.t)));
             m.SetTexture("_Texture2D", tex);
         }
 
