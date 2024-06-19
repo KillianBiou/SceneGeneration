@@ -25,7 +25,7 @@ public class GenerativeChoice : MonoBehaviour
     private int amount;
     private bool pending;
 
-    public SdRequest req;
+    public StableCompleteRequest req;
 
     private Process pythonProcess;
     private bool isProcessRunning = false;
@@ -38,6 +38,8 @@ public class GenerativeChoice : MonoBehaviour
         pending = false;
 
         sdh = FindFirstObjectByType<StableHandler>();
+
+        req = DiffuserInterface.GetRequestTemplate();
     }
 
 
@@ -68,10 +70,9 @@ public class GenerativeChoice : MonoBehaviour
 
         ClearPicker();
 
-        rq.directory = folderName +"/";
         for (int i = 0; i < n; i++)
         {
-            req.filename.Replace(".png", "_" + i + ".png");
+            req.request.filename.Replace(".png", "_" + i + ".png");
             sdh.RequestGeneration(rq);
         }
 
@@ -93,24 +94,26 @@ public class GenerativeChoice : MonoBehaviour
 
         uiContainer.transform.parent.gameObject.SetActive(true);
 
-        if (!folderName.EndsWith('/'))
-            folderName = folderName + '/';
+        req.request.directory = Path.Combine("GeneratedData", folderName);
+        req.request.filename = "GeneratedChoice";
+        req.nbImages = 4;
 
 
-        req.directory = "/GeneratedData/" + folderName + "/";
-        for (int i = 0; i < n; i++)
+        DiffuserInterface.Instance.RequestGeneration(req, RemoveBackground);
+
+        /*for (int i = 0; i < n; i++)
         {
             req.filename = req.filename.Replace(".png", "_" + i + ".png");
             sdh.RequestGeneration(req);
-        }
+        }*/
 
-        sdh.FinishedGenerating.AddListener(RemoveBackground);
         amount = n;
         pending = true;
     }
 
-    public void RemoveBackground()
+    public string RemoveBackground()
     {
+        UnityEngine.Debug.Log("CALLBACK CALLED");
         if (isProcessRunning)
         {
             UnityEngine.Debug.Log("A background remover process is already running - quitting and replacing process.");
@@ -125,9 +128,10 @@ public class GenerativeChoice : MonoBehaviour
             isProcessRunning = false;
         }
 
-        DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/GeneratedData/" + folderName);
+        DirectoryInfo dir = new DirectoryInfo(Path.Combine(Application.dataPath, req.request.directory));
         FileInfo[] info = dir.GetFiles("*.png");
 
+        UnityEngine.Debug.Log("SADSADASDAS CALLED");
         // Progress Bar Notification
         switch (info.Length)
         {
@@ -145,13 +149,15 @@ public class GenerativeChoice : MonoBehaviour
                 break;
         }
 
+        UnityEngine.Debug.Log("Nb element = " + info.Length);
+
         if (info.Length >= amount)
         {
             string[] names = new string[info.Length];
 
             for (int i = 0; i < info.Length; i++)
             {
-                names[i] = Application.dataPath + "/GeneratedData/" + folderName + "/" + info[i].Name;
+                names[i] =  Application.dataPath + "/GeneratedData/" + folderName + "/" + info[i].Name;
             }
 
             string args = $"\"{string.Join("\" \"", names)}\" ";
@@ -188,6 +194,7 @@ public class GenerativeChoice : MonoBehaviour
             pythonProcess.BeginErrorReadLine();
             isProcessRunning = true;
         }
+        return "";
     }
 
     private void OnPythonProcessExited(object sender, EventArgs e)
@@ -220,7 +227,7 @@ public class GenerativeChoice : MonoBehaviour
                 tex.LoadImage(File.ReadAllBytes(Application.dataPath + "/GeneratedData/" + folderName + "/" + f.Name));
 
                 last.GetComponent<Button>().onClick.AddListener(() => ChooseImage(Application.dataPath + "/GeneratedData/" + folderName + "/" + f.Name, 
-                                                                                Application.dataPath + "/GeneratedData/" + folderName + req.prompt.Replace(" ", "") + (System.DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds + ".png"));
+                                                                                Application.dataPath + "/GeneratedData/" + folderName + req.request.prompt.Replace(" ", "") + (System.DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds + ".png"));
 
                 last.transform.GetChild(0).GetComponent<RawImage>().texture = tex;
                 last.transform.SetParent(uiContainer.transform);
@@ -256,71 +263,71 @@ public class GenerativeChoice : MonoBehaviour
 
     public void SetPrompt(string s)
     {
-        req.prompt = s;
+        req.request.prompt = s;
     }
 
     public void SetNegPrompt(string s)
     {
-        req.negPrompt = s;
+        req.request.negPrompt = s;
     }
 
 
     public void SetWidth(float i)
     {
-        req.width = (int)i;
+        req.request.width = (int)i;
     }
 
     public void SetHeight(float i)
     {
-        req.height = (int)i;
+        req.request.height = (int)i;
     }
 
 
 
     public void SetWidth(string i)
     {
-        req.width = int.Parse(i);
+        req.request.width = int.Parse(i);
     }
 
     public void SetHeight(string i)
     {
-        req.height = int.Parse(i);
+        req.request.height = int.Parse(i);
     }
 
     public void SetWidth(int i)
     {
-        req.width = i;
+        req.request.width = i;
     }
 
     public void SetHeight(int i)
     {
-        req.height = i;
+        req.request.height = i;
     }
 
 
 
     public void SetSteps(string i)
     {
-        req.steps = int.Parse(i);
+        req.request.steps = int.Parse(i);
     }
     public void SetCfg(string i)
     {
-        req.cfgScale = int.Parse(i);
+        req.request.cfgScale = int.Parse(i);
     }
     public void SetSeed(string i)
     {
-        req.seed = int.Parse(i);
+        req.request.seed = int.Parse(i);
     }
 
 
 
     public void SetFileName(string s)
     {
-        req.filename = s;
+        req.request.filename = s;
     }
     public void SetDirectory(string s)
     {
-        req.directory = s;
+        req.request.directory = s;
     }
 
 }

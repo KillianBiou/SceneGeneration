@@ -50,7 +50,7 @@ public class SD_PromptHandler : MonoBehaviour
     {
         if (genChoice != null)
         {
-            genChoice.req = request;
+            genChoice.req.request = request;
             genChoice.Test(n);
         }
     }

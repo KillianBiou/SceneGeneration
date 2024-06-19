@@ -72,6 +72,7 @@ public class GlobalVariables : MonoBehaviour
 
     public void SetCurrentPhase(ApplicationStatePhase newState)
     {
+        return;
         if(newState != currentPhase)
         {
             currentPhase = newState;

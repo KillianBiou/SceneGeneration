@@ -29,6 +29,7 @@ class StableHandler:
     def GenerateBatch(self, prompt: str, nprompt: str, hprompt: str, width: int, height: int, steps: int, cfg: int, seed: int, tile: bool, tileX: bool, tileY: bool, nbImage: int, device: str, outputDir: str, filename: str):
         generator = torch.Generator(device="cuda").manual_seed(int(time.time() * 1000) % (2**32)) if seed == -1 else torch.Generator(device="cuda").manual_seed(seed)
         for nb in range(nbImage):
+            print("Generating image " + str(nb))
             self.pipe(
                 prompt=f'{prompt}',
                 negative_prompt=nprompt,
@@ -38,7 +39,8 @@ class StableHandler:
                 cfg=cfg,
                 generator = generator,
                 num_images_per_prompt=1,
-            ).images[0].save(f"{outputDir}/{filename}{nb}.png")
+            ).images[0].save(f"{outputDir}/{filename}{str(nb)}.png")
+            print("Generated image " + str(nb))
 
     def Generate(self, prompt: str, nprompt: str, hprompt: str, width: int, height: int, steps: int, cfg: int, seed: int, tile: bool, tileX: bool, tileY: bool, nbImage: int, device: str, outputDir: str, filename: str):
         generator = torch.Generator(device="cuda").manual_seed(int(time.time() * 1000) % (2**32)) if seed == -1 else torch.Generator(device="cuda").manual_seed(seed)
@@ -96,6 +98,6 @@ if __name__ == '__main__':
 
     stableHandler = StableHandler(args.device, args.image_model)
     if(args.nbImages == 1):
-        stableHandler.Generate(args.prompt, args.nprompt, args.hprompt, args.width, args.height, args.steps, args.cfg, args.seed, args.tilling, args.tileX, args.tileY, args.nbImages, args.deviceargs.output_path, args.file_name)
+        stableHandler.Generate(args.prompt, args.nprompt, args.hprompt, args.width, args.height, args.steps, args.cfg, args.seed, args.tilling, args.tileX, args.tileY, args.nbImages, args.device, args.output_path, args.file_name)
     else:
         stableHandler.GenerateBatch(args.prompt, args.nprompt, args.hprompt, args.width, args.height, args.steps, args.cfg, args.seed, args.tilling, args.tileX, args.tileY, args.nbImages, args.device, args.output_path, args.file_name)
