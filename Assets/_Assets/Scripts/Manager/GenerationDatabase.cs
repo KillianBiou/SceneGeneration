@@ -11,6 +11,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Threading.Tasks;
+using UnityGLTF;
 
 public class GenerationDatabase : MonoBehaviour
 {
@@ -49,11 +50,11 @@ public class GenerationDatabase : MonoBehaviour
     public void AddEntry(string key, string value)
     {
         if (assetDatabase.ContainsKey(key))
-            key += "1";
+            key += "_01";
         assetDatabase.Add(key, value);
         SaveDatabase();
     }
-
+    
     public GameObject GetObject(string key)
     {
         return GetObject(key, Vector3.zero);
@@ -64,55 +65,79 @@ public class GenerationDatabase : MonoBehaviour
         StartLoadingOBJ.Invoke(GetObject(key, Vector3.zero));
     }
 
-    public GameObject GetObject(string key, Vector3 basePos)
+    //try instanciating a gameobject version of a 3D model in library, return null if key not in lib
+    public GameObject GetObject(string key, Vector3 targetPos)
     {
-        Debug.Log("Try Load");
-        Debug.Log(key);
-        Debug.Log(basePos);
-        if (assetDatabase.ContainsKey(key))
+        Debug.Log("Trying to  Spawn " + key + " at " + targetPos);
+        if (!assetDatabase.ContainsKey(key))
         {
-            try
-            {
-                string fullPath = Path.Combine(Application.dataPath, assetDatabase[key]);
-                string objFullPath = Path.Combine(Application.dataPath, assetDatabase[key].Replace(".json", ".obj"));
-
-                GameObjectSerializable parentSerializable = JsonUtility.FromJson<GameObjectSerializable>(File.ReadAllText(fullPath));
-                Debug.Log("Loaded JSON");
-                Debug.Log(parentSerializable);
-
-                //GameObject loadedAsset = Resources.Load<GameObject>(Path.Combine(Application.dataPath, assetDatabase[key].Replace("json", "obj")));
-                //Debug.Log("Loaded Asset");
-
-                GameObject parent = new GameObject(key);
-                parent.transform.parent = GameObject.FindGameObjectWithTag("Playground").transform;
-                parent.transform.position = parentSerializable.position;
-                parent.transform.rotation = parentSerializable.rotation;
-                if (!(basePos.magnitude == 0))
-                    parent.transform.position = basePos;
-
-                ImportOptions options = new ImportOptions();
-                options.buildColliders = true;
-                options.colliderConvex = true;
-                options.localPosition = parentSerializable.child[0].position;
-                options.localEulerAngles = parentSerializable.child[0].rotation.eulerAngles;
-
-
-                ObjectImporter.Instance.ImportModelAsync(key, objFullPath, parent.transform, options);
-
-                parent.AddComponent<ParentCheck>();
-
-                Debug.Log("Setup object concluded");
-
-
-                return parent;
-            }
-            catch
-            {
-                return null;
-            }
+            Debug.Log("XXX - KEY NOT FOUND - XXX");
+            return null;
         }
-        return null;
+
+        string fullPath = Path.Combine(Application.dataPath, assetDatabase[key]);
+        GeneratedModelSerializable data = JsonUtility.FromJson<GeneratedModelSerializable>(File.ReadAllText(fullPath));
+        Debug.Log("Loaded - " + Path.GetFileName(fullPath));
+
+        string meshFullPath = Path.Combine(Application.dataPath, Path.GetDirectoryName(assetDatabase[key]), data.meshName);
+
+        Debug.Log("Spawning " + meshFullPath);
+        GameObject last = new GameObject("MESH - " + key);
+        last.transform.SetParent(GameObject.FindGameObjectWithTag("Playground").transform);
+
+        if (meshFullPath.Contains(".obj"))
+        {
+            Debug.Log("c'est un obj !");
+            AsImpL.ImportOptions options = new AsImpL.ImportOptions();
+            options.buildColliders = true;
+            options.colliderConvex = true;
+
+            ObjectImporter.Instance.ImportModelAsync("mesh_" + key, meshFullPath, last.transform, options);
+
+            //last.AddComponent<ParentCheck>();
+        }
+        else if (meshFullPath.Contains(".glb"))
+        {
+            Debug.Log("c'est un glb !");
+            GLTFComponent glb = last.AddComponent<GLTFComponent>();
+
+            glb.Collider = GLTFSceneImporter.ColliderType.MeshConvex;
+            glb.ImportNormals = GLTFImporterNormals.Calculate;
+            glb.GLTFUri = Path.Combine(meshFullPath);
+            /*
+            GameObject mem = last.transform.GetChild(0).gameObject;
+
+            last.transform.GetChild(0).GetChild(0).SetParent(last.transform);
+            Destroy(mem);
+            last.transform.GetChild(0).name = "mesh_" + key;*/
+        }
+
+        Debug.Log("Setup object concluded");
+
+        // FIRST TIME ?
+        if (data.goData.assetName == "")
+        {
+            //gestion de la premiere apparition en 0, 0, 0
+
+            //data.goData = new GameObjectSerializable(last.transform.GetChild(0).gameObject, true);
+            data.goData = new GameObjectSerializable(last, true);
+            File.WriteAllText(fullPath, JsonUtility.ToJson(data));
+            Debug.Log("First time spawned Saved to json.");
+        }
+        else
+        {
+            Debug.Log("Loading pivot points informations from json.");
+            //data.goData.LoadToGameobject(last.transform.GetChild(0).gameObject);
+            data.goData.LoadToGameobject(last);
+        }
+
+        last.transform.localPosition = targetPos;
+        return last;
     }
+
+
+
+
 
 
     public void CheckEntryAtFolders(List<string> folderName)
@@ -137,6 +162,7 @@ public class GenerationDatabase : MonoBehaviour
         foreach (DirectoryInfo info in directoryInfo.GetDirectories())
         {
             string targetFullPath = Path.Combine(info.FullName, info.Name + ".json");
+            //Debug.Log("---- Looking for entry " + targetFullPath);
             if (!assetDatabase.ContainsKey(info.Name) && File.Exists(targetFullPath))
             {
                 Debug.Log("Found " + info.Name + " unregistered, adding to db");
@@ -165,6 +191,14 @@ public class GenerationDatabase : MonoBehaviour
 
     }
 
+
+    public void SetupMeshFolder(string savePath)
+    {
+        UnityEngine.Debug.Log("Generating json at " + Path.Combine(savePath, Path.GetFileName(savePath) + ".json"));
+        GeneratedModelSerializable data = new GeneratedModelSerializable(savePath);
+        File.WriteAllText(Path.Combine(savePath, Path.GetFileName(savePath) + ".json"), JsonUtility.ToJson(data));
+        AddEntry(Path.GetFileName(savePath), Path.Combine(savePath.Substring(Application.dataPath.Length+1, savePath.Length - Application.dataPath.Length-1), Path.GetFileName(savePath) + ".json"));
+    }
 
 
     public void SaveGeneratedAsset(GameObject gameobject, string path)

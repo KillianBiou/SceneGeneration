@@ -119,8 +119,6 @@ public class GenerativeChoice : MonoBehaviour
 
     public void RemoveBackground()
     {
-        UnityEngine.Debug.Log("Il est lheure de remove le bg .............");
-
         if (isProcessRunning)
         {
             UnityEngine.Debug.Log("A background remover process is already running - quitting and replacing process.");

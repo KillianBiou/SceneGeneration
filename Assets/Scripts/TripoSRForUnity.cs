@@ -202,16 +202,15 @@ public class TripoSRForUnity : MonoBehaviour
     //Generate a 3D model and put it into a folder
     public void RunTripoSR_GLB(Func<string, int> callback = null, string imagefullpath = null)
     {
-        //savePath = Path.Combine(Application.dataPath, "GeneratedData/Models/", "M_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
-        savePath = Path.Combine(Application.dataPath, "GeneratedData/Models/", Path.GetFileNameWithoutExtension(imagefullpath));
+        savePath = Path.Combine(Application.dataPath, "GeneratedData/Models/", Path.GetFileNameWithoutExtension(imagefullpath).Substring(0, Path.GetFileNameWithoutExtension(imagefullpath).Length-4));
 
         UnityEngine.Debug.Log("Creation de la destination :  " + savePath + "...");
         if (!Directory.Exists(savePath))
             Directory.CreateDirectory(savePath);
 
+        File.Copy(imagefullpath, Path.Combine(savePath, Path.GetFileName(savePath) + ".png"));
+
         memoryCallback = callback;
-        generatedImagePath = imagefullpath;
-        //destinationPath = savePath;
 
         if (isProcessRunning)
         {
@@ -225,12 +224,6 @@ public class TripoSRForUnity : MonoBehaviour
             isProcessRunning = false;
         }
 
-        /*string[] imagePaths = new string[images.Length];
-        
-        if (imagefullpath != null)
-        {
-            imagePaths[0] = imagefullpath;
-        }*/
 
         string args = $"\"{string.Join("\" \"", imagefullpath)}\" --device {device} " +
                       $"--pretrained-model-name-or-path {pretrainedModelNameOrPath} " +
@@ -238,7 +231,6 @@ public class TripoSRForUnity : MonoBehaviour
                       $"{(noRemoveBg ? "--no-remove-bg " : "")} " +
                       $"--foreground-ratio {foregroundRatio.ToString(CultureInfo.InvariantCulture)} " +
                       $"--output-dir {(savePath)} " +
-                      //$"--model-save-format {((modelSaveFormat == "dae") ? "glb" : modelSaveFormat)} " +
                       $"--model-save-format {("glb")} " +
                       $"{(render ? "--render" : "")}";
 
@@ -294,7 +286,6 @@ public class TripoSRForUnity : MonoBehaviour
     }
 
 
-    //Move image and create json for the new 3D model
     private void OnPythonProcessExited_GLB(object sender, EventArgs e)
     {
         UnityEngine.Debug.Log("Python process exited. ");
@@ -302,14 +293,18 @@ public class TripoSRForUnity : MonoBehaviour
         isProcessRunning = false;
         pythonProcess = null;
 
-        string tag = savePath.Split('/')[Path.GetDirectoryName(savePath).Split('/').Length-1];
+        DirectoryInfo dInfo = new DirectoryInfo(savePath);
 
-        UnityEngine.Debug.Log("Moving image to "+ savePath + tag + ".png" + "... ");
-        File.Copy(generatedImagePath, savePath + tag + ".png");
+        //string fileName = dInfo.Name;
 
-        UnityEngine.Debug.Log("Generating json... ");
-        GeneratedModelSerializable data = new GeneratedModelSerializable(savePath);
-        File.WriteAllText(savePath + Path.GetDirectoryName(savePath) + ".json", JsonUtility.ToJson(data));
+        //UnityEngine.Debug.Log("Moving image to "+ Path.Combine(savePath, fileName + ".png") + "... ");
+        //File.Copy(generatedImagePath, Path.Combine(savePath, fileName + ".png"));
+
+        //UnityEngine.Debug.Log("Generating json at " + Path.Combine(savePath, Path.GetFileName(savePath) + ".json"));
+        //GeneratedModelSerializable data = new GeneratedModelSerializable(savePath);
+        //File.WriteAllText(Path.Combine(savePath, fileName + ".json"), JsonUtility.ToJson(data));
+
+        GenerationDatabase.Instance.SetupMeshFolder(savePath);
 
         UnityEngine.Debug.Log("Calling back for instantiation...");
         if (memoryCallback != null)

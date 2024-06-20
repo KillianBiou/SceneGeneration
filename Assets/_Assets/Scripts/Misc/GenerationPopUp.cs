@@ -11,6 +11,8 @@ public class GenerationPopUp : MonoBehaviour
     public void RequestGeneration()
     {
         modelPrompt.SetActive(true);
+        Cursor3D.instance.blocked = true;
+        Cursor3D.instance.toggleLoadFX(true);
         //modelPrompt.GetComponent<GenerativeChoice>().generationPos = point;
         gameObject.SetActive(false);
     }

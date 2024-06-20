@@ -57,10 +57,10 @@ public class ModelLibraryDragDropHandler : MonoBehaviour
 
         if (!onUI)
         {
-            GameObject generated = GenerationDatabase.Instance.GetObject(data.selectedObject.name);
+            GameObject generated = GenerationDatabase.Instance.GetObject(data.selectedObject.name, hit.point);
             Debug.Log("Loaded : " + data.selectedObject.name);
 
-            generated.transform.position = hit.point;
+            //generated.transform.position = hit.point;
         }
 
         if (modelInstance)

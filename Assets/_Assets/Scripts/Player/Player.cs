@@ -32,7 +32,7 @@ public class GeneratedModelSerializable
         if (search.Length > 0)
             meshName = Path.GetFileName(search[0]);
 
-        objectDescription = Path.GetDirectoryName(directoryPath);
+        objectDescription = Path.GetFileName(directoryPath);
     }
 
     public void GenerateGoData(GameObject go, bool recursive = false)
@@ -52,6 +52,11 @@ public class GameObjectSerializable
 
     public GameObjectSerializable()
     {
+        assetName = "";
+        position = Vector3.zero;
+        rotation = Quaternion.identity;
+        childNumber = 0;
+        child = new GameObjectSerializable[0];
     }
 
     public GameObjectSerializable(GameObject go, bool recursive)
@@ -74,8 +79,17 @@ public class GameObjectSerializable
         {
             childNumber = 0;
             child = null;
-        }
-            
+        }     
+    }
+
+    public void LoadToGameobject(GameObject go)
+    {
+        go.name = assetName;
+        go.transform.position = position;
+        go.transform.rotation = rotation;
+
+        foreach(GameObjectSerializable gos in child)
+            gos.LoadToGameobject(go.transform.GetChild(0).gameObject);
     }
 
 }
@@ -238,35 +252,42 @@ public class Player : MonoBehaviour
 
     public int InstantiationCallback_GLB(string objPath)
     {
-
         GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.MODEL_IMPORT);
+
+        /*
         Debug.Log("Instanciating glb from : " + objPath);
 
         GameObject gblOrigin = new GameObject("GBL_origin");
-        gblOrigin.transform.SetParent(playgroundHolder);
+        gblOrigin.transform.SetParent(playgroundHolder, false);
         gblOrigin.transform.position = instanciationPoint + Vector3.up;
         gblOrigin.transform.rotation = Quaternion.identity;
 
         
         GameObject model = new GameObject("Mesh");
-        model.transform.SetParent(gblOrigin.transform);
+        model.transform.SetParent(gblOrigin.transform, false);
 
 
         GLTFComponent glb = model.AddComponent<GLTFComponent>();
 
         glb.Collider = GLTFSceneImporter.ColliderType.MeshConvex;
         glb.ImportNormals = GLTFImporterNormals.Calculate;
-        glb.GLTFUri = Path.Combine(objPath);
+        //glb.GLTFUri = Path.Combine(objPath, Path.GetFileName(objPath)+".glb");
+        glb.GLTFUri = Path.Combine(objPath, "mesh.glb");
+        */
+
+
+        GenerationDatabase.Instance.GetObject(Path.GetFileName(objPath), instanciationPoint);
+        //GenerationDatabase.Instance.SaveGeneratedAsset(model, objPath);
 
         Debug.Log("Object instancie !!");
 
-
-        GenerationDatabase.Instance.SaveGeneratedAsset(model, objPath);
 
         if (images.Count > 0)
             images.RemoveAt(0);
         
         generationLock = false;
+        Cursor3D.instance.blocked = false;
+        Cursor3D.instance.toggleLoadFX(false);
 
         return 0;
     }
@@ -374,8 +395,6 @@ public class Player : MonoBehaviour
 
     public void AddImage(string imagePath)
     {
-        //Texture2D tex = new Texture2D(2, 2);
-        //tex.LoadImage(File.ReadAllBytes(imagePath));
         images.Add(imagePath);
     }
 
