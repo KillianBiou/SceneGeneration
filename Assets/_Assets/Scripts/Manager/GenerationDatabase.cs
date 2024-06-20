@@ -29,37 +29,21 @@ public class GenerationDatabase : MonoBehaviour
 
     public UnityEvent<GameObject> StartLoadingOBJ;
 
+    public List<string> modelsFolders;
+
+
     private void Awake()
     {
         Instance = this;
-
-        if (!File.Exists(DatabaseLocation))
-        {
-            File.Create(DatabaseLocation);
-        }
-        else
-        {
-            LoadDatabase();
-        }
-
-        /*List<string> toRemove = new List<string>();
-
-        foreach(KeyValuePair<string, string> entry in assetDatabase)
-        {
-            if (!File.Exists(entry.Value))
-                toRemove.Add(entry.Key);
-        }
-        foreach(string remove in toRemove)
-        {
-            assetDatabase.Remove(remove);
-        }
-        SaveDatabase();*/
+        LoadDatabase();
     }
 
     private void Start()
     {
         Debug.Log("STATIC INSTANCE :" + Instance.name);
-        CheckGenerationEntry();
+        if(modelsFolders != null)
+            CheckEntryAtFolders(modelsFolders);
+        //CheckGenerationEntry();
     }
 
     public void AddEntry(string key, string value)
@@ -130,48 +114,65 @@ public class GenerationDatabase : MonoBehaviour
         return null;
     }
 
-    public void CheckGenerationEntry()
+
+    public void CheckEntryAtFolders(List<string> folderName)
     {
-        DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(Application.dataPath, "Models"));
+        RmBadEntry();
 
-        // Remove phantom entry
-        List<string> toRemove = new List<string>();
-        foreach (string assetName in assetDatabase.Keys)
-        {
-            if (!Directory.Exists(Path.Combine(directoryInfo.FullName, assetName)))
-            {
-                Debug.Log(assetName + " missing, removing !");
-                //assetDatabase.Remove(assetName);
-                toRemove.Add(assetName);
-            }
-        }
-        foreach (string assetName in toRemove)
-            assetDatabase.Remove(assetName);
+        foreach ( string name in folderName )
+            CheckNewEntry(name);
 
+        SaveDatabase();
+    }
 
-        // Add Missing
-        List<(string, string)> toAdd = new List<(string, string)>();
+    // Add all found entry in folder and subfolder level 1
+    public void CheckNewEntry(string folderName = "Models")
+    {
+        if (!Directory.Exists(Path.Combine(Application.dataPath, folderName)))
+            return;
+
+        Debug.Log("Looking for entry in " + Path.Combine(Application.dataPath, folderName));
+        DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(Application.dataPath, folderName));
+
         foreach (DirectoryInfo info in directoryInfo.GetDirectories())
         {
             string targetFullPath = Path.Combine(info.FullName, info.Name + ".json");
             if (!assetDatabase.ContainsKey(info.Name) && File.Exists(targetFullPath))
             {
                 Debug.Log("Found " + info.Name + " unregistered, adding to db");
-                toAdd.Add((info.Name, targetFullPath));
+                assetDatabase.Add(info.Name, Path.Combine(folderName, info.Name, info.Name + ".json"));
             }
         }
-        foreach ((string, string) assetName in toAdd)
-            assetDatabase.Add(assetName.Item1, assetName.Item2);
 
-        SaveDatabase();
     }
+
+    // Remove phantom entry
+    private void RmBadEntry()
+    {
+        List<string> toRemove = new List<string>();
+        foreach (string assetName in assetDatabase.Keys)
+        {
+            if (!File.Exists(Path.Combine(Application.dataPath, assetDatabase[assetName])))
+            {
+                Debug.Log(Path.Combine(Application.dataPath, assetDatabase[assetName]) + " missing, removing !");
+                toRemove.Add(assetName);
+            }
+        }
+        foreach (string assetName in toRemove)
+        {
+            assetDatabase.Remove(assetName);
+        }
+
+    }
+
+
 
     public void SaveGeneratedAsset(GameObject gameobject, string path)
     {
         Debug.Log(gameobject.name);
 
         GameObjectSerializable parentSerializable = new GameObjectSerializable();
-        parentSerializable.assetName = gameobject.name;
+        parentSerializable.assetName = Path.GetFileName(path);
         parentSerializable.position = gameobject.transform.position;
         parentSerializable.rotation = gameobject.transform.rotation;
         parentSerializable.childNumber = gameobject.transform.childCount;
@@ -191,7 +192,7 @@ public class GenerationDatabase : MonoBehaviour
 
         parentSerializable.childNumber = gameobject.transform.childCount;
 
-        string savingPath = path.Substring(0, path.Length - (gameobject.name + ".obj").Length);
+        string savingPath = Path.GetDirectoryName(path);
 
         if (!Directory.Exists(savingPath)) Debug.Log("ERROR FOLDER DOES NOT EXIST");
 
@@ -215,12 +216,14 @@ public class GenerationDatabase : MonoBehaviour
         File.WriteAllText(DatabaseLocation, data);
     }
 
+    //Load database from file, ccreate it if not found
     public void LoadDatabase()
     {
-        Debug.Log(DatabaseLocation);
+        Debug.Log("Looking for " + DatabaseLocation);
         if (!File.Exists(DatabaseLocation))
         {
             File.Create(DatabaseLocation);
+            Debug.Log("Generated " + DatabaseLocation);
         }
         assetDatabase = JsonUtility.FromJson<SerializedDictionary<string, string>>(File.ReadAllText(DatabaseLocation));
     }

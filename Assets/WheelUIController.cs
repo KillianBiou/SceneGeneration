@@ -34,26 +34,26 @@ public class WheelUIController : MonoBehaviour
     {
         cursor.transform.localPosition = input * (transform as RectTransform).rect.width/2 * 0.8f;
 
-        int newChoice = Choosed();
 
-        if (input.magnitude > 0.5)
+        if (!isChoosing && input.magnitude > 0.5)
         {
-            if (!isChoosing)
-            {
-                isChoosing = true;
-                currentChoice = newChoice;
-                content.transform.GetChild(currentChoice).GetComponent<WheelUiButton>().Hover();
-            }
-            if(currentChoice != newChoice)
-            {
-                content.transform.GetChild(currentChoice).GetComponent<WheelUiButton>().EndHover();
-                currentChoice = newChoice;
-                content.transform.GetChild(currentChoice).GetComponent<WheelUiButton>().Hover();
-            }
+            isChoosing = true;
+            currentChoice = Choosed();
+            content.transform.GetChild(currentChoice).GetComponent<WheelUiButton>().Hover();
+            return;
         }
 
         if (!isChoosing)
             return;
+
+        int newChoice = Choosed();
+
+        if (currentChoice != newChoice)
+        {
+            content.transform.GetChild(currentChoice).GetComponent<WheelUiButton>().EndHover();
+            currentChoice = newChoice;
+            content.transform.GetChild(currentChoice).GetComponent<WheelUiButton>().Hover();
+        }
 
         if (input.magnitude < 0.5)
             gameObject.SetActive(false);
@@ -61,6 +61,7 @@ public class WheelUIController : MonoBehaviour
 
     private void OnDisable()
     {
+        content.transform.GetChild(currentChoice).GetComponent<WheelUiButton>().EndHover();
         ChoiceDone.Invoke(Choosed());
     }
 
@@ -100,7 +101,7 @@ public class WheelUIController : MonoBehaviour
         if (angle >= 360)
             return 0;
 
-        Debug.Log("choix : " + Mathf.FloorToInt(angle / marge) + " angle : " + angle + " margew : " + marge);
+        //Debug.Log("choix : " + Mathf.FloorToInt(angle / marge) + " angle : " + angle + " margew : " + marge);
 
         return Mathf.FloorToInt(angle/marge);
     }

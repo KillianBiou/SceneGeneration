@@ -14,7 +14,7 @@ public class GenerativeChoice : MonoBehaviour
 
     public string folderName;
     public GameObject uiContainer, buttonChoice;
-    public Vector3 generationPos;
+    private Vector3 generationPos;
     [SerializeField]
     private TMP_Text title;
 
@@ -22,6 +22,7 @@ public class GenerativeChoice : MonoBehaviour
 
 
     private StableHandler sdh;
+    private Cursor3D cursor;
     private int amount;
     private bool pending;
 
@@ -38,6 +39,7 @@ public class GenerativeChoice : MonoBehaviour
         pending = false;
 
         sdh = FindFirstObjectByType<StableHandler>();
+        cursor = FindFirstObjectByType<Cursor3D>();
     }
 
 
@@ -66,16 +68,21 @@ public class GenerativeChoice : MonoBehaviour
         if (!sdh || pending)
             return;
 
+        generationPos = cursor.transform.position;
+
         ClearPicker();
 
-        rq.directory = folderName +"/";
+        GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.ZERO_IMAGE);
+
+        rq.directory = "GeneratedData/" + folderName;
+        UnityEngine.Debug.Log(req.directory);
         for (int i = 0; i < n; i++)
         {
-            req.filename.Replace(".png", "_" + i + ".png");
+            rq.filename = rq.prompt + "_" +  i + "_T.png";
             sdh.RequestGeneration(rq);
         }
 
-        sdh.FinishedGenerating.AddListener(CountingResults);
+        sdh.FinishedGenerating.AddListener(RemoveBackground);
         amount = n;
         pending = true;
     }
@@ -87,9 +94,9 @@ public class GenerativeChoice : MonoBehaviour
         if (!sdh)
             return;
 
-        GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.ZERO_IMAGE);
-
         ClearPicker();
+
+        GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.ZERO_IMAGE);
 
         uiContainer.transform.parent.gameObject.SetActive(true);
 
@@ -109,8 +116,11 @@ public class GenerativeChoice : MonoBehaviour
         pending = true;
     }
 
+
     public void RemoveBackground()
     {
+        UnityEngine.Debug.Log("Il est lheure de remove le bg .............");
+
         if (isProcessRunning)
         {
             UnityEngine.Debug.Log("A background remover process is already running - quitting and replacing process.");
@@ -125,7 +135,7 @@ public class GenerativeChoice : MonoBehaviour
             isProcessRunning = false;
         }
 
-        DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/GeneratedData/" + folderName);
+        DirectoryInfo dir = new DirectoryInfo(Path.Combine(Application.dataPath, "GeneratedData", folderName));
         FileInfo[] info = dir.GetFiles("*.png");
 
         // Progress Bar Notification
@@ -204,7 +214,7 @@ public class GenerativeChoice : MonoBehaviour
     public void CountingResults()
     {
 
-        DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/GeneratedData/" +  folderName);
+        DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/GeneratedData/" +  folderName); // CALL THE DIR
         FileInfo[] info = dir.GetFiles("*.png");
 
         if (info.Length >= amount)
@@ -212,33 +222,23 @@ public class GenerativeChoice : MonoBehaviour
             //generate buttons
             foreach (FileInfo f in info)
             {
-
-
                 GameObject last = Instantiate(buttonChoice);
 
                 Texture2D tex = new Texture2D(2, 2);
-                tex.LoadImage(File.ReadAllBytes(Application.dataPath + "/GeneratedData/" + folderName + "/" + f.Name));
+                tex.LoadImage(File.ReadAllBytes(f.FullName));
 
-                last.GetComponent<Button>().onClick.AddListener(() => ChooseImage(Application.dataPath + "/GeneratedData/" + folderName + "/" + f.Name, 
-                                                                                Application.dataPath + "/GeneratedData/" + folderName + req.prompt.Replace(" ", "") + (System.DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds + ".png"));
+                last.GetComponent<Button>().onClick.AddListener(() => PickedImageCallback(f.FullName));
 
                 last.transform.GetChild(0).GetComponent<RawImage>().texture = tex;
                 last.transform.SetParent(uiContainer.transform);
 
             }
 
-            //LayoutRebuilder.MarkLayoutForRebuild(GetComponent<RectTransform>());
-            //LayoutRebuilder.MarkLayoutForRebuild(gameObject.transform as RectTransform);
-            //LayoutRebuilder.MarkLayoutForRebuild(uiContainer.transform as RectTransform);
-
-            //EditorUtility.SetDirty(transform.parent.GetComponent<Canvas>());
-
             title.text = "Choices (" + amount + ")";
-            uiContainer.SetActive(true);
 
             pending = false;
-            sdh.FinishedGenerating.RemoveListener(CountingResults);
-            gameObject.SetActive(false);
+            sdh.FinishedGenerating.RemoveListener(RemoveBackground);
+            //gameObject.SetActive(false);
 
             GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.USER_SELECTION);
         }
@@ -246,13 +246,25 @@ public class GenerativeChoice : MonoBehaviour
 
     public void ChooseImage(string oldPath, string newPath)
     {
-        uiContainer.transform.parent.gameObject.SetActive(false);
+        //uiContainer.transform.parent.gameObject.SetActive(false);
 
-        File.Move(oldPath, newPath);
+        //File.Move(oldPath, newPath);
 
         //Player.Instance.AddImage(newPath);
         Player.Instance.AddImage(newPath, generationPos);
     }
+
+
+    public void PickedImageCallback(string path)
+    {
+        Player.Instance.AddImage(path, generationPos);
+    }
+
+
+
+
+
+
 
     public void SetPrompt(string s)
     {

@@ -128,8 +128,6 @@ public class StableHandler : StableDiffusionGenerator
     }
 
 
-
-
     IEnumerator GenerateAsync()
     {
         generating = true;
@@ -387,13 +385,13 @@ public class StableHandler : StableDiffusionGenerator
                 // Decode the image from Base64 string into an array of bytes
                 byte[] imageData = Convert.FromBase64String(json.images[0]);
 
-                rq.directory = PathFixer(rq.directory);
+                //rq.directory = PathFixer(rq.directory);
 
-                if(!Directory.Exists(Application.dataPath + rq.directory))
-                    Directory.CreateDirectory(Application.dataPath + rq.directory);
+                if(!Directory.Exists(Path.Combine(Application.dataPath, rq.directory)))
+                    Directory.CreateDirectory(Path.Combine(Application.dataPath, rq.directory));
 
                 // Write it in the specified project output folder
-                using (FileStream imageFile = new FileStream(Application.dataPath + rq.directory + rq.filename, FileMode.Create))
+                using (FileStream imageFile = new FileStream(Path.Combine(Application.dataPath, rq.directory, rq.filename), FileMode.Create))
                 {
                     yield return imageFile.WriteAsync(imageData, 0, imageData.Length);
                 }
@@ -421,6 +419,8 @@ public class StableHandler : StableDiffusionGenerator
                 {
                     Debug.LogError(e.Message + "\n\n" + e.StackTrace);
                 }
+
+                Debug.Log("genere a lemplacemnt : " + "" + Application.dataPath + rq.directory + rq.filename);
 
                 FinishedGenerating.Invoke();
                 EditorUtility.ClearProgressBar();

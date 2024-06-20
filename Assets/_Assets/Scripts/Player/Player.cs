@@ -5,8 +5,43 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityGLTF;
+
+
 
 [Serializable]
+public class GeneratedModelSerializable
+{
+    public string meshName, imgName;
+    public string objectDescription;
+    public Vector3 boundingBoxSize;
+
+    public GameObjectSerializable goData;
+
+    public GeneratedModelSerializable(string directoryPath)
+    {
+        string[] search = Directory.GetFiles(directoryPath, "*.png");
+        if(search.Length>0)
+            imgName = Path.GetFileName(search[0]);
+
+        search = Directory.GetFiles(directoryPath, "*.glb");
+        if (search.Length > 0)
+            meshName = Path.GetFileName(search[0]);
+
+        search = Directory.GetFiles(directoryPath, "*.obj");
+        if (search.Length > 0)
+            meshName = Path.GetFileName(search[0]);
+
+        objectDescription = Path.GetDirectoryName(directoryPath);
+    }
+
+    public void GenerateGoData(GameObject go, bool recursive = false)
+    {
+        goData = new GameObjectSerializable(go, recursive);
+    }
+}
+
+    [Serializable]
 public class GameObjectSerializable
 {
     public string assetName;
@@ -14,6 +49,35 @@ public class GameObjectSerializable
     public Quaternion rotation;
     public int childNumber;
     public GameObjectSerializable[] child;
+
+    public GameObjectSerializable()
+    {
+    }
+
+    public GameObjectSerializable(GameObject go, bool recursive)
+    {
+        assetName = go.name;
+        position = go.transform.position;
+        rotation = go.transform.rotation;
+
+        if (recursive)
+        {
+            childNumber =go.transform.childCount;
+            List<GameObjectSerializable> childs = new List<GameObjectSerializable>();
+            for(int i = 0; i<childNumber; i++)
+            {
+                childs.Add(new GameObjectSerializable(go.transform.GetChild(i).gameObject, recursive));
+            }
+            child = childs.ToArray();
+        }
+        else
+        {
+            childNumber = 0;
+            child = null;
+        }
+            
+    }
+
 }
 
 public class Player : MonoBehaviour
@@ -39,6 +103,8 @@ public class Player : MonoBehaviour
     private string debugScenePath;
     [ReadOnly, SerializeField]
     private bool generationLock;
+    [SerializeField]
+    private bool GLBmode = true;
 
     [Header("References")]
     [SerializeField]
@@ -132,12 +198,12 @@ public class Player : MonoBehaviour
         parent.transform.position = instanciationPoint + Vector3.up;
         parent.transform.rotation = Quaternion.identity;
 
-        ImportOptions importOptions = new ImportOptions();
+        AsImpL.ImportOptions importOptions = new AsImpL.ImportOptions();
         importOptions.buildColliders = true;
         importOptions.colliderConvex = true;
-
+        
         ObjectImporter.Instance.ImportModelAsync(Path.GetFileNameWithoutExtension(objPath), objPath, parent.transform, importOptions);
-
+        
         StartCoroutine(ReplacementCoroutine(parent.transform, objPath));
 
         /*GameObject importedObj = AssetDatabase.LoadAssetAtPath<GameObject>(objPath);
@@ -164,10 +230,44 @@ public class Player : MonoBehaviour
             GenerationDatabase.Instance.SaveGeneratedAsset(instantiatedObj, objPath);
         }*/
 
-
         if (images.Count > 0)
             images.RemoveAt(0);
         generationLock = false;
+        return 0;
+    }
+
+    public int InstantiationCallback_GLB(string objPath)
+    {
+
+        GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.MODEL_IMPORT);
+        Debug.Log("Instanciating glb from : " + objPath);
+
+        GameObject gblOrigin = new GameObject("GBL_origin");
+        gblOrigin.transform.SetParent(playgroundHolder);
+        gblOrigin.transform.position = instanciationPoint + Vector3.up;
+        gblOrigin.transform.rotation = Quaternion.identity;
+
+        
+        GameObject model = new GameObject("Mesh");
+        model.transform.SetParent(gblOrigin.transform);
+
+
+        GLTFComponent glb = model.AddComponent<GLTFComponent>();
+
+        glb.Collider = GLTFSceneImporter.ColliderType.MeshConvex;
+        glb.ImportNormals = GLTFImporterNormals.Calculate;
+        glb.GLTFUri = Path.Combine(objPath);
+
+        Debug.Log("Object instancie !!");
+
+
+        GenerationDatabase.Instance.SaveGeneratedAsset(model, objPath);
+
+        if (images.Count > 0)
+            images.RemoveAt(0);
+        
+        generationLock = false;
+
         return 0;
     }
 
@@ -196,6 +296,7 @@ public class Player : MonoBehaviour
 
         Debug.Log("Scene saved at " +  savePath);
     }
+
 
     public GameObjectSerializable GetGameObjectSaveData()
     {
@@ -241,8 +342,6 @@ public class Player : MonoBehaviour
     }
 
 
-
-
     public void LoadSceneFromFile(string scenePath)
     {
         if (!File.Exists(scenePath))
@@ -279,13 +378,19 @@ public class Player : MonoBehaviour
         //tex.LoadImage(File.ReadAllBytes(imagePath));
         images.Add(imagePath);
     }
-    public void AddImage(string imagePath, Vector3 generationPos)
+
+
+    public void AddImage(string imageFullpath, Vector3 generationPos)
     {
         instanciationPoint = generationPos;
-
         generationLock = true;
-        TripoSRForUnity.Instance.RunTripoSR(InstantiationCallback, imagePath);
+        if(GLBmode)
+            TripoSRForUnity.Instance.RunTripoSR_GLB(InstantiationCallback_GLB, imageFullpath);
+        else
+            TripoSRForUnity.Instance.RunTripoSR(InstantiationCallback, imageFullpath);
     }
+
+
 
     private void OnDrawGizmos()
     {

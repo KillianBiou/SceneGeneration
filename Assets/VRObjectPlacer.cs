@@ -60,7 +60,11 @@ public class VRObjectPlacer : MonoBehaviour
         isLoading = true;
 
         if (_cpRef.transform.childCount > 0)
-            Destroy(_cpRef.transform.GetChild(0).gameObject);
+        {
+            _cpRef.transform.GetChild(0).transform.gameObject.SetActive(false);
+            _cpRef.transform.GetChild(0).transform.SetParent(null);
+        }
+            //Destroy(_cpRef.transform.GetChild(0).gameObject);
 
         go.transform.SetParent(_cpRef.transform, false);
 

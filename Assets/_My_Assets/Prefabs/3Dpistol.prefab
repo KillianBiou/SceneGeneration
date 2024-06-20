@@ -506,7 +506,7 @@ MonoBehaviour:
   m_HoverTimeToSelect: 0.5
   m_AutoDeselect: 0
   m_TimeToAutoDeselect: 3
-  m_EnableUIInteraction: 1
+  m_EnableUIInteraction: 0
   m_BlockUIOnInteractableSelection: 1
   m_AllowAnchorControl: 1
   m_UseForceGrab: 1
@@ -848,7 +848,7 @@ Transform:
   m_GameObject: {fileID: 4209184865242191430}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.7299995, z: 0}
+  m_LocalPosition: {x: 0, y: 0.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1255,7 +1255,7 @@ Transform:
   m_GameObject: {fileID: 7566004084760618600}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0042, z: 0}
+  m_LocalPosition: {x: 0, y: 0.0153, z: 0}
   m_LocalScale: {x: 0.06, y: 0.06, z: 0.06}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1323,6 +1323,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   matRef: {fileID: 2100000, guid: ba39e4d1241b7d247837013516c08f1b, type: 2}
+  mask:
+    serializedVersion: 2
+    m_Bits: 2
+  imask:
+    m_Bits: 2
   _cpRef: {fileID: 7566004084760618600}
   _ray: {fileID: 7966098412969573534}
 --- !u!1 &7832530766825925053

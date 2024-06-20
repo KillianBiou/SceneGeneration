@@ -11,7 +11,7 @@ public class GenerationPopUp : MonoBehaviour
     public void RequestGeneration()
     {
         modelPrompt.SetActive(true);
-        modelPrompt.GetComponent<GenerativeChoice>().generationPos = point;
+        //modelPrompt.GetComponent<GenerativeChoice>().generationPos = point;
         gameObject.SetActive(false);
     }
 }

@@ -158,5 +158,5 @@ for i, image in enumerate(images):
 
     timer.start("Exporting mesh")
     meshes = model.extract_mesh(scene_codes, resolution=args.mc_resolution)
-    meshes[0].export(os.path.join(output_dir, str(i), f"mesh.{args.model_save_format}"))
+    meshes[0].export(os.path.join(output_dir, f"mesh.{args.model_save_format}"))
     timer.end("Exporting mesh")

@@ -39,7 +39,7 @@ public class ModelLibraryUIHandler : MonoBehaviour
 
     public void DatabaseUpdatedReceiver()
     {
-        Debug.Log("Refresh Database UI");
+        Debug.Log("Refmesh Database UI");
 
         // Clear View (Not optimal, but sufficient for now as they wont be more than 20 models)
         ClearView();

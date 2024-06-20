@@ -6,15 +6,15 @@ using UnityEngine;
 
 public class SD_PromptHandler : MonoBehaviour
 {
+
     public SdRequest request = new SdRequest();
+
+    [SerializeField]
+    private GenerativeChoice genChoice;
 
     private StableHandler handler;
 
-    public bool preserve;
-
-    public GenerativeChoice genChoice;
-
-    int n = 4;
+    public int n = 4;
 
     private void Awake()
     {
@@ -23,35 +23,17 @@ public class SD_PromptHandler : MonoBehaviour
 
     public void SendGenerationRequest()
     {
-        if (preserve)
-            FixName(request.filename);
+        request.filename = request.prompt + DateTime.Now.ToString("_MMdd-HHmmss") + "_T.png";
 
         if (handler)
             handler.RequestGeneration(request);
-    }
-
-
-    public void FixName(string s)
-    {/*
-        DirectoryInfo dir = new DirectoryInfo(Application.dataPath + request.directory);
-        FileInfo[] info = dir.GetFiles(request.filename);
-
-        if(info.Length > 0)
-        {
-            s = s.Split('_')[0];
-            if ()
-            request.filename.Replace("","");
-        }*/
-        
-        request.filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "_T.png";
     }
 
     public void GenX()
     {
         if (genChoice != null)
         {
-            genChoice.req = request;
-            genChoice.Test(n);
+            genChoice.GenerateChoices(request, n);
         }
     }
 
@@ -150,7 +132,6 @@ public class SD_PromptHandler : MonoBehaviour
     {
         request.tileY = b;
     }
-
 
     public void SetHiddenPrompt(int i)
     {

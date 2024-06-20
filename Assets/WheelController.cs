@@ -8,6 +8,7 @@ using UnityEngine.XR;
 public class WheelController : MonoBehaviour
 {
     public GameObject cancelable;
+    private bool wasCanceled = false;
 
 
     [SerializeField]
@@ -16,7 +17,7 @@ public class WheelController : MonoBehaviour
     public InputActionProperty buttonHold, stick;
 
     [SerializeField]
-    private UnityEvent<int> OutpuChoiceEvent;
+    private UnityEvent<int> OutputChoiceEvent;
 
 
     void Start()
@@ -43,15 +44,33 @@ public class WheelController : MonoBehaviour
 
     public void ModeToggle(int n)
     {
-        OutpuChoiceEvent.Invoke(n);
+        OutputChoiceEvent.Invoke(n);
     }
 
 
     public void ShowWheel(InputAction.CallbackContext c)
     {
-        wheel.gameObject.SetActive(1 == c.ReadValue<float>());
+        bool newState = 1 == c.ReadValue<float>();
 
-        if (cancelable != null)
-            cancelable.SetActive(1 != c.ReadValue<float>());
+        wheel.gameObject.SetActive(newState);
+
+        if (cancelable == null)
+            return;
+
+        if(newState && cancelable.activeSelf)
+        {
+            cancelable.SetActive(false);
+            wasCanceled = true;
+        }
+        else if (newState)
+        {
+            cancelable.SetActive(false);
+        }
+
+        if (wasCanceled && !newState)
+        {
+            cancelable.SetActive(true);
+            wasCanceled = false;
+        }
     }
 }
