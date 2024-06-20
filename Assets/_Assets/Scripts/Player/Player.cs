@@ -257,6 +257,10 @@ public class Player : MonoBehaviour
 
     public void LoadScene(GameObjectSerializable parentSerializable)
     {
+        foreach(Transform child in GameObject.FindGameObjectWithTag("Playground").transform)
+        {
+            Destroy(child.gameObject);
+        }
         foreach (GameObjectSerializable child in parentSerializable.child)
         {
             GenerationDatabase.Instance.GetObject(child.assetName, child.position, child.rotation, Vector3.one);

@@ -339,6 +339,7 @@ public class RoomMap : MonoBehaviour
             if(File.Exists(Path.Combine(Application.dataPath, "GeneratedData", sv.t)))
                 tex.LoadImage(File.ReadAllBytes(Path.Combine(Application.dataPath, "GeneratedData", sv.t)));
             m.SetTexture("_Texture2D", tex);
+            tex.name = sv.t;
         }
 
         /*if (sv.n != "NormalMap")
