@@ -30,6 +30,17 @@ public class GlobalProgressBar : MonoBehaviour
 
     private List<ApplicationStatePhase> currentProcedureList;
 
+    private ApplicationStatePhase newPhase = ApplicationStatePhase.UNKNOWN;
+
+    private void Update()
+    {
+        if (newPhase != ApplicationStatePhase.UNKNOWN)
+        {
+            InternalNotifyPhaseChange(newPhase);
+            newPhase = ApplicationStatePhase.UNKNOWN;
+        }
+    }
+
     public void SetProcedure(ApplicationState state)
     {
         // Set procedure if exist
@@ -46,6 +57,11 @@ public class GlobalProgressBar : MonoBehaviour
     }
 
     public void NotifyPhaseChange(ApplicationStatePhase newPhase)
+    {
+        this.newPhase = newPhase;
+    }
+
+    private void InternalNotifyPhaseChange(ApplicationStatePhase newPhase)
     {
         // Advancement value
         int currentAdvancement = currentProcedureList.IndexOf(newPhase);

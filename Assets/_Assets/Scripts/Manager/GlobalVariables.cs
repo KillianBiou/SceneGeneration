@@ -16,6 +16,7 @@ public enum ApplicationState
 
 public enum ApplicationStatePhase
 {
+    UNKNOWN = 0,
     NONE,
     PROMPT_INPUT,
     ZERO_IMAGE,
@@ -72,7 +73,6 @@ public class GlobalVariables : MonoBehaviour
 
     public void SetCurrentPhase(ApplicationStatePhase newState)
     {
-        return;
         if(newState != currentPhase)
         {
             currentPhase = newState;
