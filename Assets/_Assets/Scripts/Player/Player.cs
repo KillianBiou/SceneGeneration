@@ -12,7 +12,7 @@ using UnityGLTF;
 [Serializable]
 public class GeneratedModelSerializable
 {
-    public string meshName, imgName;
+    public string meshName = "", imgName;
     public string objectDescription;
     public Vector3 boundingBoxSize;
 
@@ -47,6 +47,7 @@ public class GameObjectSerializable
     public string assetName;
     public Vector3 position;
     public Quaternion rotation;
+    public Vector3 scale;
     public int childNumber;
     public GameObjectSerializable[] child;
 
@@ -62,8 +63,9 @@ public class GameObjectSerializable
     public GameObjectSerializable(GameObject go, bool recursive)
     {
         assetName = go.name;
-        position = go.transform.position;
-        rotation = go.transform.rotation;
+        position = go.transform.localPosition;
+        rotation = go.transform.localRotation;
+        scale = go.transform.localScale;
 
         if (recursive)
         {
@@ -85,10 +87,11 @@ public class GameObjectSerializable
     public void LoadToGameobject(GameObject go)
     {
         go.name = assetName;
-        go.transform.position = position;
-        go.transform.rotation = rotation;
+        go.transform.localPosition = position;
+        go.transform.localRotation = rotation;
+        go.transform.localScale = scale;
 
-        foreach(GameObjectSerializable gos in child)
+        foreach (GameObjectSerializable gos in child)
             gos.LoadToGameobject(go.transform.GetChild(0).gameObject);
     }
 
@@ -157,7 +160,7 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            GenerationDatabase.Instance.GetObject(debugLoadObjectName);
+            //GenerationDatabase.Instance.GetObject(debugLoadObjectName);
             //Instantiate(Resources.Load<GameObject>(debugLoadObjectName), GameObject.FindGameObjectWithTag("Playground").transform);
         }
     }
@@ -253,42 +256,14 @@ public class Player : MonoBehaviour
     public int InstantiationCallback_GLB(string objPath)
     {
         GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.MODEL_IMPORT);
-
-        /*
-        Debug.Log("Instanciating glb from : " + objPath);
-
-        GameObject gblOrigin = new GameObject("GBL_origin");
-        gblOrigin.transform.SetParent(playgroundHolder, false);
-        gblOrigin.transform.position = instanciationPoint + Vector3.up;
-        gblOrigin.transform.rotation = Quaternion.identity;
-
-        
-        GameObject model = new GameObject("Mesh");
-        model.transform.SetParent(gblOrigin.transform, false);
-
-
-        GLTFComponent glb = model.AddComponent<GLTFComponent>();
-
-        glb.Collider = GLTFSceneImporter.ColliderType.MeshConvex;
-        glb.ImportNormals = GLTFImporterNormals.Calculate;
-        //glb.GLTFUri = Path.Combine(objPath, Path.GetFileName(objPath)+".glb");
-        glb.GLTFUri = Path.Combine(objPath, "mesh.glb");
-        */
-
-
-        GenerationDatabase.Instance.GetObject(Path.GetFileName(objPath), instanciationPoint);
-        //GenerationDatabase.Instance.SaveGeneratedAsset(model, objPath);
-
-        Debug.Log("Object instancie !!");
-
-
         if (images.Count > 0)
             images.RemoveAt(0);
         
         generationLock = false;
         Cursor3D.instance.blocked = false;
         Cursor3D.instance.toggleLoadFX(false);
-
+        GenerationDatabase.Instance.SpawnObject(Path.GetFileName(objPath), instanciationPoint, Quaternion.identity, Vector3.one);
+        Debug.Log("Object instancie !!");
         return 0;
     }
 
@@ -379,11 +354,7 @@ public class Player : MonoBehaviour
     {
         foreach (GameObjectSerializable child in parentSerializable.child)
         {
-            GenerationDatabase.Instance.GetObject(child.assetName, child.position);
-
-            /*temp.transform.GetChild(0).position = child.child[0].position;
-            temp.transform.GetChild(0).rotation = child.child[0].rotation;
-            temp.transform.GetChild(0).GetComponent<Renderer>().material = baseMat;*/
+            GenerationDatabase.Instance.SpawnObject(child.assetName.Replace("MESH_", ""), child.position, child.rotation, child.scale);
         }
     }
 
@@ -406,7 +377,7 @@ public class Player : MonoBehaviour
         if(GLBmode)
             TripoSRForUnity.Instance.RunTripoSR_GLB(InstantiationCallback_GLB, imageFullpath);
         else
-            TripoSRForUnity.Instance.RunTripoSR(InstantiationCallback, imageFullpath);
+            TripoSRForUnity.Instance.RunTripoSR_GLB(InstantiationCallback_GLB, imageFullpath, "obj");
     }
 
 

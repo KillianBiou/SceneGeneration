@@ -78,7 +78,7 @@ public class GenerativeChoice : MonoBehaviour
         UnityEngine.Debug.Log(req.directory);
         for (int i = 0; i < n; i++)
         {
-            rq.filename = rq.prompt + "_" +  i + "_T.png";
+            rq.filename = rq.prompt + "_" + DateTime.Now.ToString("yyyyMMdd_hhmm") +  i + "_T.png";
             sdh.RequestGeneration(rq);
         }
 

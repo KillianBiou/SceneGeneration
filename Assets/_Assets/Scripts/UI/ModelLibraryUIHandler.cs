@@ -28,6 +28,7 @@ public class ModelLibraryUIHandler : MonoBehaviour
     {
         GenerationDatabase.OnDatabaseUpdated += DatabaseUpdatedReceiver;
         dragDropHandler = GetComponent<ModelLibraryDragDropHandler>();
+        GenerationDatabase.Instance.NewGeneratedModel.AddListener(AddEntry);
     }
 
     private void Update()
@@ -55,6 +56,8 @@ public class ModelLibraryUIHandler : MonoBehaviour
 
     private void AddEntry(string objName, string jsonPath)
     {
+        UnityEngine.Debug.Log("Creating a button for " + objName);
+
         string imagePath = jsonPath.Replace(".json", ".png");
         Texture2D showcaseImage = new Texture2D(2, 2);
         if (File.Exists(imagePath))
@@ -86,6 +89,8 @@ public class ModelLibraryUIHandler : MonoBehaviour
         trigger.triggers.Add(beginDrag);
         trigger.triggers.Add(drag);
         trigger.triggers.Add(endDrag);
+
+        UnityEngine.Debug.Log("Button ok !");
     }
 
     private void ClearView()

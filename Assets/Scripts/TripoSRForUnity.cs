@@ -200,7 +200,7 @@ public class TripoSRForUnity : MonoBehaviour
     public UnityEvent<string> memoryCallbackGLB;
 
     //Generate a 3D model and put it into a folder
-    public void RunTripoSR_GLB(Func<string, int> callback = null, string imagefullpath = null)
+    public void RunTripoSR_GLB(Func<string, int> callback = null, string imagefullpath = null, string fileType = "glb")
     {
         savePath = Path.Combine(Application.dataPath, "GeneratedData/Models/", Path.GetFileNameWithoutExtension(imagefullpath).Substring(0, Path.GetFileNameWithoutExtension(imagefullpath).Length-4));
 
@@ -224,14 +224,18 @@ public class TripoSRForUnity : MonoBehaviour
             isProcessRunning = false;
         }
 
+        UnityEngine.Debug.Log("GENERATING - " + fileType);
+        string s = "a" +
+            "b";
+
 
         string args = $"\"{string.Join("\" \"", imagefullpath)}\" --device {device} " +
                       $"--pretrained-model-name-or-path {pretrainedModelNameOrPath} " +
                       $"--chunk-size {chunkSize} --mc-resolution {marchingCubesResolution} " +
                       $"{(noRemoveBg ? "--no-remove-bg " : "")} " +
                       $"--foreground-ratio {foregroundRatio.ToString(CultureInfo.InvariantCulture)} " +
-                      $"--output-dir {(savePath)} " +
-                      $"--model-save-format {("glb")} " +
+                      $"--output-dir \"{savePath}\" " +
+                      $"--model-save-format {fileType} " +
                       $"{(render ? "--render" : "")}";
 
         ProcessStartInfo start = new ProcessStartInfo

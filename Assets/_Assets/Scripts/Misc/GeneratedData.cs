@@ -14,7 +14,9 @@ public class GeneratedData : MonoBehaviour
         moveTransform = transform.parent;
         rotateTransform = transform;
         scaleTransform = transform.parent;
-        StartCoroutine(DelaySet());
+        GetComponent<MeshFilter>().mesh.RecalculateNormals();
+        GetComponent<MeshRenderer>().material = GlobalVariables.Instance.GetBaseMaterial();
+        //StartCoroutine(DelaySet());
     }
 
     private IEnumerator DelaySet()

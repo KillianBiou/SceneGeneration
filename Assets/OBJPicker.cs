@@ -6,6 +6,6 @@ public class OBJPicker : MonoBehaviour
 {
     public void Pick()
     {
-        GenerationDatabase.Instance.GetObjectEvent(transform.name);
+        GenerationDatabase.Instance.SpawnObject(transform.name, transform.position, transform.rotation, transform.localScale);
     }
 }
