@@ -236,25 +236,15 @@ public class GenerativeChoice : MonoBehaviour
 
             pending = false;
             sdh.FinishedGenerating.RemoveListener(RemoveBackground);
-            //gameObject.SetActive(false);
 
             GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.USER_SELECTION);
         }
     }
 
-    public void ChooseImage(string oldPath, string newPath)
-    {
-        //uiContainer.transform.parent.gameObject.SetActive(false);
-
-        //File.Move(oldPath, newPath);
-
-        //Player.Instance.AddImage(newPath);
-        Player.Instance.AddImage(newPath, generationPos);
-    }
-
 
     public void PickedImageCallback(string path)
     {
+        gameObject.SetActive(false);
         Player.Instance.AddImage(path, generationPos);
     }
 

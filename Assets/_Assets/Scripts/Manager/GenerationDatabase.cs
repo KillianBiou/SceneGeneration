@@ -122,7 +122,7 @@ public class GenerationDatabase : MonoBehaviour
             glb.Collider = GLTFSceneImporter.ColliderType.MeshConvex;
             glb.ImportNormals = GLTFImporterNormals.Calculate;
             glb.GLTFUri = meshFullPath;
-            glb.Load();
+            //glb.Load();
         }
         else
         {
@@ -141,26 +141,31 @@ public class GenerationDatabase : MonoBehaviour
 
         if(data.meshName.Contains(".obj"))
         {
-            lastImportedGo.transform.GetChild(0).gameObject.AddComponent<GeneratedData>();
+            GeneratedData gd = lastImportedGo.transform.GetChild(0).gameObject.AddComponent<GeneratedData>();
 
         }
         else if (data.meshName.Contains(".glb"))
         {
+            lastImportedGo.transform.GetChild(0).GetChild(0).GetChild(0).name = data.meshName;//.Replace(".glb", "_mesh");
+            GeneratedData gd = lastImportedGo.transform.GetChild(0).GetChild(0).GetChild(0).gameObject.AddComponent<GeneratedData>();
+            gd.GeneratedModelSetup(lastImportedGo.transform);
+            
+            lastImportedGo.GetComponent<GLTFComponent>().onLoadComplete = null;
+            /*
+            Destroy(lastImportedGo.GetComponent<GLTFComponent>());
             GameObject mem = lastImportedGo.transform.GetChild(0).gameObject;
 
             lastImportedGo.transform.GetChild(0).GetChild(0).GetChild(0).SetParent(lastImportedGo.transform);
             Destroy(mem);
             lastImportedGo.transform.GetChild(0).name = "mesh_" + importationKey;
+            */
         }
 
 
         // FIRST TIME ?
         if (data.goData.assetName == "")
         {
-            //gestion de la premiere apparition en 0, 0, 0
-
-            data.goData = new GameObjectSerializable(lastImportedGo.transform.GetChild(0).gameObject, true);
-            File.WriteAllText(fullPath, JsonUtility.ToJson(data));
+            SaveAssetPivotPoint(importationKey, lastImportedGo);
             Debug.Log("First time spawned Saved to json.");
         }
         else
@@ -174,6 +179,14 @@ public class GenerationDatabase : MonoBehaviour
         callback?.Invoke(lastImportedGo);
     }
 
+
+    public void SaveAssetPivotPoint(string key, GameObject parent)
+    {
+        string fullPath = Path.Combine(Application.dataPath, assetDatabase[key]);
+        GeneratedModelSerializable data = JsonUtility.FromJson<GeneratedModelSerializable>(File.ReadAllText(fullPath));
+        data.goData = new GameObjectSerializable(parent.transform.GetChild(0).gameObject, true);
+        File.WriteAllText(fullPath, JsonUtility.ToJson(data));
+    }
 
 
 
@@ -249,7 +262,7 @@ public class GenerationDatabase : MonoBehaviour
         GeneratedModelSerializable data = new GeneratedModelSerializable(savePath);
         File.WriteAllText(Path.Combine(savePath, Path.GetFileName(savePath) + ".json"), JsonUtility.ToJson(data));
         AddEntry(Path.GetFileName(savePath), Path.Combine(savePath.Substring(Application.dataPath.Length+1, savePath.Length - Application.dataPath.Length-1), Path.GetFileName(savePath) + ".json"));
-        //NewGeneratedModel.Invoke(Path.GetFileName(savePath), Path.Combine(savePath.Substring(Application.dataPath.Length + 1, savePath.Length - Application.dataPath.Length - 1), Path.GetFileName(savePath) + ".json"));
+        NewGeneratedModel.Invoke(Path.GetFileName(savePath), Path.Combine(savePath, Path.GetFileName(savePath))  + ".json");
     }
 
 
