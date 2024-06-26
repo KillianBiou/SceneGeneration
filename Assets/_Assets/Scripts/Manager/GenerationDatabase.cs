@@ -84,7 +84,8 @@ public class GenerationDatabase : MonoBehaviour
         if (!assetDatabase.ContainsKey(key))
         {
             Debug.Log("XXX - KEY '"+ key +"' NOT FOUND - XXX");
-            onSpawnedCallback(null);
+            if(onSpawnedCallback != null)
+                onSpawnedCallback(null);
         }
 
         string fullPath = Path.Combine(Application.dataPath, assetDatabase[key]);
