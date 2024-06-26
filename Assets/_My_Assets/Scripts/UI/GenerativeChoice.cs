@@ -52,7 +52,7 @@ public class GenerativeChoice : MonoBehaviour
             Destroy(uiContainer.transform.GetChild(i - 1).gameObject);
         }
 
-        DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/GeneratedData/" + folderName);
+        DirectoryInfo dir = new DirectoryInfo(Path.Combine(Application.dataPath + "/GeneratedData/" + folderName));
         FileInfo[] info = dir.GetFiles("*.*");
 
         foreach (FileInfo f in info)
@@ -74,13 +74,18 @@ public class GenerativeChoice : MonoBehaviour
 
         ClearPicker();
 
-        for (int i = 0; i < n; i++)
-        {
-            req.request.filename.Replace(".png", "_" + i + ".png");
-            sdh.RequestGeneration(rq);
-        }
+        GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.ZERO_IMAGE);
 
-        sdh.FinishedGenerating.AddListener(RemoveBackground);
+        uiContainer.transform.parent.gameObject.SetActive(true);
+
+        req.request = rq;
+        req.request.directory = Path.Combine("GeneratedData", folderName);
+        req.request.filename = req.request.prompt;
+        req.nbImages = n;
+
+
+        DiffuserInterface.Instance.RequestGeneration(req, RemoveBackground);
+
         amount = n;
         pending = true;
     }
@@ -238,7 +243,6 @@ public class GenerativeChoice : MonoBehaviour
             title.text = "Choices (" + amount + ")";
 
             pending = false;
-            sdh.FinishedGenerating.RemoveListener(RemoveBackground);
 
             GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.USER_SELECTION);
         }
