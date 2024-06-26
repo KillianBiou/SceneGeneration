@@ -60,6 +60,7 @@ if __name__ == '__main__':
     # Argument parse
     parser = argparse.ArgumentParser()
     # Prompt param
+
     parser.add_argument('prompt', help='Prompt')
     parser.add_argument('--nprompt', help='Negative prompt', default="")
     parser.add_argument('--hprompt', help='Hidden Prompt', default="")
