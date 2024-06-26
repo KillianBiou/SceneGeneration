@@ -1,6 +1,7 @@
 using Microsoft.Win32;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 [System.Serializable]
@@ -49,7 +50,7 @@ public class GlobalVariables : MonoBehaviour
 
     [Header("ReadOnly Global Variable")]
     [ReadOnly, SerializeField]
-    private string pythonPath;
+    private string pythonPath, modelsPath, imagesPath;
 
     public static GlobalVariables Instance;
 
@@ -57,6 +58,12 @@ public class GlobalVariables : MonoBehaviour
     {
         Instance = this;
         pythonPath = GetPythonPathFromRegistry();
+        modelsPath = Path.Combine(Application.dataPath, "GeneratedData/Models/");
+        imagesPath = Path.Combine(Application.dataPath, "GeneratedData/Images/");
+        if (!Directory.Exists(modelsPath))
+            Directory.CreateDirectory(modelsPath);
+        if (!Directory.Exists(imagesPath))
+            Directory.CreateDirectory(imagesPath);
         EndOfGen();
     }
 
@@ -92,8 +99,19 @@ public class GlobalVariables : MonoBehaviour
         return meshBaseMaterial;
     }
 
-    public string GetPythonPath() { 
+    public string GetPythonPath()
+    {
         return pythonPath;
+    }
+
+    public string GetModelPath()
+    {
+        return modelsPath;
+    }
+
+    public string GetImagePath()
+    {
+        return imagesPath;
     }
 
     private string GetPythonPathFromRegistry(string requiredVersion = "", string maxVersion = "")

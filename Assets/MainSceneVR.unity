@@ -4970,6 +4970,7 @@ GameObject:
   - component: {fileID: 375968612}
   - component: {fileID: 375968611}
   - component: {fileID: 375968610}
+  - component: {fileID: 375968613}
   m_Layer: 0
   m_Name: SD
   m_TagString: Untagged
@@ -5061,6 +5062,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &375968613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375968609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2047836ba135ebc429953bbea81be3c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stableRequest:
+    request:
+      directory: 
+      filename: 
+      prompt: 
+      negPrompt: 
+      hiddenPrompt: 
+      width: 0
+      height: 0
+      steps: 0
+      cfgScale: 0
+      seed: 0
+      tilling: 0
+      tileX: 0
+      tileY: 0
+    imagesModels: 
+    nbImages: 0
+    device: 
 --- !u!1 &385237092
 GameObject:
   m_ObjectHideFlags: 0

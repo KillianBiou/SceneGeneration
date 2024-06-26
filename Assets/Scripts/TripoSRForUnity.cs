@@ -200,7 +200,8 @@ public class TripoSRForUnity : MonoBehaviour
     //Generate a 3D model and put it into a folder
     public void RunTripoSR_GLB(Func<string, int> callback = null, string imagefullpath = null, string fileType = "glb")
     {
-        savePath = Path.Combine(Application.dataPath, "GeneratedData/Models/", Path.GetFileNameWithoutExtension(imagefullpath).Substring(0, Path.GetFileNameWithoutExtension(imagefullpath).Length-4));
+        savePath = Path.Combine(GlobalVariables.Instance.GetModelPath(), Path.GetFileNameWithoutExtension(imagefullpath).Substring(0, Path.GetFileNameWithoutExtension(imagefullpath).Length-2));
+        savePath += DateTime.Now.ToString("yyMMdd-HHmmss");
 
         UnityEngine.Debug.Log("Creation de la destination :  " + savePath + "...");
         if (!Directory.Exists(savePath))
