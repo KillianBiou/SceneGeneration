@@ -5,15 +5,96 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityGLTF;
+
+
 
 [Serializable]
+public class GeneratedModelSerializable
+{
+    public string meshName = "", imgName;
+    public string objectDescription;
+    public Vector3 boundingBoxSize;
+
+    public GameObjectSerializable goData;
+
+    public GeneratedModelSerializable(string directoryPath)
+    {
+        string[] search = Directory.GetFiles(directoryPath, "*.png");
+        if(search.Length>0)
+            imgName = Path.GetFileName(search[0]);
+
+        search = Directory.GetFiles(directoryPath, "*.glb");
+        if (search.Length > 0)
+            meshName = Path.GetFileName(search[0]);
+
+        search = Directory.GetFiles(directoryPath, "*.obj");
+        if (search.Length > 0)
+            meshName = Path.GetFileName(search[0]);
+
+        objectDescription = Path.GetFileName(directoryPath);
+    }
+
+    public void GenerateGoData(GameObject go, bool recursive = false)
+    {
+        goData = new GameObjectSerializable(go, recursive);
+    }
+}
+
+    [Serializable]
 public class GameObjectSerializable
 {
     public string assetName;
     public Vector3 position;
     public Quaternion rotation;
+    public Vector3 scale;
     public int childNumber;
     public GameObjectSerializable[] child;
+
+    public GameObjectSerializable()
+    {
+        assetName = "";
+        position = Vector3.zero;
+        rotation = Quaternion.identity;
+        childNumber = 0;
+        child = new GameObjectSerializable[0];
+    }
+
+    public GameObjectSerializable(GameObject go, bool recursive)
+    {
+        assetName = go.name;
+        position = go.transform.localPosition;
+        rotation = go.transform.localRotation;
+        scale = go.transform.localScale;
+
+        if (recursive)
+        {
+            childNumber =go.transform.childCount;
+            List<GameObjectSerializable> childs = new List<GameObjectSerializable>();
+            for(int i = 0; i<childNumber; i++)
+            {
+                childs.Add(new GameObjectSerializable(go.transform.GetChild(i).gameObject, recursive));
+            }
+            child = childs.ToArray();
+        }
+        else
+        {
+            childNumber = 0;
+            child = null;
+        }     
+    }
+
+    public void LoadToGameobject(GameObject go)
+    {
+        go.name = assetName;
+        go.transform.localPosition = position;
+        go.transform.localRotation = rotation;
+        go.transform.localScale = scale;
+
+        foreach (GameObjectSerializable gos in child)
+            gos.LoadToGameobject(go.transform.GetChild(0).gameObject);
+    }
+
 }
 
 public class Player : MonoBehaviour
@@ -39,6 +120,8 @@ public class Player : MonoBehaviour
     private string debugScenePath;
     [ReadOnly, SerializeField]
     private bool generationLock;
+    [SerializeField]
+    private bool GLBmode = true;
 
     [Header("References")]
     [SerializeField]
@@ -77,7 +160,7 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            GenerationDatabase.Instance.GetObject(debugLoadObjectName);
+            //GenerationDatabase.Instance.GetObject(debugLoadObjectName);
             //Instantiate(Resources.Load<GameObject>(debugLoadObjectName), GameObject.FindGameObjectWithTag("Playground").transform);
         }
     }
@@ -132,12 +215,12 @@ public class Player : MonoBehaviour
         parent.transform.position = instanciationPoint + Vector3.up;
         parent.transform.rotation = Quaternion.identity;
 
-        ImportOptions importOptions = new ImportOptions();
+        AsImpL.ImportOptions importOptions = new AsImpL.ImportOptions();
         importOptions.buildColliders = true;
         importOptions.colliderConvex = true;
-
+        
         ObjectImporter.Instance.ImportModelAsync(Path.GetFileNameWithoutExtension(objPath), objPath, parent.transform, importOptions);
-
+        
         StartCoroutine(ReplacementCoroutine(parent.transform, objPath));
 
         /*GameObject importedObj = AssetDatabase.LoadAssetAtPath<GameObject>(objPath);
@@ -164,10 +247,23 @@ public class Player : MonoBehaviour
             GenerationDatabase.Instance.SaveGeneratedAsset(instantiatedObj, objPath);
         }*/
 
-
         if (images.Count > 0)
             images.RemoveAt(0);
         generationLock = false;
+        return 0;
+    }
+
+    public int InstantiationCallback_GLB(string objPath)
+    {
+        GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.MODEL_IMPORT);
+        if (images.Count > 0)
+            images.RemoveAt(0);
+        
+        generationLock = false;
+        Cursor3D.instance.blocked = false;
+        Cursor3D.instance.toggleLoadFX(false);
+        GenerationDatabase.Instance.SpawnObject(Path.GetFileName(objPath), instanciationPoint, Quaternion.identity, Vector3.one);
+        Debug.Log("Object instancie !!");
         return 0;
     }
 
@@ -178,7 +274,7 @@ public class Player : MonoBehaviour
 
         OriginPlacement OP = parent.GetChild(0).gameObject.AddComponent<OriginPlacement>();
         OP.ReplaceOrigin();
-        Debug.Log("sent ÅF " + objPath.Substring("Assets/".Length));
+        Debug.Log("sent ÔøΩF " + objPath.Substring("Assets/".Length));
         GlobalVariables.Instance.EndOfGen();
         GenerationDatabase.Instance.SaveGeneratedAsset(parent.gameObject, objPath.Substring("Assets/".Length));
     }
@@ -196,6 +292,7 @@ public class Player : MonoBehaviour
 
         Debug.Log("Scene saved at " +  savePath);
     }
+
 
     public GameObjectSerializable GetGameObjectSaveData()
     {
@@ -241,8 +338,6 @@ public class Player : MonoBehaviour
     }
 
 
-
-
     public void LoadSceneFromFile(string scenePath)
     {
         if (!File.Exists(scenePath))
@@ -263,11 +358,7 @@ public class Player : MonoBehaviour
         }
         foreach (GameObjectSerializable child in parentSerializable.child)
         {
-            GenerationDatabase.Instance.GetObject(child.assetName, child.position, child.rotation, Vector3.one);
-
-            /*temp.transform.GetChild(0).position = child.child[0].position;
-            temp.transform.GetChild(0).rotation = child.child[0].rotation;
-            temp.transform.GetChild(0).GetComponent<Renderer>().material = baseMat;*/
+            GenerationDatabase.Instance.SpawnObject(child.assetName.Replace("MESH_", ""), child.position, child.rotation, child.scale);
         }
     }
 
@@ -279,17 +370,21 @@ public class Player : MonoBehaviour
 
     public void AddImage(string imagePath)
     {
-        //Texture2D tex = new Texture2D(2, 2);
-        //tex.LoadImage(File.ReadAllBytes(imagePath));
         images.Add(imagePath);
     }
-    public void AddImage(string imagePath, Vector3 generationPos)
+
+
+    public void AddImage(string imageFullpath, Vector3 generationPos)
     {
         instanciationPoint = generationPos;
-
         generationLock = true;
-        TripoSRForUnity.Instance.RunTripoSR(InstantiationCallback, imagePath);
+        if(GLBmode)
+            TripoSRForUnity.Instance.RunTripoSR_GLB(InstantiationCallback_GLB, imageFullpath);
+        else
+            TripoSRForUnity.Instance.RunTripoSR_GLB(InstantiationCallback_GLB, imageFullpath, "obj");
     }
+
+
 
     private void OnDrawGizmos()
     {

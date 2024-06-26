@@ -8,6 +8,10 @@ public class Cursor3D : MonoBehaviour
 {
 
     static public Cursor3D instance;
+    [SerializeField]
+    private GameObject loadingFX;
+
+    public bool blocked = false;
 
     private void Awake()
     {
@@ -19,6 +23,8 @@ public class Cursor3D : MonoBehaviour
 
     private void Update()
     {
+        if (blocked) return;
+
 
         if (EventSystem.current.IsPointerOverGameObject())
             return;
@@ -43,12 +49,21 @@ public class Cursor3D : MonoBehaviour
 
     public void SetTransform(Vector3 pos, Quaternion rot)
     {
+        if (blocked) return;
+
         transform.position = pos;
         transform.rotation = rot;
     }
     public void SetTransform(Vector3 pos, Vector3 rot)
     {
+        if (blocked) return;
+
         transform.position = pos;
         transform.rotation = Quaternion.FromToRotation(Vector3.up, rot);
+    }
+
+    public void toggleLoadFX(bool b)
+    {
+        loadingFX.SetActive(b);
     }
 }

@@ -1,11 +1,10 @@
-using GLTFast;
+
 using System;
 using System.Collections;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
-using GLTFast.Export;
 using System.Collections.Generic;
 
 enum OutputFormat
@@ -112,7 +111,7 @@ public class ShapeClient : MonoBehaviour
         GameObject temp = Instantiate(new GameObject());
         temp.AddComponent<GltfAsset>();
         temp.GetComponent<GltfAsset>().Url = "file://" + filePath;*/
-
+        /*
         Debug.Log("Instantiation Try");
         byte[] data = File.ReadAllBytes(filePath);
         var gltf = new GltfImport();
@@ -125,6 +124,6 @@ public class ShapeClient : MonoBehaviour
         {
             Debug.Log("Instantiation Success");
             success = await gltf.InstantiateMainSceneAsync(transform);
-        }
+        }*/
     }
 }

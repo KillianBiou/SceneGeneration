@@ -5,6 +5,7 @@ using System.IO;
 using System.Globalization;
 using System;
 using AsImpL;
+using UnityEngine.Events;
 
 public enum TripoState
 {
@@ -33,7 +34,7 @@ public class TripoSRForUnity : MonoBehaviour
     private bool moveAndRename = true;
     
     [ReadOnly, SerializeField, Tooltip("If moveAndRename = true, specifies the relative path to some folder where the output .obj file will be moved to.")]
-    private string moveAndRenamePath = "Models";
+    private string destinationPath = "Models";
     
     [SerializeField, Tooltip("If true, TripoSR's run.py debug output is printed to Unity's console.")]
     private bool showDebugLogs = true;
@@ -78,7 +79,7 @@ public class TripoSRForUnity : MonoBehaviour
     private Process pythonProcess;
     private bool isProcessRunning = false;
     private Func<string, int> memoryCallback;
-    private string currentImagePath = null;
+    private string generatedImagePath = null;
 
     public static event Action OnPythonProcessEnded;
 
@@ -99,7 +100,7 @@ public class TripoSRForUnity : MonoBehaviour
     {
         memoryCallback = callback;
         if(imagePath != null)
-            moveAndRenamePath = Path.Combine("Models", imagePath.Split('/')[imagePath.Split('/').Length - 1].Split(".")[0]);
+            destinationPath = Path.Combine("Models", imagePath.Split('/')[imagePath.Split('/').Length - 1].Split(".")[0]);
         if (isProcessRunning)
         {
             UnityEngine.Debug.Log("A TripoSR process is already running - quitting and replacing process.");
@@ -118,7 +119,7 @@ public class TripoSRForUnity : MonoBehaviour
         if (imagePath != null)
         {
             imagePaths[0] = imagePath;
-            currentImagePath = imagePath;
+            generatedImagePath = imagePath;
         }
         else
         {
@@ -135,7 +136,8 @@ public class TripoSRForUnity : MonoBehaviour
                       $"--pretrained-model-name-or-path {pretrainedModelNameOrPath} " +
                       $"--chunk-size {chunkSize} --mc-resolution {marchingCubesResolution} " +
                       $"{(noRemoveBg ? "--no-remove-bg " : "")} " +
-                      $"--foreground-ratio {foregroundRatio.ToString(CultureInfo.InvariantCulture)} --output-dir {Path.Combine(Application.dataPath, "TripoSR/" + outputDir)} " +
+                      $"--foreground-ratio {foregroundRatio.ToString(CultureInfo.InvariantCulture)} +" +
+                      $"--output-dir {Path.Combine(Application.dataPath, "TripoSR/" + outputDir)} " +
                       $"--model-save-format {((modelSaveFormat == "dae") ? "obj" : modelSaveFormat)} " +
                       $"{(render ? "--render" : "")}";
 
@@ -192,6 +194,133 @@ public class TripoSRForUnity : MonoBehaviour
         isProcessRunning = true;
     }
 
+    private string savePath;
+    public UnityEvent<string> memoryCallbackGLB;
+
+    //Generate a 3D model and put it into a folder
+    public void RunTripoSR_GLB(Func<string, int> callback = null, string imagefullpath = null, string fileType = "glb")
+    {
+        savePath = Path.Combine(Application.dataPath, "GeneratedData/Models/", Path.GetFileNameWithoutExtension(imagefullpath).Substring(0, Path.GetFileNameWithoutExtension(imagefullpath).Length-4));
+
+        UnityEngine.Debug.Log("Creation de la destination :  " + savePath + "...");
+        if (!Directory.Exists(savePath))
+            Directory.CreateDirectory(savePath);
+
+        File.Copy(imagefullpath, Path.Combine(savePath, Path.GetFileName(savePath) + ".png"));
+
+        memoryCallback = callback;
+
+        if (isProcessRunning)
+        {
+            UnityEngine.Debug.Log("A TripoSR process is already running - quitting and replacing process.");
+            if (pythonProcess is { HasExited: false })
+            {
+                pythonProcess.Kill();
+                pythonProcess.Dispose();
+            }
+            pythonProcess = null;
+            isProcessRunning = false;
+        }
+
+        UnityEngine.Debug.Log("GENERATING - " + fileType);
+        string s = "a" +
+            "b";
+
+
+        string args = $"\"{string.Join("\" \"", imagefullpath)}\" --device {device} " +
+                      $"--pretrained-model-name-or-path {pretrainedModelNameOrPath} " +
+                      $"--chunk-size {chunkSize} --mc-resolution {marchingCubesResolution} " +
+                      $"{(noRemoveBg ? "--no-remove-bg " : "")} " +
+                      $"--foreground-ratio {foregroundRatio.ToString(CultureInfo.InvariantCulture)} " +
+                      $"--output-dir \"{savePath}\" " +
+                      $"--model-save-format {fileType} " +
+                      $"{(render ? "--render" : "")}";
+
+        ProcessStartInfo start = new ProcessStartInfo
+        {
+            FileName = pythonPath,
+            Arguments = $"{Path.Combine(Application.dataPath, "TripoSR/run.py")} {args}",
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            CreateNoWindow = true
+        };
+
+        pythonProcess = new Process { StartInfo = start };
+        pythonProcess.StartInfo = start;
+        pythonProcess.EnableRaisingEvents = true;
+        pythonProcess.Exited += OnPythonProcessExited_GLB;
+
+        pythonProcess.OutputDataReceived += (sender, e) =>
+        {
+            if (showDebugLogs && !string.IsNullOrEmpty(e.Data))
+            {
+                UnityEngine.Debug.Log(e.Data);
+            }
+        };
+
+        pythonProcess.ErrorDataReceived += (sender, e) =>
+        {
+            if (e.Data.Contains("Initializing"))
+            {
+                currentState = TripoState.INITIALIZATION;
+            }
+            if (e.Data.Contains("Processing"))
+            {
+                currentState = TripoState.PROCESSING;
+            }
+            if (e.Data.Contains("Running"))
+            {
+                currentState = TripoState.RUNNING;
+            }
+            if (e.Data.Contains("Exporting"))
+            {
+                currentState = TripoState.EXPORTING;
+            }
+
+            UnityEngine.Debug.Log(e.Data);
+        };
+
+        pythonProcess.Start();
+        pythonProcess.BeginOutputReadLine();
+        pythonProcess.BeginErrorReadLine();
+        isProcessRunning = true;
+    }
+
+
+    private void OnPythonProcessExited_GLB(object sender, EventArgs e)
+    {
+        UnityEngine.Debug.Log("Python process exited. ");
+        currentState = TripoState.WAITING;
+        isProcessRunning = false;
+        pythonProcess = null;
+
+        DirectoryInfo dInfo = new DirectoryInfo(savePath);
+
+        //string fileName = dInfo.Name;
+
+        //UnityEngine.Debug.Log("Moving image to "+ Path.Combine(savePath, fileName + ".png") + "... ");
+        //File.Copy(generatedImagePath, Path.Combine(savePath, fileName + ".png"));
+
+        //UnityEngine.Debug.Log("Generating json at " + Path.Combine(savePath, Path.GetFileName(savePath) + ".json"));
+        //GeneratedModelSerializable data = new GeneratedModelSerializable(savePath);
+        //File.WriteAllText(Path.Combine(savePath, fileName + ".json"), JsonUtility.ToJson(data));
+
+        GenerationDatabase.Instance.SetupMeshFolder(savePath);
+
+        UnityEngine.Debug.Log("Calling back for instantiation...");
+        if (memoryCallback != null)
+        {
+            UnityEditor.EditorApplication.delayCall += () => memoryCallback.Invoke(savePath);
+        }
+        else
+            UnityEngine.Debug.Log("XXX No python exit callback XXX ");
+
+        UnityEditor.EditorApplication.delayCall += () => OnPythonProcessEnded?.Invoke();
+    }
+
+
+
     private void OnPythonProcessExited(object sender, EventArgs e)
     {
         currentState = TripoState.WAITING;
@@ -207,8 +336,8 @@ public class TripoSRForUnity : MonoBehaviour
     private void MoveAndRenameOutputFile()
     {
         string originalPath = Path.Combine(Application.dataPath, "TripoSR/" + outputDir + "0/mesh.obj");
-        string modelsDirectory = "Assets/"+moveAndRenamePath;
-        string newFileName = moveAndRenamePath.Split("\\")[moveAndRenamePath.Split("\\").Length - 1] + ".obj";
+        string modelsDirectory = "Assets/"+destinationPath;
+        string newFileName = destinationPath.Split("\\")[destinationPath.Split("\\").Length - 1] + ".obj";
         string newAssetPath = Path.Combine(modelsDirectory, newFileName);
         string newPath = Path.Combine(Application.dataPath, newAssetPath.Substring("Assets/".Length));
 
@@ -220,8 +349,8 @@ public class TripoSRForUnity : MonoBehaviour
             if (File.Exists(newPath)) UnityEngine.Debug.LogWarning($"The file '{newPath}' already exists. Please move or rename, then run TripoSR again.");
             else {
                 File.Move(originalPath, newPath);
-                if (currentImagePath != null)
-                    File.Copy(currentImagePath, newPath.Replace(".obj", ".png"));
+                if (generatedImagePath != null)
+                    File.Copy(generatedImagePath, newPath.Replace(".obj", ".png"));
                 //AssetDatabase.Refresh();
 
                 UnityEngine.Debug.Log($"Moved and renamed mesh to path: {newPath}");

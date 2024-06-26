@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Security;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -28,18 +29,32 @@ public class ModelLibraryUIHandler : MonoBehaviour
     {
         GenerationDatabase.OnDatabaseUpdated += DatabaseUpdatedReceiver;
         dragDropHandler = GetComponent<ModelLibraryDragDropHandler>();
+        GenerationDatabase.Instance.NewGeneratedModel.AddListener(AddMainThreadEntry);
     }
+
+
+    private bool pendingNewEntry;
+    private string newObj, newJson;
+
 
     private void Update()
     {
-        if(Input.GetKeyUp(KeyCode.Alpha3)) { 
+        if (pendingNewEntry)
+        {
+            pendingNewEntry = false;
+            AddEntry(newObj, newJson);
+        }
+            
+
+        if (Input.GetKeyUp(KeyCode.Alpha3))
+        { 
             DatabaseUpdatedReceiver();
         }
     }
 
     public void DatabaseUpdatedReceiver()
     {
-        Debug.Log("Refresh Database UI");
+        Debug.Log("Refmesh Database UI");
 
         // Clear View (Not optimal, but sufficient for now as they wont be more than 20 models)
         ClearView();
@@ -53,8 +68,18 @@ public class ModelLibraryUIHandler : MonoBehaviour
         }
     }
 
+    private void AddMainThreadEntry(string objName, string jsonPath)
+    {
+        pendingNewEntry = true;
+
+        newObj = objName;
+        newJson = jsonPath;
+    }
+
     private void AddEntry(string objName, string jsonPath)
     {
+        UnityEngine.Debug.Log("Creating a button for " + objName + " located at " + jsonPath);
+
         string imagePath = jsonPath.Replace(".json", ".png");
         Texture2D showcaseImage = new Texture2D(2, 2);
         if (File.Exists(imagePath))
@@ -65,6 +90,8 @@ public class ModelLibraryUIHandler : MonoBehaviour
         GameObject modelView = Instantiate(entryGameobject, entryHolder.transform);
         modelView.GetComponentInChildren<RawImage>().texture = showcaseImage;
         modelView.name = objName;
+
+
 
         EventTrigger trigger = modelView.GetComponent<EventTrigger>();
 

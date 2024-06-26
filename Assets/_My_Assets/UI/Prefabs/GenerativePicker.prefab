@@ -34,9 +34,9 @@ RectTransform:
   - {fileID: 4578122370831866925}
   m_Father: {fileID: 4970504383074765274}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 43.1465, y: 36.82}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1399769972702469199
@@ -306,6 +306,7 @@ GameObject:
   - component: {fileID: 1784367696105882773}
   - component: {fileID: 5485833212508941398}
   - component: {fileID: 8938433757024943984}
+  - component: {fileID: 3183981254614502005}
   m_Layer: 5
   m_Name: GenerativePicker
   m_TagString: Untagged
@@ -355,7 +356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5372549, g: 0.68235296, b: 0.83137256, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -411,7 +412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
-  m_VerticalFit: 2
+  m_VerticalFit: 1
 --- !u!114 &5485833212508941398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -441,6 +442,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 13
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8938433757024943984}
+          m_TargetAssemblyTypeName: MoveableUI, Assembly-CSharp
+          m_MethodName: BeginHandler
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &8938433757024943984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,6 +470,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3218314670bcca94ebd1af7ebfe28e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3183981254614502005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2525356168897796715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38a0d9e021728714fbdc70b4953cf3f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  folderName: ChoicePicker
+  uiContainer: {fileID: 2584055140658719107}
+  buttonChoice: {fileID: 7135418982240320871, guid: 7cb95b6a1f6143a4e9e5a11821899313,
+    type: 3}
+  title: {fileID: 4216265675096531747}
+  req:
+    directory: p1
+    filename: choicetest.png
+    prompt: gundam, robot, mecha
+    negPrompt: nsfw, girl
+    hiddenPrompt: 
+    width: 512
+    height: 512
+    steps: 20
+    cfgScale: 7
+    seed: -1
+    tilling: 0
+    tileX: 0
+    tileY: 0
 --- !u!1 &2584055140658719107
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,7 +514,6 @@ GameObject:
   - component: {fileID: 514730232479604351}
   - component: {fileID: 4436379113713138852}
   - component: {fileID: 4515577069227335315}
-  - component: {fileID: 4327505826958377015}
   m_Layer: 5
   m_Name: Holder
   m_TagString: Untagged
@@ -490,8 +537,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 355, y: -205}
-  m_SizeDelta: {x: 700, y: 0}
+  m_AnchoredPosition: {x: 365, y: -70}
+  m_SizeDelta: {x: 720, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7899551690520740974
 CanvasRenderer:
@@ -553,7 +600,7 @@ MonoBehaviour:
   m_StartAxis: 0
   m_CellSize: {x: 350, y: 350}
   m_Spacing: {x: 0, y: 0}
-  m_Constraint: 0
+  m_Constraint: 1
   m_ConstraintCount: 2
 --- !u!114 &4515577069227335315
 MonoBehaviour:
@@ -569,26 +616,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
---- !u!114 &4327505826958377015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2584055140658719107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: 0
-  m_MinHeight: 0
-  m_PreferredWidth: 700
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
 --- !u!1 &4993037500033233728
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,7 +1081,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 5, y: -5}
-  m_SizeDelta: {x: 200, y: 0}
+  m_SizeDelta: {x: 720, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &5912593285190856241
 CanvasRenderer:
@@ -1117,7 +1144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
-  m_MinWidth: 200
+  m_MinWidth: 720
   m_MinHeight: -1
   m_PreferredWidth: -1
   m_PreferredHeight: 40

@@ -8,20 +8,15 @@ public class GeneratedData : MonoBehaviour
     public Transform rotateTransform;
     public Transform scaleTransform;
 
-    private void Start()
+    public void GeneratedModelSetup(Transform parent)
     {
-        transform.tag = "3D generated";
-        moveTransform = transform.parent;
-        rotateTransform = transform.parent;
-        scaleTransform = transform.parent;
-        StartCoroutine(DelaySet());
-    }
+        Debug.Log("PivotPoint Setup");
 
-    private IEnumerator DelaySet()
-    {
-        yield return new WaitForSeconds(.1f);
-        GetComponent<MeshFilter>().mesh.RecalculateNormals();
+        transform.tag = "3D generated";
         GetComponent<MeshRenderer>().material = GlobalVariables.Instance.GetBaseMaterial();
-        //transform.GetChild(0).GetComponent<MeshCollider>().sharedMesh = transform.GetChild(0).GetComponent<MeshFilter>().mesh;
+
+        moveTransform = parent;
+        rotateTransform = transform;
+        scaleTransform = parent;
     }
 }

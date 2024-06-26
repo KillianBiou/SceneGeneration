@@ -14,7 +14,7 @@ public class GenerativeChoice : MonoBehaviour
 
     public string folderName;
     public GameObject uiContainer, buttonChoice;
-    public Vector3 generationPos;
+    private Vector3 generationPos;
     [SerializeField]
     private TMP_Text title;
 
@@ -22,6 +22,7 @@ public class GenerativeChoice : MonoBehaviour
 
 
     private StableHandler sdh;
+    private Cursor3D cursor;
     private int amount;
     private bool pending;
 
@@ -40,6 +41,7 @@ public class GenerativeChoice : MonoBehaviour
         sdh = FindFirstObjectByType<StableHandler>();
 
         req = DiffuserInterface.GetRequestTemplate();
+        cursor = FindFirstObjectByType<Cursor3D>();
     }
 
 
@@ -68,6 +70,8 @@ public class GenerativeChoice : MonoBehaviour
         if (!sdh || pending)
             return;
 
+        generationPos = cursor.transform.position;
+
         ClearPicker();
 
         for (int i = 0; i < n; i++)
@@ -76,7 +80,7 @@ public class GenerativeChoice : MonoBehaviour
             sdh.RequestGeneration(rq);
         }
 
-        sdh.FinishedGenerating.AddListener(CountingResults);
+        sdh.FinishedGenerating.AddListener(RemoveBackground);
         amount = n;
         pending = true;
     }
@@ -88,9 +92,9 @@ public class GenerativeChoice : MonoBehaviour
         if (!sdh)
             return;
 
-        GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.ZERO_IMAGE);
-
         ClearPicker();
+
+        GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.ZERO_IMAGE);
 
         uiContainer.transform.parent.gameObject.SetActive(true);
 
@@ -211,7 +215,7 @@ public class GenerativeChoice : MonoBehaviour
     public void CountingResults()
     {
 
-        DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/GeneratedData/" +  folderName);
+        DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/GeneratedData/" +  folderName); // CALL THE DIR
         FileInfo[] info = dir.GetFiles("*.png");
 
         if (info.Length >= amount)
@@ -219,47 +223,39 @@ public class GenerativeChoice : MonoBehaviour
             //generate buttons
             foreach (FileInfo f in info)
             {
-
-
                 GameObject last = Instantiate(buttonChoice);
 
                 Texture2D tex = new Texture2D(2, 2);
-                tex.LoadImage(File.ReadAllBytes(Application.dataPath + "/GeneratedData/" + folderName + "/" + f.Name));
+                tex.LoadImage(File.ReadAllBytes(f.FullName));
 
-                last.GetComponent<Button>().onClick.AddListener(() => ChooseImage(Application.dataPath + "/GeneratedData/" + folderName + "/" + f.Name, 
-                                                                                Application.dataPath + "/GeneratedData/" + folderName + req.request.prompt.Replace(" ", "") + (System.DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds + ".png"));
+                last.GetComponent<Button>().onClick.AddListener(() => PickedImageCallback(f.FullName));
 
                 last.transform.GetChild(0).GetComponent<RawImage>().texture = tex;
                 last.transform.SetParent(uiContainer.transform);
 
             }
 
-            //LayoutRebuilder.MarkLayoutForRebuild(GetComponent<RectTransform>());
-            //LayoutRebuilder.MarkLayoutForRebuild(gameObject.transform as RectTransform);
-            //LayoutRebuilder.MarkLayoutForRebuild(uiContainer.transform as RectTransform);
-
-            //EditorUtility.SetDirty(transform.parent.GetComponent<Canvas>());
-
             title.text = "Choices (" + amount + ")";
-            uiContainer.SetActive(true);
 
             pending = false;
-            sdh.FinishedGenerating.RemoveListener(CountingResults);
-            gameObject.SetActive(false);
+            sdh.FinishedGenerating.RemoveListener(RemoveBackground);
 
             GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.USER_SELECTION);
         }
     }
 
-    public void ChooseImage(string oldPath, string newPath)
+
+    public void PickedImageCallback(string path)
     {
-        uiContainer.transform.parent.gameObject.SetActive(false);
-
-        File.Move(oldPath, newPath);
-
-        //Player.Instance.AddImage(newPath);
-        Player.Instance.AddImage(newPath, generationPos);
+        gameObject.SetActive(false);
+        Player.Instance.AddImage(path, generationPos);
     }
+
+
+
+
+
+
 
     public void SetPrompt(string s)
     {

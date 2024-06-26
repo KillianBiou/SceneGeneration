@@ -290,7 +290,6 @@ public class EditmapMode : MonoBehaviour
 
     public void ToggleMode(int i)
     {
-        Debug.Log("mais oui !" + i);
         switch (i)
         {
             case 0:
