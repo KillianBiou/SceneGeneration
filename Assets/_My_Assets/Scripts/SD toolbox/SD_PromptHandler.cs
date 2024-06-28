@@ -7,29 +7,23 @@ using UnityEngine;
 public class SD_PromptHandler : MonoBehaviour
 {
 
-    public SdRequest request = new SdRequest();
+    private SdRequest request = new SdRequest();
+    private string _model = "";
 
     [SerializeField]
     private GenerativeChoice genChoice;
+    [SerializeField]
+    private GameObject modelInput;
 
-    private StableHandler handler;
-
-    public int n = 4;
-
-    private void Awake()
-    {
-        handler = FindFirstObjectByType<StableHandler>();
-    }
 
     public void SendGenerationRequest()
     {
         request.filename = request.prompt + DateTime.Now.ToString("_MMdd-HHmmss") + "_T.png";
-
-        if (handler)
-            handler.RequestGeneration(request);
+        StableCompleteRequest sdcr = new StableCompleteRequest(request, _model, 1, "");
+        DiffuserInterface.Instance.RequestGeneration(sdcr);
     }
 
-    public void GenX()
+    public void GenX(int n)
     {
         if (genChoice != null)
         {
@@ -133,12 +127,15 @@ public class SD_PromptHandler : MonoBehaviour
         request.tileY = b;
     }
 
-    public void SetHiddenPrompt(int i)
+    public void SetGenerationStyle(int i)
     {
-        switch(i)
+        modelInput.SetActive(false);
+
+        switch (i)
         {
             case 0:
                 request.hiddenPrompt = "realistic";
+                //_model = "truc";
                 break;
             case 1:
                 request.hiddenPrompt = "stylized";
@@ -157,8 +154,14 @@ public class SD_PromptHandler : MonoBehaviour
                 break;
             default:
                 request.hiddenPrompt = "";
+                modelInput.SetActive(true);
                 break;
         }
+    }
+
+    public void SetModel(string s)
+    {
+        _model = s;
     }
 
 }

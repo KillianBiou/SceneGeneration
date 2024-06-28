@@ -60,7 +60,7 @@ public class GameObjectSerializable
         child = new GameObjectSerializable[0];
     }
 
-    public GameObjectSerializable(GameObject go, bool recursive)
+    public GameObjectSerializable(GameObject go, bool recursive = false)
     {
         assetName = go.name;
         position = go.transform.localPosition;
@@ -307,32 +307,35 @@ public class Player : MonoBehaviour
         parentSerializable.child = new GameObjectSerializable[parent.transform.childCount];
 
         int i = 0;
+
+        List< GameObjectSerializable > objList = new List< GameObjectSerializable >();
         foreach (Transform child in parent.transform)
         {
-            GameObjectSerializable childTemp = new GameObjectSerializable();
+            objList.Add(new GameObjectSerializable(child.gameObject, false));
+
+            /*GameObjectSerializable childTemp = new GameObjectSerializable();
             childTemp.assetName = child.name;
             childTemp.position = child.transform.localPosition;
             childTemp.rotation = child.transform.localRotation;
             childTemp.childNumber = 1;
-
-            //
+            */
+            /*
             GameObjectSerializable mesh = new GameObjectSerializable();
             mesh.assetName = child.GetChild(0).name;
             mesh.position = child.GetChild(0).transform.localPosition;
             mesh.rotation = child.GetChild(0).transform.localRotation;
             mesh.childNumber = 0;
             mesh.child = null;
-            //
-
+            */
+            /*
             childTemp.child = new GameObjectSerializable[1];
             childTemp.child[0] = mesh;
 
             parentSerializable.child[i] = childTemp;
-            i++;
+            i++;*/
         }
-
-        parentSerializable.childNumber = parent.transform.childCount;
-
+        parentSerializable.child = objList.ToArray();
+        parentSerializable.childNumber = parentSerializable.child.Length;
 
         return parentSerializable;
     }
@@ -350,16 +353,35 @@ public class Player : MonoBehaviour
         Debug.Log("Scene loaded from " + scenePath);
     }
 
+
+
     public void LoadScene(GameObjectSerializable parentSerializable)
     {
         foreach(Transform child in GameObject.FindGameObjectWithTag("Playground").transform)
         {
             Destroy(child.gameObject);
         }
+        toImport = parentSerializable;
+        ID = -1;
+
+        ImportAll(null);
+        /*
         foreach (GameObjectSerializable child in parentSerializable.child)
         {
-            GenerationDatabase.Instance.SpawnObject(child.assetName.Replace("MESH_", ""), child.position, child.rotation, child.scale);
-        }
+            GenerationDatabase.Instance.SpawnObject(child.assetName, child.position, child.rotation, child.scale);
+        }*/
+    }
+
+    private GameObjectSerializable toImport;
+    private int ID;
+
+    public int ImportAll(GameObject go)
+    {
+        ID++;
+        if(ID < toImport.child.Length)
+            GenerationDatabase.Instance.SpawnObject(toImport.child[ID].assetName, toImport.child[ID].position, toImport.child[ID].rotation, toImport.child[ID].scale, ImportAll);
+
+        return 0;
     }
 
 

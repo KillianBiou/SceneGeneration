@@ -488,19 +488,23 @@ MonoBehaviour:
     type: 3}
   title: {fileID: 4216265675096531747}
   req:
-    directory: p1
-    filename: choicetest.png
-    prompt: gundam, robot, mecha
-    negPrompt: nsfw, girl
-    hiddenPrompt: 
-    width: 512
-    height: 512
-    steps: 20
-    cfgScale: 7
-    seed: -1
-    tilling: 0
-    tileX: 0
-    tileY: 0
+    request:
+      directory: 
+      filename: 
+      prompt: 
+      negPrompt: 
+      hiddenPrompt: 
+      width: 0
+      height: 0
+      steps: 0
+      cfgScale: 0
+      seed: 0
+      tilling: 0
+      tileX: 0
+      tileY: 0
+    imagesModels: 
+    nbImages: 0
+    device: 
 --- !u!1 &2584055140658719107
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,7 +542,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 365, y: -70}
-  m_SizeDelta: {x: 720, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7899551690520740974
 CanvasRenderer:
@@ -1081,7 +1085,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 5, y: -5}
-  m_SizeDelta: {x: 720, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &5912593285190856241
 CanvasRenderer:

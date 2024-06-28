@@ -44,7 +44,6 @@ public class DiffuserInterface : MonoBehaviour
         }
 
         string args = $"{(requestDetail.request.negPrompt == "" ? "" : "--nprompt \"" + requestDetail.request.negPrompt + "\"")} " +
-                      $"{(requestDetail.request.hiddenPrompt == "" ? "" : "--hprompt \"" + requestDetail.request.hiddenPrompt + "\"")} " +
                       $"--width {requestDetail.request.width} " +
                       $"--height {requestDetail.request.height} " +
                       $"{(requestDetail.imagesModels == "" ? "" : "--image-model \"" + requestDetail.imagesModels + "\"")} " +
@@ -58,7 +57,7 @@ public class DiffuserInterface : MonoBehaviour
                       $"{(requestDetail.device == "" ? "" : "--device \"" + requestDetail.device + "\"")} " +
                       $"--output_path \"{Path.Combine(Application.dataPath, requestDetail.request.directory)}\" " +
                       $"--file_name \"{requestDetail.request.filename}\" " +
-                      $" \"{requestDetail.request.prompt}\" ";
+                      $" \"{requestDetail.request.prompt + "," + requestDetail.request.hiddenPrompt}\" ";
 
         // {Path.Combine(Application.dataPath, outputPath)}
         ProcessStartInfo start = new ProcessStartInfo

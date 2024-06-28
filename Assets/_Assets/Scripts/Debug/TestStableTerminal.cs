@@ -10,6 +10,14 @@ public struct StableCompleteRequest
     public string imagesModels;
     public int nbImages;
     public string device;
+
+    public StableCompleteRequest(SdRequest rq, string model, int nb, string d)
+    {
+        request = rq;
+        imagesModels = model;
+        nbImages = nb;
+        device = d;
+    }
 }
 
 public class TestStableTerminal : MonoBehaviour

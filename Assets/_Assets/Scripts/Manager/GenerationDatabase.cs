@@ -49,8 +49,10 @@ public class GenerationDatabase : MonoBehaviour
         Debug.Log("STATIC INSTANCE :" + Instance.name);
 
         RmBadEntry();
+        CheckNewEntry(GlobalVariables.Instance.GetModelPath());
+        /*
         if (modelsFolders != null)
-            CheckEntryAtFolders(modelsFolders);
+            CheckEntryAtFolders(modelsFolders);*/
     }
 
     public void AddEntry(string key, string value)
@@ -95,7 +97,7 @@ public class GenerationDatabase : MonoBehaviour
         string meshFullPath = Path.Combine(Application.dataPath, Path.GetDirectoryName(assetDatabase[key]), data.meshName);
 
         Debug.Log("Spawning " + meshFullPath);
-        GameObject parent = new GameObject("MESH_" + key);
+        GameObject parent = new GameObject(key);
         lastImportedGo = parent;
         parent.transform.SetParent(GameObject.FindGameObjectWithTag("Playground").transform);
         parent.transform.position = targetPos;
@@ -201,11 +203,11 @@ public class GenerationDatabase : MonoBehaviour
     // Add all found entry in folder and subfolder level 1
     public void CheckNewEntry(string folderName = "Models")
     {
-        if (!Directory.Exists(Path.Combine(Application.dataPath, folderName)))
+        if (!Directory.Exists(folderName))
             return;
 
-        Debug.Log("Looking for entry in " + Path.Combine(Application.dataPath, folderName));
-        DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(Application.dataPath, folderName));
+        Debug.Log("Looking for entry in " + folderName);
+        DirectoryInfo directoryInfo = new DirectoryInfo(folderName);
 
         foreach (DirectoryInfo info in directoryInfo.GetDirectories())
         {
@@ -219,7 +221,7 @@ public class GenerationDatabase : MonoBehaviour
                     if(data.meshName != "")
                     {
                         Debug.Log("Found " + info.Name + " unregistered, adding to db");
-                        assetDatabase.Add(info.Name, Path.Combine(folderName, info.Name, info.Name + ".json"));
+                        assetDatabase.Add(info.Name, Path.Combine(folderName.Substring(Application.dataPath.Length-1), info.Name, info.Name + ".json"));
                     }
                 }
             }
