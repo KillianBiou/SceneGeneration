@@ -6,7 +6,7 @@ public class SquarePicker : MonoBehaviour
 {
     [SerializeField]
     private ColorPicker _colorPicker;
-
+    private bool _selecting;
 
 
     private void Awake()
@@ -14,9 +14,23 @@ public class SquarePicker : MonoBehaviour
         _colorPicker.ColorChanged.AddListener(ResetCursor);
     }
 
+    private void Update()
+    {
+        if (_selecting)
+        {
+            PickOnSquare();
+        }
+    }
+
+
+
+
     public void PickOnSquare()
     {
+        RectTransform rectTransform = GetComponent<RectTransform>();
+
         transform.position = Input.mousePosition;
+        rectTransform.anchoredPosition = new Vector3(Mathf.Clamp(rectTransform.anchoredPosition.x, 0, 135), Mathf.Clamp(rectTransform.anchoredPosition.y, 0, 135), 0);
 
         if (_colorPicker)
         {
@@ -34,5 +48,11 @@ public class SquarePicker : MonoBehaviour
         Color.RGBToHSV(c, out h, out s, out v);
 
         gameObject.transform.localPosition = new Vector3(s*130-65, v*130-65, 0);
+    }
+
+
+    public void SetSelecting(bool b)
+    {
+        _selecting = b;
     }
 }

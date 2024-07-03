@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,10 @@ public class WheelUiButton : MonoBehaviour
 {
     [SerializeField]
     private GameObject visual;
+    [SerializeField]
+    private Image segmentIcon;
+    [SerializeField]
+    private TMP_Text segmentName;
     [SerializeField]
     private Color hoveredColor;
 
@@ -17,6 +22,24 @@ public class WheelUiButton : MonoBehaviour
         normalColor = transform.GetChild(0).GetComponent<Image>().color;
     }
 
+    public void Init(WheelVisuals button)
+    {
+        if (button.img != null)
+        {
+            segmentIcon.sprite = button.img;
+            segmentIcon.gameObject.SetActive(true);
+        }
+
+        if (button.name != null)
+        {
+            if(button.name != "")
+            {
+                segmentIcon.sprite = button.img;
+                segmentIcon.gameObject.SetActive(true);
+            }
+        }
+    }
+
     public void ResetRot()
     {
         visual.transform.eulerAngles = transform.parent.eulerAngles;
@@ -24,10 +47,10 @@ public class WheelUiButton : MonoBehaviour
 
     public void Hover()
     {
-        transform.GetChild(0).GetComponent<Image>().color = hoveredColor;
+        GetComponent<Image>().material.SetColor("_Color", hoveredColor);
     }
     public void EndHover()
     {
-        transform.GetChild(0).GetComponent<Image>().color = normalColor;
+        GetComponent<Image>().material.SetColor("_Color", normalColor);
     }
 }

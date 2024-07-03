@@ -93,7 +93,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content: {fileID: 6412779195426205582}
   cursor: {fileID: 5610715873032417927}
+  segmentPrefab: {fileID: 645962538274740346, guid: c59de57c84fcd674b95ec09822ea389f,
+    type: 3}
   input: {x: 0, y: 0}
+  ChoiceDone:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2443512663023147471
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,10 +339,10 @@ RectTransform:
   - {fileID: 5294183141607104585}
   m_Father: {fileID: 5208954263774225692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &5624719102409210432
 PrefabInstance:
@@ -360,22 +365,22 @@ PrefabInstance:
     - target: {fileID: 538096302797232649, guid: c59de57c84fcd674b95ec09822ea389f,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 538096302797232649, guid: c59de57c84fcd674b95ec09822ea389f,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 538096302797232649, guid: c59de57c84fcd674b95ec09822ea389f,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 538096302797232649, guid: c59de57c84fcd674b95ec09822ea389f,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 538096302797232649, guid: c59de57c84fcd674b95ec09822ea389f,
         type: 3}
@@ -451,6 +456,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: WheelButton (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 786539572704005405, guid: c59de57c84fcd674b95ec09822ea389f,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

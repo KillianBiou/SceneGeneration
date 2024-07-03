@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_UI_Grad
-  m_Shader: {fileID: -6465566751694194690, guid: c14c92bcfc364004aae622cde601d7f3,
+  m_Name: Shader Graphs_CircleSegment
+  m_Shader: {fileID: -6465566751694194690, guid: 45b523f571ddfeb498d6fec2372cf5c9,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -41,11 +41,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _Angle: 60
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _Thikness: 0.5
     m_Colors:
-    - _Color: {r: 0, g: 0.30422592, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &5968243555076225214
+--- !u!114 &7987388177974513115
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

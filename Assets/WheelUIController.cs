@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class WheelUIController : MonoBehaviour
 {
 
     [SerializeField]
-    private GameObject content, cursor;
+    private GameObject content, cursor, segmentPrefab;
 
 
     [HideInInspector]
@@ -19,8 +22,17 @@ public class WheelUIController : MonoBehaviour
 
     private bool isChoosing;
 
-    public void Init()
+    public void Init(List<WheelVisuals> buttons)
     {
+
+        foreach(WheelVisuals button in buttons)
+        {
+            GameObject last = Instantiate(segmentPrefab);
+            last.transform.SetParent(content.transform, false);
+            last.GetComponent<WheelUiButton>().Init(button);
+            last.GetComponent<UnityEngine.UI.Image>().material = Instantiate(last.GetComponent<UnityEngine.UI.Image>().material);
+        }
+
         if (content.transform.childCount != 0)
         {
             ArrangeItems();
@@ -78,6 +90,8 @@ public class WheelUIController : MonoBehaviour
         {
             content.transform.GetChild(i).localEulerAngles = new Vector3(0, 0, 360 / content.transform.childCount * i);
             content.transform.GetChild(i).GetComponent<WheelUiButton>().ResetRot();
+
+            content.transform.GetChild(i).GetComponent<UnityEngine.UI.Image>().material.SetFloat("_Angle", 180/content.transform.childCount);
         }
     }
 
