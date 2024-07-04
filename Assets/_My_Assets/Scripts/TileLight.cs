@@ -6,11 +6,12 @@ using UnityEngine.Events;
 public class TileLight : MonoBehaviour
 {
 
-    public float lightHeight, lightIntensity;
+    //public float lightHeight, lightIntensity;
     public Light lightRef;
 
 
     public GameObject remover, editGizmo, lightObj;
+    public GameObject vrGizmo, vrRemover;
     public EditmapMode editmap;
 
 
@@ -36,11 +37,13 @@ public class TileLight : MonoBehaviour
     {
         editGizmo.SetActive(false);
         remover.SetActive(true);
+        vrRemover.SetActive(true);
         GetComponent<BoxCollider>().enabled = true;
     }
     public void DeactivateRemover()
     {
         remover.SetActive(false);
+        vrRemover.SetActive(false);
         GetComponent<BoxCollider>().enabled = false;
     }
 
@@ -48,11 +51,13 @@ public class TileLight : MonoBehaviour
     public void ActivateEdit()
     {
         editGizmo.SetActive(true);
+        vrGizmo.SetActive(true);
         GetComponent<BoxCollider>().enabled = true;
     }
     public void DeactivateEdit()
     {
         editGizmo.SetActive(false);
+        vrGizmo.SetActive(false);
         GetComponent<BoxCollider>().enabled = false;
     }
 }

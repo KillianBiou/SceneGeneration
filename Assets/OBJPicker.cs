@@ -6,6 +6,7 @@ public class OBJPicker : MonoBehaviour
 {
     public void Pick()
     {
-        GenerationDatabase.Instance.SpawnObject(transform.name, transform.position, transform.rotation, transform.localScale);
+        VRObjectPlacer.Instance.selectedKey = gameObject.name;
+        //GenerationDatabase.Instance.SpawnObject(transform.name, transform.position, transform.rotation, transform.localScale);
     }
 }

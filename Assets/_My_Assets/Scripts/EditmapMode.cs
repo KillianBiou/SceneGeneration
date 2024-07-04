@@ -55,7 +55,7 @@ public class EditmapMode : MonoBehaviour
 
     public RoomMap roomMap;
 
-    public GameObject lightPrefab, lightInspector;
+    public GameObject lightPrefab, lightInspector, lightTool;
 
 
     private GameObject lightGizmo;
@@ -73,7 +73,7 @@ public class EditmapMode : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        llights = new List<GameObject>();
+        RoomMap.Instance.llights = new List<GameObject>();
         lightGizmo = Instantiate(lightPrefab);
         lightGizmo.SetActive(false);
 
@@ -219,7 +219,7 @@ public class EditmapMode : MonoBehaviour
                     if (Input.GetMouseButtonDown(0))
                     {
                         GameObject last = Instantiate(lightPrefab);
-                        llights.Add(last);
+                        RoomMap.Instance.llights.Add(last);
                         last.transform.position = hit.point;
                         last.GetComponent<TileLight>().editmap = this;
                         last.GetComponent<TileLight>().ActivateRemover();
@@ -250,7 +250,7 @@ public class EditmapMode : MonoBehaviour
 
     public void RemoveLight(GameObject me)
     {
-        llights.Remove(me);
+        RoomMap.Instance.llights.Remove(me);
     }
 
     private void OnDisable()
@@ -268,7 +268,8 @@ public class EditmapMode : MonoBehaviour
                 break;
             case EDIT_STATE.LIGHT:
                 lightGizmo.SetActive(false);
-                foreach (GameObject l in llights)
+                lightTool.SetActive(false);
+                foreach (GameObject l in RoomMap.Instance.llights)
                 {
                     l.GetComponent<TileLight>().DeactivateRemover();
                 }
@@ -276,7 +277,7 @@ public class EditmapMode : MonoBehaviour
             case EDIT_STATE.SKY:
                 break;
             case EDIT_STATE.EDITLIGHT:
-                foreach (GameObject l in llights)
+                foreach (GameObject l in RoomMap.Instance.llights)
                 {
                     l.GetComponent<TileLight>().DeactivateEdit();
                 }
@@ -320,10 +321,11 @@ public class EditmapMode : MonoBehaviour
         ExitPrevious();
 
 
-        foreach(GameObject l in llights)
+        foreach(GameObject l in RoomMap.Instance.llights)
         {
             l.GetComponent<TileLight>().ActivateRemover();
         }
+        lightTool.SetActive(true);
 
         state = EDIT_STATE.LIGHT;
     }
@@ -333,7 +335,7 @@ public class EditmapMode : MonoBehaviour
         ExitPrevious();
 
 
-        foreach (GameObject l in llights)
+        foreach (GameObject l in RoomMap.Instance.llights)
         {
             l.GetComponent<TileLight>().ActivateEdit();
         }
@@ -349,7 +351,7 @@ public class EditmapMode : MonoBehaviour
         LightsData ld = new LightsData();
         ld.lights = new List<LightPlace>();
 
-        foreach (GameObject l in llights)
+        foreach (GameObject l in RoomMap.Instance.llights)
         {
             Light linfo = l.GetComponent<TileLight>().lightObj.GetComponent<Light>();
             ld.lights.Add(new LightPlace(linfo.intensity, linfo.range, linfo.transform.position.y, linfo.transform.parent.position));
@@ -360,9 +362,9 @@ public class EditmapMode : MonoBehaviour
 
     public void DeleteAllLights()
     {
-        foreach (GameObject l in llights)
+        foreach (GameObject l in RoomMap.Instance.llights)
             Destroy(l);
-        llights.Clear();
+        RoomMap.Instance.llights.Clear();
     }
 
 
@@ -379,7 +381,7 @@ public class EditmapMode : MonoBehaviour
             li.intensity = l.intensity;
             li.range = l.range;
             last.GetComponent<TileLight>().DeactivateEdit();
-            llights.Add(last);
+            RoomMap.Instance.llights.Add(last);
         }
     }
 

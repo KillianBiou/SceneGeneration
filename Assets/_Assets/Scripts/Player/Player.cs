@@ -379,7 +379,7 @@ public class Player : MonoBehaviour
     {
         ID++;
         if(ID < toImport.child.Length)
-            GenerationDatabase.Instance.SpawnObject(toImport.child[ID].assetName, toImport.child[ID].position, toImport.child[ID].rotation, toImport.child[ID].scale, ImportAll);
+            GenerationDatabase.Instance.SpawnObject(toImport.child[ID].assetName, toImport.child[ID].position, toImport.child[ID].rotation, toImport.child[ID].scale, null, ImportAll);
 
         return 0;
     }

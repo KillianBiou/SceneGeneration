@@ -74,10 +74,11 @@ public struct wrapList
 public class RoomMap : MonoBehaviour
 {
     public static RoomMap Instance;
-
+    
 
     public int size;
     public List<List<TileObject>> mapObj; // SAVE THIS
+    public List<GameObject> llights; //SAVE THIS
     public string nameOfMap;
     public GameObject prefab;
     public bool isEditing;

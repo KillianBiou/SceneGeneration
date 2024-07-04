@@ -34,8 +34,8 @@ public class WheelUiButton : MonoBehaviour
         {
             if(button.name != "")
             {
-                segmentIcon.sprite = button.img;
-                segmentIcon.gameObject.SetActive(true);
+                segmentName.text = button.name;
+                segmentName.gameObject.SetActive(true);
             }
         }
     }

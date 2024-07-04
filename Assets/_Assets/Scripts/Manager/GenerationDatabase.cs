@@ -70,7 +70,7 @@ public class GenerationDatabase : MonoBehaviour
     GameObject lastImportedGo;
 
     //try instanciating a gameobject version of a 3D model in library, return null if key not in lib
-    public void SpawnObject(string key, Vector3 targetPos, Quaternion targetRot, Vector3 targetScale, Func<GameObject, int> onSpawnedCallback = null)
+    public void SpawnObject(string key, Vector3 targetPos, Quaternion targetRot, Vector3 targetScale, Transform parenting = null, Func<GameObject, int> onSpawnedCallback = null)
     {
         if (importating)
         {
@@ -99,7 +99,10 @@ public class GenerationDatabase : MonoBehaviour
         Debug.Log("Spawning " + meshFullPath);
         GameObject parent = new GameObject(key);
         lastImportedGo = parent;
-        parent.transform.SetParent(GameObject.FindGameObjectWithTag("Playground").transform);
+        if (parent == null)
+            parent.transform.SetParent(GameObject.FindGameObjectWithTag("Playground").transform);
+        else
+            parent.transform.SetParent(parenting, false);
         parent.transform.position = targetPos;
         parent.transform.rotation = targetRot;
         parent.transform.localScale = targetScale;

@@ -22,6 +22,15 @@ public class VRObjectPlacer : MonoBehaviour
 
     private bool isLoading;
 
+    public static VRObjectPlacer Instance;
+
+    public string selectedKey;
+
+    private void Awake()
+    {
+        Instance = this;
+        selectedKey = "";
+    }
 
     private void Start()
     {
@@ -31,10 +40,14 @@ public class VRObjectPlacer : MonoBehaviour
 
     public void Place(SelectExitEventArgs args)
     {
-        if (isLoading)
+        if (isLoading || selectedKey == "")
             return;
 
 
+        _ray.TryGetHitInfo(out Vector3 pos, out Vector3 norm, out int i, out bool b);
+
+        GenerationDatabase.Instance.SpawnObject(selectedKey, pos, Quaternion.identity, Vector3.one);
+        /*
         GameObject last = Instantiate(_cpRef.transform.GetChild(0).gameObject);
         _ray.TryGetHitInfo(out Vector3 pos, out Vector3 norm, out int i, out bool b);
         last.transform.position = pos;
@@ -49,7 +62,7 @@ public class VRObjectPlacer : MonoBehaviour
         XRGrabInteractable grab = last.transform.AddComponent<XRGrabInteractable>();
         grab.interactionLayers = imask;
         grab.interactionLayerMask = mask;
-        grab.trackRotation = false;
+        grab.trackRotation = false;*/
         //grab.colliders = new List<Collider>();
     }
 
