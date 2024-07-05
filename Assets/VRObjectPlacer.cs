@@ -26,6 +26,8 @@ public class VRObjectPlacer : MonoBehaviour
 
     public string selectedKey;
 
+    public GameObject reticle;
+
     private void Awake()
     {
         Instance = this;
@@ -46,7 +48,8 @@ public class VRObjectPlacer : MonoBehaviour
 
         _ray.TryGetHitInfo(out Vector3 pos, out Vector3 norm, out int i, out bool b);
 
-        GenerationDatabase.Instance.SpawnObject(selectedKey, pos, Quaternion.identity, Vector3.one);
+        reticle.GetComponent<ReticleAction>().StartLoading();
+        GenerationDatabase.Instance.SpawnObject(selectedKey, pos, Quaternion.identity, Vector3.one, null, reticle.GetComponent<ReticleAction>().EndingLoad);
         /*
         GameObject last = Instantiate(_cpRef.transform.GetChild(0).gameObject);
         _ray.TryGetHitInfo(out Vector3 pos, out Vector3 norm, out int i, out bool b);
@@ -66,6 +69,13 @@ public class VRObjectPlacer : MonoBehaviour
         //grab.colliders = new List<Collider>();
     }
 
+    public void SelectKey(string key)
+    {
+        selectedKey = key;
+        Destroy(_cpRef.transform.GetChild(0).GetChild(0).gameObject);
+        GenerationDatabase.Instance.SpawnObject(selectedKey, Vector3.zero, Quaternion.identity, Vector3.one, _cpRef.transform.GetChild(0));
+
+    }
 
     public void StartLoad(GameObject go)
     {

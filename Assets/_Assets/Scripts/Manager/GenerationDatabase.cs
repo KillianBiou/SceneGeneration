@@ -98,13 +98,17 @@ public class GenerationDatabase : MonoBehaviour
         Debug.Log("Spawning " + meshFullPath);
         GameObject parent = new GameObject(key);
         lastImportedGo = parent;
+
+        parent.transform.position = targetPos;
+        parent.transform.rotation = targetRot;
+        parent.transform.localScale = targetScale;
+
         if (parent == null)
             parent.transform.SetParent(GameObject.FindGameObjectWithTag("Playground").transform);
         else
             parent.transform.SetParent(parenting, false);
-        parent.transform.position = targetPos;
-        parent.transform.rotation = targetRot;
-        parent.transform.localScale = targetScale;
+
+        
 
         if (meshFullPath.Contains(".obj"))
         {
