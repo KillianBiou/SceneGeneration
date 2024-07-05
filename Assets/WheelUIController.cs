@@ -91,7 +91,7 @@ public class WheelUIController : MonoBehaviour
             content.transform.GetChild(i).localEulerAngles = new Vector3(0, 0, 360 / content.transform.childCount * i);
             content.transform.GetChild(i).GetComponent<WheelUiButton>().ResetRot();
 
-            content.transform.GetChild(i).GetComponent<UnityEngine.UI.Image>().material.SetFloat("_Angle", 180/content.transform.childCount);
+            content.transform.GetChild(i).GetComponent<UnityEngine.UI.Image>().material.SetFloat("_Angle", 180/content.transform.childCount -0.5f);
         }
     }
 

@@ -78,7 +78,7 @@ public class ModelLibraryUIHandler : MonoBehaviour
 
     private void AddEntry(string objName, string jsonPath)
     {
-        UnityEngine.Debug.Log("Creating a button for " + objName + " located at " + jsonPath);
+        //UnityEngine.Debug.Log("Creating a button for " + objName + " located at " + jsonPath);
 
         string imagePath = jsonPath.Replace(".json", ".png");
         Texture2D showcaseImage = new Texture2D(2, 2);

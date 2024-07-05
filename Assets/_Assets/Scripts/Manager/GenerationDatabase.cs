@@ -46,10 +46,9 @@ public class GenerationDatabase : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("STATIC INSTANCE :" + Instance.name);
-
         RmBadEntry();
         CheckNewEntry(GlobalVariables.Instance.GetModelPath());
+        SaveDatabase();
         /*
         if (modelsFolders != null)
             CheckEntryAtFolders(modelsFolders);*/
@@ -240,10 +239,8 @@ public class GenerationDatabase : MonoBehaviour
             if (File.Exists(Path.Combine(Application.dataPath, assetDatabase[assetName])))
             {
                 GeneratedModelSerializable data = JsonUtility.FromJson<GeneratedModelSerializable>(File.ReadAllText(Path.Combine(Application.dataPath, assetDatabase[assetName])));
-                Debug.Log("jamais ca passe : " + data.meshName);
                 if (data.meshName == null)
                 {
-                    Debug.Log("tkt il degage lui : " + data.meshName);
                     Debug.Log(Path.Combine(Application.dataPath, assetDatabase[assetName]) + " no proper data found, removing !");
                     toRemove.Add(assetName);
                 }
@@ -312,7 +309,7 @@ public class GenerationDatabase : MonoBehaviour
 
     public void SaveDatabase()
     {
-        Debug.Log(DatabaseLocation);
+        //Debug.Log(DatabaseLocation);
         if (!File.Exists(DatabaseLocation))
         {
             File.Create(DatabaseLocation);

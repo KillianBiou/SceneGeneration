@@ -22,7 +22,6 @@ public class GenerativeChoice : MonoBehaviour
 
 
     private StableHandler sdh;
-    private Cursor3D cursor;
     private int amount;
     private bool pending;
 
@@ -41,7 +40,6 @@ public class GenerativeChoice : MonoBehaviour
         sdh = FindFirstObjectByType<StableHandler>();
 
         req = DiffuserInterface.GetRequestTemplate();
-        cursor = FindFirstObjectByType<Cursor3D>();
     }
 
 
@@ -70,7 +68,7 @@ public class GenerativeChoice : MonoBehaviour
         if (!sdh || pending)
             return;
 
-        generationPos = cursor.transform.position;
+        //generationPos = Cursor3D.instance.transform.position;
 
         ClearPicker();
 
@@ -236,8 +234,7 @@ public class GenerativeChoice : MonoBehaviour
                 last.GetComponent<Button>().onClick.AddListener(() => PickedImageCallback(f.FullName));
 
                 last.transform.GetChild(0).GetComponent<RawImage>().texture = tex;
-                last.transform.SetParent(uiContainer.transform);
-
+                last.transform.SetParent(uiContainer.transform, false);
             }
 
             title.text = "Choices (" + amount + ")";

@@ -13,6 +13,7 @@ public class GenerationPopUp : MonoBehaviour
         modelPrompt.SetActive(true);
         Cursor3D.instance.blocked = true;
         Cursor3D.instance.toggleLoadFX(true);
+        Player.Instance.libAdd = false;
         //modelPrompt.GetComponent<GenerativeChoice>().generationPos = point;
         gameObject.SetActive(false);
     }

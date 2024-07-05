@@ -56,10 +56,10 @@ public class ToolMenu : MonoBehaviour
 
         foreach (GameObject go in modeC)
             go.SetActive(false);
-
+        /*
         foreach (GameObject go in modeD)
             go.SetActive(false);
-
+        */
         A.interactable = true;
         B.interactable = true;
         C.interactable = true;

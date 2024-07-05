@@ -73,7 +73,26 @@ public class triD_toolset : MonoBehaviour
 
         state = D_EDIT_STATE.NULL;
     }
+    public void EnterState(int newState)
+    {
+        switch ((D_EDIT_STATE)newState+1)
+        {
+            case D_EDIT_STATE.MOVE:
+                EnterMove();
+                break;
+            case D_EDIT_STATE.ROTATE:
+                EnterRotation();
+                break;
+            case D_EDIT_STATE.SCALE:
+                EnterScaling();
+                break;
+            case D_EDIT_STATE.GEN:
+                EnterGen();
+                break;
+        }
 
+        state = D_EDIT_STATE.NULL;
+    }
 
 
 

@@ -42,6 +42,8 @@ public class GlobalVariables : MonoBehaviour
     [SerializeField]
     private ApplicationStatePhase currentPhase;
 
+    public bool isInVr = false;
+
     [Header("References")]
     [SerializeField]
     private GlobalProgressBar progressBar;

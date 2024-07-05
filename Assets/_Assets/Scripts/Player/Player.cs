@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.XR.ARSubsystems;
 using UnityGLTF;
 
 
@@ -130,6 +132,10 @@ public class Player : MonoBehaviour
     private Transform playgroundHolder;
     [SerializeField]
     private Material baseMat;
+    [SerializeField]
+    public InputActionProperty isTracking;
+    [SerializeField]
+    public GameObject XrRig;
 
     private Vector3 instanciationPoint;
 
@@ -147,6 +153,21 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        /*
+        if((TrackingState)isTracking.action.ReadValue<float>() != TrackingState.None)
+        {
+            Debug.Log("oui");
+            XrRig.SetActive(true);
+
+        }
+        else
+        {
+            Debug.Log("non");
+            XrRig.SetActive(false);
+        }
+        */
+
+
         if (!debugMode)
             return;
 
@@ -253,6 +274,13 @@ public class Player : MonoBehaviour
         return 0;
     }
 
+    public bool libAdd = false;
+    public void SetLibAdd(bool b)
+    {
+        libAdd = b;
+    }
+
+
     public int InstantiationCallback_GLB(string objPath)
     {
         GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.MODEL_IMPORT);
@@ -260,6 +288,12 @@ public class Player : MonoBehaviour
             images.RemoveAt(0);
         
         generationLock = false;
+
+        if (GlobalVariables.Instance.isInVr || libAdd)
+            return 0;
+
+
+
         Cursor3D.instance.blocked = false;
         Cursor3D.instance.toggleLoadFX(false);
         GenerationDatabase.Instance.SpawnObject(Path.GetFileName(objPath), instanciationPoint, Quaternion.identity, Vector3.one);
