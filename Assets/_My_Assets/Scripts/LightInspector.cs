@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class LightInspector : MonoBehaviour
 {
-    public GameObject lightObj;
+    public TileLight lightObj;
 
     [SerializeField]
     private Slider intensity, range, height;
@@ -16,36 +16,36 @@ public class LightInspector : MonoBehaviour
     [SerializeField]
     private Image colorIcon;
 
-
-    public void Inspect(GameObject l)
+    
+    public void Inspect(TileLight l)
     {
         lightObj = l;
-        intensity.value = lightObj.GetComponent<Light>().intensity;
-        range.value = lightObj.GetComponent<Light>().range;
-        height.value = lightObj.transform.position.y;
-        picker.GetComponent<Image>().color = lightObj.GetComponent<Light>().color;
+        intensity.value = lightObj.GetLightIntensity();
+        range.value = lightObj.GetLightRange();
+        height.value = lightObj.GetLightHeight();
+        picker.GetComponent<Image>().color = lightObj.GetLightColor();
         picker.ColorHook.AddListener(SetColor);
     }
-
+    
 
     public void SetIntensity(float f)
     {
-        lightObj.GetComponent<Light>().intensity = f;
+        lightObj.SetLightIntensity(f);
     }
 
     public void SetRange(float f)
     {
-        lightObj.GetComponent <Light>().range = f;
+        lightObj.SetLightRange(f);
     }
 
     public void SetHeight(float f)
     {
-        lightObj.transform.position = new Vector3(lightObj.transform.position.x, f, lightObj.transform.position.z);
+        lightObj.SetLightHeight(f);
     }
 
     public void SetColor(Color c)
     {
-        lightObj.GetComponent<Light>().color = c;
+        lightObj.SetLightColor(c);
         colorIcon.color = c;
     }
 }

@@ -65,6 +65,8 @@ public class EditmapMode : MonoBehaviour
     private List<TileObject> selection;
 
 
+    public Camera CameraRef;
+
     private void Awake()
     {
         Instance = this;
@@ -95,8 +97,8 @@ public class EditmapMode : MonoBehaviour
             return;
 
 
+        Ray ray = CameraRef.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (EventSystem.current.IsPointerOverGameObject())
             return;
@@ -218,11 +220,7 @@ public class EditmapMode : MonoBehaviour
                     lightGizmo.transform.position = hit.point;
                     if (Input.GetMouseButtonDown(0))
                     {
-                        GameObject last = Instantiate(lightPrefab);
-                        RoomMap.Instance.llights.Add(last);
-                        last.transform.position = hit.point;
-                        last.GetComponent<TileLight>().editmap = this;
-                        last.GetComponent<TileLight>().ActivateRemover();
+                        RoomMap.Instance.AddLightTile(hit.point, 1.6f);
                     }
                 }
                 else
@@ -240,7 +238,7 @@ public class EditmapMode : MonoBehaviour
                 {
                     if (hit.collider.gameObject.GetComponent<TileLight>() != null)
                     {
-                        lightInspector.GetComponent<LightInspector>().Inspect(hit.collider.gameObject.GetComponent<TileLight>().lightObj);
+                        lightInspector.GetComponent<LightInspector>().Inspect(hit.collider.gameObject.GetComponent<TileLight>());
                     }
                 }
             }
@@ -248,10 +246,6 @@ public class EditmapMode : MonoBehaviour
     }
 
 
-    public void RemoveLight(GameObject me)
-    {
-        RoomMap.Instance.llights.Remove(me);
-    }
 
     private void OnDisable()
     {

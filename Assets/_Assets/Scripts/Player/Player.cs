@@ -127,13 +127,9 @@ public class Player : MonoBehaviour
 
     [Header("References")]
     [SerializeField]
-    private Transform camera;
-    [SerializeField]
     private Transform playgroundHolder;
     [SerializeField]
     private Material baseMat;
-    [SerializeField]
-    public InputActionProperty isTracking;
     [SerializeField]
     public GameObject XrRig;
 
@@ -146,6 +142,7 @@ public class Player : MonoBehaviour
         Instance = this;
     }
 
+
     private void Start()
     {
         sceneSavePath = Path.Combine(Application.dataPath, sceneSavePath);
@@ -153,21 +150,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        /*
-        if((TrackingState)isTracking.action.ReadValue<float>() != TrackingState.None)
-        {
-            Debug.Log("oui");
-            XrRig.SetActive(true);
-
-        }
-        else
-        {
-            Debug.Log("non");
-            XrRig.SetActive(false);
-        }
-        */
-
-
         if (!debugMode)
             return;
 
@@ -186,94 +168,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void GetLookPos()
-    {
-        if(images.Count > 0 && !generationLock)
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(camera.position, camera.forward, out hit, 100f))
-            {
-                string imagePath = images[0]; //AssetDatabase.GetAssetPath(images[0]);
-                instanciationPoint = hit.point;
-
-                generationLock = true;
-                TripoSRForUnity.Instance.RunTripoSR(InstantiationCallback, imagePath);
-            }
-        }
-    }
-
-    public int InstantiationCallback(GameObject obj)
-    {
-        if (obj != null)
-        {
-            GameObject instantiatedObj = Instantiate(obj, instanciationPoint + Vector3.up, Quaternion.identity, playgroundHolder);
-            instantiatedObj.name = obj.name;
-            instantiatedObj.transform.GetChild(0).rotation = Quaternion.Euler(new Vector3(-90f, -90f, 0f));
-
-            Debug.Log("Instantiated GameObject prefab: " + instantiatedObj.name);
-
-
-            GameObject meshObj = instantiatedObj.transform.GetChild(0).gameObject;
-            meshObj.GetComponent<Renderer>().material = generatedMat;
-
-            MeshCollider mc = meshObj.AddComponent<MeshCollider>();
-            mc.convex = true;
-
-            OriginPlacement OP = meshObj.AddComponent<OriginPlacement>();
-            OP.ReplaceOrigin();
-        }
-
-        images.RemoveAt(0);
-        generationLock = false;
-        return 0;
-    }
-
-    public int InstantiationCallback(string objPath)
-    {
-        Debug.Log(objPath);
-        GameObject parent = new GameObject(Path.GetFileNameWithoutExtension(objPath));
-        parent.transform.parent = playgroundHolder;
-        parent.transform.position = instanciationPoint + Vector3.up;
-        parent.transform.rotation = Quaternion.identity;
-
-        AsImpL.ImportOptions importOptions = new AsImpL.ImportOptions();
-        importOptions.buildColliders = true;
-        importOptions.colliderConvex = true;
-        
-        ObjectImporter.Instance.ImportModelAsync(Path.GetFileNameWithoutExtension(objPath), objPath, parent.transform, importOptions);
-        
-        StartCoroutine(ReplacementCoroutine(parent.transform, objPath));
-
-        /*GameObject importedObj = AssetDatabase.LoadAssetAtPath<GameObject>(objPath);
-
-        if (importedObj != null)
-        {
-            GameObject instantiatedObj = Instantiate(importedObj, instanciationPoint + Vector3.up, Quaternion.identity, playgroundHolder);
-            instantiatedObj.name = importedObj.name;
-            instantiatedObj.transform.GetChild(0).rotation = Quaternion.Euler(new Vector3(-90f, -90f, 0f));
-
-            Debug.Log("Instantiated GameObject prefab: " + instantiatedObj.name);
-
-
-            GameObject meshObj = instantiatedObj.transform.GetChild(0).gameObject;
-            meshObj.tag = "3D generated";
-            meshObj.GetComponent<Renderer>().material = generatedMat;
-
-            MeshCollider mc = meshObj.AddComponent<MeshCollider>();
-            mc.convex = true;
-
-            OriginPlacement OP = meshObj.AddComponent<OriginPlacement>();
-            OP.ReplaceOrigin();
-
-            GenerationDatabase.Instance.SaveGeneratedAsset(instantiatedObj, objPath);
-        }*/
-
-        if (images.Count > 0)
-            images.RemoveAt(0);
-        generationLock = false;
-        return 0;
-    }
-
     public bool libAdd = false;
     public void SetLibAdd(bool b)
     {
@@ -283,6 +177,13 @@ public class Player : MonoBehaviour
 
     public int InstantiationCallback_GLB(string objPath)
     {
+
+
+        //instantiatedObj.transform.GetChild(0).rotation = Quaternion.Euler(new Vector3(-90f, -90f, 0f));
+
+
+
+
         GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.MODEL_IMPORT);
         if (images.Count > 0)
             images.RemoveAt(0);
@@ -291,8 +192,6 @@ public class Player : MonoBehaviour
 
         if (GlobalVariables.Instance.isInVr || libAdd)
             return 0;
-
-
 
         Cursor3D.instance.blocked = false;
         Cursor3D.instance.toggleLoadFX(false);
@@ -330,7 +229,6 @@ public class Player : MonoBehaviour
 
     public GameObjectSerializable GetGameObjectSaveData()
     {
-
         GameObject parent = GameObject.FindGameObjectWithTag("Playground");
 
         GameObjectSerializable parentSerializable = new GameObjectSerializable();
@@ -344,30 +242,8 @@ public class Player : MonoBehaviour
 
         List< GameObjectSerializable > objList = new List< GameObjectSerializable >();
         foreach (Transform child in parent.transform)
-        {
             objList.Add(new GameObjectSerializable(child.gameObject, false));
-
-            /*GameObjectSerializable childTemp = new GameObjectSerializable();
-            childTemp.assetName = child.name;
-            childTemp.position = child.transform.localPosition;
-            childTemp.rotation = child.transform.localRotation;
-            childTemp.childNumber = 1;
-            */
-            /*
-            GameObjectSerializable mesh = new GameObjectSerializable();
-            mesh.assetName = child.GetChild(0).name;
-            mesh.position = child.GetChild(0).transform.localPosition;
-            mesh.rotation = child.GetChild(0).transform.localRotation;
-            mesh.childNumber = 0;
-            mesh.child = null;
-            */
-            /*
-            childTemp.child = new GameObjectSerializable[1];
-            childTemp.child[0] = mesh;
-
-            parentSerializable.child[i] = childTemp;
-            i++;*/
-        }
+        
         parentSerializable.child = objList.ToArray();
         parentSerializable.childNumber = parentSerializable.child.Length;
 
@@ -389,6 +265,8 @@ public class Player : MonoBehaviour
 
 
 
+    private GameObjectSerializable toImport;
+    private int ID;
     public void LoadScene(GameObjectSerializable parentSerializable)
     {
         foreach(Transform child in GameObject.FindGameObjectWithTag("Playground").transform)
@@ -399,36 +277,15 @@ public class Player : MonoBehaviour
         ID = -1;
 
         ImportAll(null);
-        /*
-        foreach (GameObjectSerializable child in parentSerializable.child)
-        {
-            GenerationDatabase.Instance.SpawnObject(child.assetName, child.position, child.rotation, child.scale);
-        }*/
     }
-
-    private GameObjectSerializable toImport;
-    private int ID;
 
     public int ImportAll(GameObject go)
     {
         ID++;
         if(ID < toImport.child.Length)
             GenerationDatabase.Instance.SpawnObject(toImport.child[ID].assetName, toImport.child[ID].position, toImport.child[ID].rotation, toImport.child[ID].scale, null, ImportAll);
-
         return 0;
     }
-
-
-    public void AddImage(Texture2D imagePath)
-    {
-        //images.Add(imagePath);
-    }
-
-    public void AddImage(string imagePath)
-    {
-        images.Add(imagePath);
-    }
-
 
     public void AddImage(string imageFullpath, Vector3 generationPos)
     {
@@ -440,13 +297,4 @@ public class Player : MonoBehaviour
             TripoSRForUnity.Instance.RunTripoSR_GLB(InstantiationCallback_GLB, imageFullpath, "obj");
     }
 
-
-
-    private void OnDrawGizmos()
-    {
-        if (camera)
-        {
-            Debug.DrawRay(camera.position, camera.forward * 100, Color.red);
-        }
-    }
 }

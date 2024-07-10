@@ -40,6 +40,9 @@ public class GenerativeChoice : MonoBehaviour
         sdh = FindFirstObjectByType<StableHandler>();
 
         req = DiffuserInterface.GetRequestTemplate();
+
+        if (!Directory.Exists(Path.Combine(Application.dataPath, "/GeneratedData", folderName)))
+            Directory.CreateDirectory(Path.Combine(Application.dataPath, "GeneratedData", folderName));
     }
 
 
@@ -67,8 +70,6 @@ public class GenerativeChoice : MonoBehaviour
     {
         if (!sdh || pending)
             return;
-
-        //generationPos = Cursor3D.instance.transform.position;
 
         ClearPicker();
 
@@ -118,9 +119,8 @@ public class GenerativeChoice : MonoBehaviour
         pending = true;
     }
 
-    public string RemoveBackground()
+    public string RemoveBackground(string s)
     {
-        UnityEngine.Debug.Log("CALLBACK CALLED");
         if (isProcessRunning)
         {
             UnityEngine.Debug.Log("A background remover process is already running - quitting and replacing process.");
@@ -138,7 +138,6 @@ public class GenerativeChoice : MonoBehaviour
         DirectoryInfo dir = new DirectoryInfo(Path.Combine(Application.dataPath, req.request.directory));
         FileInfo[] info = dir.GetFiles("*.png");
 
-        UnityEngine.Debug.Log("SADSADASDAS CALLED");
         // Progress Bar Notification
         switch (info.Length)
         {
@@ -208,10 +207,10 @@ public class GenerativeChoice : MonoBehaviour
     {
         isProcessRunning = false;
         pythonProcess = null;
-
+        /*
         UnityEditor.EditorApplication.delayCall += CountingResults;
 
-        UnityEditor.EditorApplication.delayCall += () => OnPythonProcessEnded?.Invoke();
+        UnityEditor.EditorApplication.delayCall += () => OnPythonProcessEnded?.Invoke();*/
     }
 
 

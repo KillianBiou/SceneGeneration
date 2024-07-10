@@ -1917,7 +1917,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2608349639828256996}
   - component: {fileID: 1212354111652097826}
-  - component: {fileID: 1365478266077532511}
   - component: {fileID: 8543337573856883038}
   m_Layer: 5
   m_Name: Content
@@ -1971,24 +1970,6 @@ MonoBehaviour:
   m_Spacing: {x: 4, y: 4}
   m_Constraint: 1
   m_ConstraintCount: 2
---- !u!114 &1365478266077532511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4465685373361251042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7231d5a622ff7ff4382e33eabce415c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  libraryName: /GeneratedData/
-  buttonPrefab: {fileID: 8905847264592823275, guid: f44dbee1ad3ca364cbd9d9ef3e60b8be,
-    type: 3}
-  selectedMaterial: {fileID: 11400000, guid: ded9fdeb40f9d0947b55605bd2041d2e, type: 2}
-  texture: {fileID: 0}
-  normal: {fileID: 0}
 --- !u!114 &8543337573856883038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2314,6 +2295,7 @@ GameObject:
   - component: {fileID: 7767614626787354329}
   - component: {fileID: 1462776648967689107}
   - component: {fileID: 4058164861519313293}
+  - component: {fileID: 4999094822314954765}
   m_Layer: 5
   m_Name: MaterialLibrary
   m_TagString: Untagged
@@ -2478,6 +2460,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3218314670bcca94ebd1af7ebfe28e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4999094822314954765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5452212591492896776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7231d5a622ff7ff4382e33eabce415c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holder: {fileID: 4465685373361251042}
+  libraryName: /GeneratedData/
+  buttonPrefab: {fileID: 8905847264592823275, guid: f44dbee1ad3ca364cbd9d9ef3e60b8be,
+    type: 3}
+  selectedMaterial: {fileID: 11400000, guid: ded9fdeb40f9d0947b55605bd2041d2e, type: 2}
+  texture: {fileID: 0}
+  normal: {fileID: 0}
 --- !u!1 &5863221935891292982
 GameObject:
   m_ObjectHideFlags: 0

@@ -95,7 +95,7 @@ public class TripoSRForUnity : MonoBehaviour
             SetTripoState();
         }
     }
-
+    /*
     public void RunTripoSR(Func<string, int> callback = null, string imagePath = null)
     {
         memoryCallback = callback;
@@ -193,6 +193,8 @@ public class TripoSRForUnity : MonoBehaviour
         pythonProcess.BeginErrorReadLine();
         isProcessRunning = true;
     }
+    */
+
 
     private string savePath;
     public UnityEvent<string> memoryCallbackGLB;
@@ -296,23 +298,15 @@ public class TripoSRForUnity : MonoBehaviour
         isProcessRunning = false;
         pythonProcess = null;
 
-        DirectoryInfo dInfo = new DirectoryInfo(savePath);
-
-        //string fileName = dInfo.Name;
-
-        //UnityEngine.Debug.Log("Moving image to "+ Path.Combine(savePath, fileName + ".png") + "... ");
-        //File.Copy(generatedImagePath, Path.Combine(savePath, fileName + ".png"));
-
-        //UnityEngine.Debug.Log("Generating json at " + Path.Combine(savePath, Path.GetFileName(savePath) + ".json"));
-        //GeneratedModelSerializable data = new GeneratedModelSerializable(savePath);
-        //File.WriteAllText(Path.Combine(savePath, fileName + ".json"), JsonUtility.ToJson(data));
-
         GenerationDatabase.Instance.SetupMeshFolder(savePath);
 
         UnityEngine.Debug.Log("Calling back for instantiation...");
         if (memoryCallback != null)
         {
             UnityEditor.EditorApplication.delayCall += () => memoryCallback.Invoke(savePath);
+#if !UNITY_EDITOR
+            memoryCallback.Invoke(savePath);
+#endif
         }
         else
             UnityEngine.Debug.Log("XXX No python exit callback XXX ");
@@ -321,19 +315,19 @@ public class TripoSRForUnity : MonoBehaviour
     }
 
 
-
+    /*
     private void OnPythonProcessExited(object sender, EventArgs e)
     {
         currentState = TripoState.WAITING;
         isProcessRunning = false;
         pythonProcess = null;
+        
+        //if (moveAndRename) UnityEditor.EditorApplication.delayCall += MoveAndRenameOutputFile;
+        //else if (autoAddMesh) UnityEditor.EditorApplication.delayCall += () => AddMeshToScene(null);
 
-        if (moveAndRename) UnityEditor.EditorApplication.delayCall += MoveAndRenameOutputFile;
-        else if (autoAddMesh) UnityEditor.EditorApplication.delayCall += () => AddMeshToScene(null);
-
-        UnityEditor.EditorApplication.delayCall += () => OnPythonProcessEnded?.Invoke();
-    }
-
+        //UnityEditor.EditorApplication.delayCall += () => OnPythonProcessEnded?.Invoke();
+    }*/
+    /*
     private void MoveAndRenameOutputFile()
     {
         string originalPath = Path.Combine(Application.dataPath, "TripoSR/" + outputDir + "0/mesh.obj");
@@ -366,7 +360,7 @@ public class TripoSRForUnity : MonoBehaviour
             memoryCallback(newAssetPath);
         }
     }
-
+    */
     private void SetTripoState()
     {
         switch (currentState)
@@ -385,7 +379,8 @@ public class TripoSRForUnity : MonoBehaviour
                 break;
         }
     }
-
+    
+    /*
     private void AddMeshToScene(string path = null)
     {        
         string objPath = path ?? "Assets/TripoSR/" + outputDir + "0/mesh.obj";
@@ -395,7 +390,7 @@ public class TripoSRForUnity : MonoBehaviour
 
         GameObject importedObj = AssetDatabase.LoadAssetAtPath<GameObject>(objPath);*/
 
-
+    /*
         if (File.Exists(objPath))
         {
             AsImpL.ImportOptions importOptions = new AsImpL.ImportOptions();
@@ -413,10 +408,11 @@ public class TripoSRForUnity : MonoBehaviour
                 mc.convex = true;
                 meshObj.AddComponent<Rigidbody>();
             }*/
+    /*
         }
         else UnityEngine.Debug.LogError("Failed to load the mesh at path: " + objPath);
     }
-
+    */
     public TripoState GetCurrentState()
     {
         return currentState;

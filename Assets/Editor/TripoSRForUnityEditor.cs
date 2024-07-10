@@ -85,12 +85,12 @@ public class TripoSRForUnityEditor : Editor
         bigButtonStyle.normal.background = isProcessRunning ? ColorTex(2, 2, GetLerpedColor()) : ColorTex(2, 2, lightBlue);
 
         EditorGUI.BeginDisabledGroup(isProcessRunning);
-        if (GUILayout.Button(isProcessRunning ? "Processing..." : "Run TripoSR", bigButtonStyle, GUILayout.Height(50)) && !isProcessRunning)
+        /*if (GUILayout.Button(isProcessRunning ? "Processing..." : "Run TripoSR", bigButtonStyle, GUILayout.Height(50)) && !isProcessRunning)
         {
             isProcessRunning = true;
             EditorApplication.update += EditorUpdate;
             tripoInstance.RunTripoSR();
-        }
+        }*/
         EditorGUI.EndDisabledGroup();
 
         EditorGUILayout.Space();

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SD_PromptHandler : MonoBehaviour
 {
-
+    [SerializeField]
     private SdRequest request = new SdRequest();
     private string _model = "";
 
@@ -18,9 +18,10 @@ public class SD_PromptHandler : MonoBehaviour
 
     public void SendGenerationRequest()
     {
-        request.filename = request.prompt + DateTime.Now.ToString("_MMdd-HHmmss") + "_T.png";
+        request.filename = request.prompt + DateTime.Now.ToString("_MMdd-HHmmss") + "_T";
         StableCompleteRequest sdcr = new StableCompleteRequest(request, _model, 1, "");
-        DiffuserInterface.Instance.RequestGeneration(sdcr);
+        DiffuserInterface.Instance.RequestGeneration(sdcr, GeneratedLibrary.Instance.AddNew);
+        //DiffuserInterface.Instance.RequestGeneration(sdcr, null);
     }
 
     public void GenX(int n)

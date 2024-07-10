@@ -79,21 +79,19 @@ public class ModelLibraryUIHandler : MonoBehaviour
     private void AddEntry(string objName, string jsonPath)
     {
         //UnityEngine.Debug.Log("Creating a button for " + objName + " located at " + jsonPath);
+        GameObject modelView = Instantiate(entryGameobject, entryHolder.transform);
+        modelView.name = objName;
 
+
+        //put preview image
         string imagePath = jsonPath.Replace(".json", ".png");
         Texture2D showcaseImage = new Texture2D(2, 2);
         if (File.Exists(imagePath))
             ImageConversion.LoadImage(showcaseImage, File.ReadAllBytes(imagePath), false);
         else
             showcaseImage = placeholder;
-
-        GameObject modelView = Instantiate(entryGameobject, entryHolder.transform);
         modelView.GetComponentInChildren<RawImage>().texture = showcaseImage;
-        modelView.name = objName;
 
-
-
-        EventTrigger trigger = modelView.GetComponent<EventTrigger>();
 
         // Add Begin Drag Trigger
         EventTrigger.Entry beginDrag = new EventTrigger.Entry();
@@ -110,6 +108,7 @@ public class ModelLibraryUIHandler : MonoBehaviour
         endDrag.eventID = EventTriggerType.EndDrag;
         endDrag.callback.AddListener((data) => { dragDropHandler.EndDrag((PointerEventData)data); });
 
+        EventTrigger trigger = modelView.GetComponent<EventTrigger>();
         trigger.triggers.Add(beginDrag);
         trigger.triggers.Add(drag);
         trigger.triggers.Add(endDrag);
@@ -122,6 +121,6 @@ public class ModelLibraryUIHandler : MonoBehaviour
             if(item.name != "AddModel")
                 Destroy(item.gameObject);
         }
-        Debug.Log("Clear database View");
+        //Debug.Log("Cleared database View");
     }
 }

@@ -17,21 +17,20 @@ public class DiffuserInterface : MonoBehaviour
     private bool isProcessRunning = false;
     public static event Action OnPythonProcessEnded;
 
-    private Func<string> memoryCallback;
+    private Func<string,string> memoryCallback;
+    private string target;
 
     private void Awake()
     {
         Instance = this;
     }
 
-    public void RequestGeneration(StableCompleteRequest requestDetail, Func<string> callback = null)
+    public void RequestGeneration(StableCompleteRequest requestDetail, Func<string, string> callback = null)
     {
-        memoryCallback = callback;
-        UnityEngine.Debug.Log("GENERATION STARTED");
 
         if (isProcessRunning)
         {
-            UnityEngine.Debug.Log("A TripoSR process is already running - quitting and replacing process.");
+            UnityEngine.Debug.Log("A Diffuser process is already running - quitting and replacing process.");
 
             if (pythonProcess is { HasExited: false })
             {
@@ -42,6 +41,10 @@ public class DiffuserInterface : MonoBehaviour
             pythonProcess = null;
             isProcessRunning = false;
         }
+
+        UnityEngine.Debug.Log("GENERATION STARTED");
+        memoryCallback = callback;
+        target = Path.Combine(GlobalVariables.Instance.GetImagePath(), requestDetail.request.filename + ".png");
 
         string args = $"{(requestDetail.request.negPrompt == "" ? "" : "--nprompt \"" + requestDetail.request.negPrompt + "\"")} " +
                       $"--width {requestDetail.request.width} " +
@@ -82,7 +85,7 @@ public class DiffuserInterface : MonoBehaviour
             UnityEngine.Debug.Log("Data :" + e.Data);
             if (e.Data.Contains("Generated image"))
             {
-                callback();
+                //callback("");
             }
         };
 
@@ -91,7 +94,7 @@ public class DiffuserInterface : MonoBehaviour
             UnityEngine.Debug.Log("Error :" + e.Data);
             if(e.Data.Contains("Generated image"))
             {
-                callback();
+                //callback("");
             }
         };
 
@@ -122,10 +125,10 @@ public class DiffuserInterface : MonoBehaviour
         pythonProcess = null;
 
         if (memoryCallback != null)
+        {
             UnityEngine.Debug.Log("MEMORY SET");
-
-        if (memoryCallback != null)
-            memoryCallback();
+            memoryCallback(target);
+        }
     }
 
 }

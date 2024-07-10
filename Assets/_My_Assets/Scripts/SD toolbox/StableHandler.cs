@@ -423,7 +423,7 @@ public class StableHandler : StableDiffusionGenerator
                 Debug.Log("genere a lemplacemnt : " + "" + Application.dataPath + rq.directory + rq.filename);
 
                 FinishedGenerating.Invoke();
-                EditorUtility.ClearProgressBar();
+                //EditorUtility.ClearProgressBar();
             }
         }
         generating = false;

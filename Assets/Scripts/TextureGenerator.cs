@@ -57,7 +57,7 @@ public class TextureGenerator : MonoBehaviour
             isProcessRunning = false;
         }
 
-        string modelPath = AssetDatabase.GetAssetPath(modelFile);
+        string modelPath = "";// AssetDatabase.GetAssetPath(modelFile);
         string args = $"\"{modelPath}\" \"{modelDescription}\" " +
                       $"--image-model {imageModel} --steps {steps} " +
                       $"--output-dir {Path.Combine(Application.dataPath, "triposr-texture-gen/" + outputDir)}";// --size {mapSize} ";//--negative \"{negativeModelDescription}\"";
@@ -75,7 +75,7 @@ public class TextureGenerator : MonoBehaviour
         pythonProcess = new Process { StartInfo = start };
         pythonProcess.StartInfo = start;
         pythonProcess.EnableRaisingEvents = true;
-        pythonProcess.Exited += OnPythonProcessExited;
+        //pythonProcess.Exited += OnPythonProcessExited;
 
         pythonProcess.OutputDataReceived += (sender, e) =>
         {
@@ -98,7 +98,7 @@ public class TextureGenerator : MonoBehaviour
         pythonProcess.BeginErrorReadLine();
         isProcessRunning = true;
     }
-
+    /*
     private void OnPythonProcessExited(object sender, EventArgs e)
     {
         isProcessRunning = false;
@@ -108,7 +108,7 @@ public class TextureGenerator : MonoBehaviour
 
         UnityEditor.EditorApplication.delayCall += () => OnPythonProcessEnded?.Invoke();
     }
-
+    /*
     private void AddMeshToScene()
     {
         string objPath = AssetDatabase.GetAssetPath(modelFile).Replace(".obj", "-tex.obj");
@@ -136,7 +136,7 @@ public class TextureGenerator : MonoBehaviour
             }
         }
         else UnityEngine.Debug.LogError("Failed to load the mesh at path: " + objPath);
-    }
+    }*/
 
 
     void OnDisable() { if (pythonProcess != null && !pythonProcess.HasExited) pythonProcess.Kill(); }

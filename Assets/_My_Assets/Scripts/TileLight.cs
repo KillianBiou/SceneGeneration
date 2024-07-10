@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class TileLight : MonoBehaviour
 {
-
-    //public float lightHeight, lightIntensity;
     public Light lightRef;
 
 
@@ -15,23 +14,17 @@ public class TileLight : MonoBehaviour
     public EditmapMode editmap;
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnDestroy()
     {
-        if(editmap)
-            editmap.RemoveLight(gameObject);
+        if(RoomMap.Instance)
+            RoomMap.Instance.RemoveLightTile(gameObject);
     }
+
+
+
+
+    // GIZMOS DE/ACTIVATORS
 
     public void ActivateRemover()
     {
@@ -47,7 +40,6 @@ public class TileLight : MonoBehaviour
         GetComponent<BoxCollider>().enabled = false;
     }
 
-
     public void ActivateEdit()
     {
         editGizmo.SetActive(true);
@@ -59,5 +51,53 @@ public class TileLight : MonoBehaviour
         editGizmo.SetActive(false);
         vrGizmo.SetActive(false);
         GetComponent<BoxCollider>().enabled = false;
+    }
+
+
+
+    // GETTERS
+
+    public float GetLightIntensity()
+    {
+        return lightRef.intensity;
+    }
+
+    public float GetLightHeight()
+    {
+        return lightObj.transform.position.y;
+    }
+
+    public Color GetLightColor()
+    {
+        return lightRef.color;
+    }
+
+    public float GetLightRange()
+    {
+        return lightRef.range;
+    }
+
+
+
+    // SETTERS
+
+    public void SetLightIntensity(float i)
+    {
+        lightRef.intensity = i;
+    }
+
+    public void SetLightHeight(float height)
+    {
+        lightObj.transform.position = new Vector3(0,height,0);
+    }
+
+    public void SetLightColor(Color c)
+    {
+        lightRef.color = c;
+    }
+
+    public void SetLightRange(float r)
+    {
+        lightRef.range = r;
     }
 }

@@ -10,7 +10,15 @@ public enum ApplicationState
     UNKNOWN = -1,
     IDLE = 0,
     GENERATION2D = 1,
-    GENERATION3D = 2
+    GENERATION3D = 2,
+    NONE,
+    TERRAIN_PLACE,
+    LIGHT_PLACE,
+    LIGHT_EDIT,
+    OBJ_MOVE,
+    OBJ_ROTATE,
+    OBJ_SCALE,
+    GEN_3D
 }
 
 [System.Serializable]

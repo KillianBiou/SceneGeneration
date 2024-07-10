@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using JetBrains.Annotations;
+using Unity.VisualScripting;
+using UnityEngine.XR;
 
 
 
@@ -80,7 +82,7 @@ public class RoomMap : MonoBehaviour
     public List<List<TileObject>> mapObj; // SAVE THIS
     public List<GameObject> llights; //SAVE THIS
     public string nameOfMap;
-    public GameObject prefab;
+    public GameObject tilePrefab, lightPrefab;
     public bool isEditing;
 
     private void Awake()
@@ -100,7 +102,7 @@ public class RoomMap : MonoBehaviour
             mapObj.Add(new List<TileObject>());
             for (int j = 0; j < size; j++)
             {
-                GameObject last = Instantiate(prefab);
+                GameObject last = Instantiate(tilePrefab);
                 last.transform.position = new Vector3(i, 0, j);
                 TileObject t = last.GetComponent<TileObject>();
 
@@ -189,6 +191,20 @@ public class RoomMap : MonoBehaviour
         nameOfMap = s;
     }
 
+    public void AddLightTile(Vector3 tilePos, float lightHeight)
+    {
+        GameObject last = Instantiate(lightPrefab);
+        last.transform.position = tilePos;
+        TileLight lightComp = last.GetComponent<TileLight>();
+        lightComp.lightObj.transform.localPosition = new Vector3(0, lightHeight, 0);
+        lightComp.ActivateRemover();
+        llights.Add(last);
+    }
+
+    public void RemoveLightTile(GameObject me)
+    {
+        llights.Remove(me);
+    }
 
     public void SaveMapToFile(string path)
     {
@@ -196,7 +212,6 @@ public class RoomMap : MonoBehaviour
 
         File.WriteAllText(Path.Combine(Application.dataPath, path, nameOfMap + ".json"), json);
     }
-
 
     public MapData GetSaveMapData()
     {
@@ -237,8 +252,6 @@ public class RoomMap : MonoBehaviour
         return data;
     }
 
-
-
     public void DropCurrentMap()
     {
         for (int i = 0; i < size; i++)
@@ -251,9 +264,6 @@ public class RoomMap : MonoBehaviour
         mapObj.Clear();
     }
 
-
-
-
     public void LoadMapFromFile(string path)
     {
         if (!File.Exists(Path.Combine(Application.dataPath, path)))
@@ -264,7 +274,6 @@ public class RoomMap : MonoBehaviour
 
         LoadMap(data);
     }
-
 
     public void LoadMap(MapData data)
     {
@@ -278,7 +287,7 @@ public class RoomMap : MonoBehaviour
             mapObj.Add(new List<TileObject>());
             for (int j = 0; j < size; j++)
             {
-                GameObject last = Instantiate(prefab);
+                GameObject last = Instantiate(tilePrefab);
                 last.transform.position = new Vector3(i, 0, j);
                 TileObject t = last.GetComponent<TileObject>();
 
@@ -319,8 +328,6 @@ public class RoomMap : MonoBehaviour
         }
 
     }
-
-
 
     public void GetShaderValues()
     {

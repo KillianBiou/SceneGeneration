@@ -24,7 +24,7 @@ public class GenerationDatabase : MonoBehaviour
 
     [SerializedDictionary("Asset name", "Asset Path")]
     [SerializeField]
-    private SerializedDictionary<string, string> assetDatabase;
+    private SerializedDictionary<string, string> assetDatabase = new SerializedDictionary<string, string>();
 
     [SerializedDictionary("Material name", "Material Path")]
     [SerializeField]
@@ -32,10 +32,11 @@ public class GenerationDatabase : MonoBehaviour
 
     public static event Action OnDatabaseUpdated;
 
+
+    [HideInInspector]
     public UnityEvent<GameObject> StartLoadingOBJ;
 
-    public List<string> modelsFolders;
-
+    [HideInInspector]
     public UnityEvent<string, string> NewGeneratedModel;
 
     private void Awake()
@@ -49,9 +50,7 @@ public class GenerationDatabase : MonoBehaviour
         RmBadEntry();
         CheckNewEntry(GlobalVariables.Instance.GetModelPath());
         SaveDatabase();
-        /*
-        if (modelsFolders != null)
-            CheckEntryAtFolders(modelsFolders);*/
+
     }
 
     public void AddEntry(string key, string value)
@@ -237,6 +236,9 @@ public class GenerationDatabase : MonoBehaviour
     // Remove phantom entry
     private void RmBadEntry()
     {
+        if (assetDatabase.Count < 1)
+            return;
+
         List<string> toRemove = new List<string>();
         foreach (string assetName in assetDatabase.Keys)
         {
@@ -330,13 +332,16 @@ public class GenerationDatabase : MonoBehaviour
         {
             File.Create(DatabaseLocation);
             Debug.Log("Generated " + DatabaseLocation);
+            assetDatabase = new SerializedDictionary<string, string>();
         }
-        assetDatabase = JsonUtility.FromJson<SerializedDictionary<string, string>>(File.ReadAllText(DatabaseLocation));
+        else
+            assetDatabase = JsonUtility.FromJson<SerializedDictionary<string, string>>(File.ReadAllText(DatabaseLocation));
     }
 
     public List<(string, string)> GetAssetsDict()
     {
         List<(string, string)> fullPaths = new List<(string, string)>();
+
         foreach (KeyValuePair<string, string> path in assetDatabase)
         {
             fullPaths.Add((path.Key, Path.Combine(Application.dataPath, path.Value)));
