@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using JetBrains.Annotations;
+using Unity.VisualScripting;
 
 
 
@@ -27,7 +28,7 @@ public struct ShaderValues
 
     public ShaderValues(Material m)
     {
-        t = m.GetTexture("_Texture2D").name;
+        t = m.GetTexture("_BaseMap").name;
         p = m.GetVector("_position_offset");
         s = m.GetVector("_Scaling");
         r = m.GetVector("_Rotation");
@@ -196,6 +197,44 @@ public class RoomMap : MonoBehaviour
         File.WriteAllText(Path.Combine(Application.dataPath, path, nameOfMap + ".json"), json);
     }
 
+    public GameObject ReturnOnlyActivatedTile()
+    {
+        GameObject parent = new GameObject();
+
+        foreach(List<TileObject> lObject in mapObj)
+        {
+            foreach (TileObject obj in lObject)
+            {
+                if (!obj.isWall)
+                {
+                    GameObject copy = obj.GetCleanCopy(); //Instantiate(obj.gameObject);
+                    /*foreach(Transform t in copy.transform)
+                    {
+                        if (!t.gameObject.activeSelf)
+                            Destroy(t.gameObject);
+                        else
+                        {
+                            foreach(Renderer r in t.GetComponentsInChildren<Renderer>(false))
+                            {
+                                Debug.Log("Seek Shadow + " + r.name);
+                                if(r.gameObject.name.ToLower() == "shadow")
+                                    Destroy(r.gameObject);
+                            }
+
+                            if (t.name == "ground -")
+                            {
+                                Debug.Log("Destroyed " + t.name);
+                                Destroy(t.gameObject);
+                            }
+                        }
+                    }*/
+                    copy.transform.parent = parent.transform;
+                }
+            }
+        }
+
+        return parent;
+    }
 
     public MapData GetSaveMapData()
     {
@@ -338,7 +377,7 @@ public class RoomMap : MonoBehaviour
             Debug.Log(Path.Combine(Application.dataPath, "GeneratedData", sv.t));
             if(File.Exists(Path.Combine(Application.dataPath, "GeneratedData", sv.t)))
                 tex.LoadImage(File.ReadAllBytes(Path.Combine(Application.dataPath, "GeneratedData", sv.t)));
-            m.SetTexture("_Texture2D", tex);
+            m.SetTexture("_BaseMap", tex);
             tex.name = sv.t;
         }
 

@@ -69,7 +69,7 @@ public class MouseGenerative2D : MonoBehaviour
 
         foreach (Material mat in mats)
         {
-            mat.SetTexture("_Texture2D", matInfo.materials[matInfo.selectedId].GetTexture("_Texture2D"));
+            mat.SetTexture("_BaseMap", matInfo.materials[matInfo.selectedId].GetTexture("_BaseMap"));
             mat.SetVector("_position_offset", matInfo.materials[matInfo.selectedId].GetVector("_position_offset"));
             mat.SetVector("_Scaling", matInfo.materials[matInfo.selectedId].GetVector("_Scaling"));
             mat.SetVector("_Rotation", matInfo.materials[matInfo.selectedId].GetVector("_Rotation"));
