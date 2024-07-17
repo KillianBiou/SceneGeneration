@@ -177,13 +177,6 @@ public class Player : MonoBehaviour
 
     public int InstantiationCallback_GLB(string objPath)
     {
-
-
-        //instantiatedObj.transform.GetChild(0).rotation = Quaternion.Euler(new Vector3(-90f, -90f, 0f));
-
-
-
-
         GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.MODEL_IMPORT);
         if (images.Count > 0)
             images.RemoveAt(0);
@@ -195,7 +188,7 @@ public class Player : MonoBehaviour
 
         Cursor3D.instance.blocked = false;
         Cursor3D.instance.toggleLoadFX(false);
-        GenerationDatabase.Instance.SpawnObject(Path.GetFileName(objPath), instanciationPoint, Quaternion.identity, Vector3.one);
+        GenerationDatabase.Instance.SpawnObject(Path.GetFileName(objPath), Cursor3D.instance.transform.position, Quaternion.identity, Vector3.one);
         Debug.Log("Object instancie !!");
         return 0;
     }

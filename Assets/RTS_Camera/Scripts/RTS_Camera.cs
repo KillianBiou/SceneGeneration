@@ -305,7 +305,7 @@ namespace RTS_Cam
         private void OnShortClickTrigger()
         {
             // DIFFERENCIATE FROM SELECTION MODE
-            switch (GlobalVariables.Instance.currentApplicationState)
+            switch (GlobalVariables.Instance.GetCurrentApplicationState())
             {
                 case ApplicationState.GENERATION2D:
                     OnMoveState.Invoke();

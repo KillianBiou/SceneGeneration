@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine.UI;
 using UnityEditor;
 using Unity.VisualScripting;
+using UnityEngine.Events;
 
 public class GeneratedLibrary : MonoBehaviour
 {
@@ -19,10 +20,15 @@ public class GeneratedLibrary : MonoBehaviour
     [HideInInspector]
     public Texture2D texture, normal;
 
+    public UnityEvent<string, int> NewTextureAdded;
+
     public static GeneratedLibrary Instance;
     private void Awake()
     {
-        Instance = this;
+        if (!GeneratedLibrary.Instance)
+            Instance = this;
+        else
+            GeneratedLibrary.Instance.NewTextureAdded.AddListener(AddNew);
     }
 
     // Start is called before the first frame update
@@ -71,16 +77,23 @@ public class GeneratedLibrary : MonoBehaviour
         }
     }
 
-    public string AddNew(string path)
+    public int AddNew(string path)
     {
         if (path == "")
-            return "";
+            return 0;
 
         Debug.Log("has just been generated : " + path);
         CreateButton(new FileInfo(path));
-        return "";
+
+        if (Instance == this)
+            NewTextureAdded.Invoke(path, 0);
+        return 0;
     }
 
+    public void AddNew(string path, int i)
+    {
+        CreateButton(new FileInfo(path));
+    }
 
     private void CreateButton(FileInfo f)
     {

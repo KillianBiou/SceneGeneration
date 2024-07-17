@@ -32,6 +32,14 @@ public class GlobalProgressBar : MonoBehaviour
 
     private ApplicationStatePhase newPhase = ApplicationStatePhase.UNKNOWN;
 
+
+    public static GlobalProgressBar Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Update()
     {
         if (newPhase != ApplicationStatePhase.UNKNOWN)
@@ -43,9 +51,10 @@ public class GlobalProgressBar : MonoBehaviour
 
     public void SetProcedure(ApplicationState state)
     {
-        // Set procedure if exist
-        if(statesProcedure.ContainsKey(state))
-            currentProcedureList = statesProcedure[state];
+        if (!statesProcedure.ContainsKey(state))
+            return;
+
+        currentProcedureList = statesProcedure[state];
 
         // Set Slider var
         progressBar.maxValue = currentProcedureList.Count - 1;

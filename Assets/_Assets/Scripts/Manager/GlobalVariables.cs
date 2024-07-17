@@ -6,6 +6,7 @@ using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 
 [System.Serializable]
 public enum ApplicationState
@@ -43,6 +44,12 @@ public enum ApplicationStatePhase
     TRIPOSR_RUNNING,
     TRIPOSR_EXPORT,
     MODEL_IMPORT,
+    _0_100,
+    _20_100,
+    _40_100,
+    _60_100,
+    _80_100,
+    _100_100,
 }
 
 [Serializable]
@@ -61,7 +68,7 @@ public class GlobalVariables : MonoBehaviour
 {
     [Header("Application State")]
     [SerializeField]
-    public ApplicationState currentApplicationState;
+    private ApplicationState currentApplicationState;
     [SerializeField]
     private ApplicationStatePhase currentPhase;
     [ReadOnly, SerializeField]
@@ -77,7 +84,7 @@ public class GlobalVariables : MonoBehaviour
 
     //[Header("ReadOnly Global Variable")]
     //[ReadOnly, SerializeField]
-    private string pythonPath, modelsPath, imagesPath;
+    private string pythonPath, pyDirectory, modelsPath, imagesPath;
 
     public static GlobalVariables Instance;
 
@@ -85,16 +92,22 @@ public class GlobalVariables : MonoBehaviour
     {
         Instance = this;
         pythonPath = GetPythonPathFromRegistry();
+        pyDirectory = Path.Combine(Application.dataPath, "TripoSR/");
         modelsPath = Path.Combine(Application.dataPath, "GeneratedData/Models/");
         imagesPath = Path.Combine(Application.dataPath, "GeneratedData/Images/");
-        if (!Directory.Exists(modelsPath))
-            Directory.CreateDirectory(modelsPath);
-        if (!Directory.Exists(imagesPath))
-            Directory.CreateDirectory(imagesPath);
+
+        if (!System.IO.Directory.Exists(modelsPath))
+            System.IO.Directory.CreateDirectory(modelsPath);
+        if (!System.IO.Directory.Exists(imagesPath))
+            System.IO.Directory.CreateDirectory(imagesPath);
         EndOfGen();
 
         currentApplicationState = ApplicationState.IDLE;
         ModeHideAll();
+    }
+
+    private void Start()
+    {
         ModeActivate(currentApplicationState);
     }
 
@@ -135,6 +148,11 @@ public class GlobalVariables : MonoBehaviour
     public string GetPythonPath()
     {
         return pythonPath;
+    }
+
+    public string GetPyScriptDirectory()
+    {
+        return pyDirectory;
     }
 
     public string GetModelPath()
@@ -256,6 +274,8 @@ public class GlobalVariables : MonoBehaviour
                 if(am.bouton)
                     am.bouton.interactable = false;
                 currentApplicationState = newState;
+
+                progressBar.SetProcedure(newState);
                 return;
             }
         }
@@ -289,5 +309,10 @@ public class GlobalVariables : MonoBehaviour
     {
         if(i>-1 &&  i<Modes.Length)
             ModeSwitchTo(Modes[i]);
+    }
+
+    public ApplicationState GetCurrentApplicationState()
+    {
+        return currentApplicationState;
     }
 }

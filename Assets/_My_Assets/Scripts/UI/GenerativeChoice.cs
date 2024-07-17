@@ -82,7 +82,6 @@ public class GenerativeChoice : MonoBehaviour
         req.request.filename = req.request.prompt;
         req.nbImages = n;
 
-
         DiffuserInterface.Instance.RequestGeneration(req, RemoveBackground);
 
         amount = n;
@@ -119,7 +118,7 @@ public class GenerativeChoice : MonoBehaviour
         pending = true;
     }
 
-    public string RemoveBackground(string s)
+    public int RemoveBackground(string s)
     {
         if (isProcessRunning)
         {
@@ -200,18 +199,33 @@ public class GenerativeChoice : MonoBehaviour
             pythonProcess.BeginErrorReadLine();
             isProcessRunning = true;
         }
-        return "";
+        return 0;
     }
 
     private void OnPythonProcessExited(object sender, EventArgs e)
     {
         isProcessRunning = false;
         pythonProcess = null;
-        /*
+
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.delayCall += CountingResults;
 
-        UnityEditor.EditorApplication.delayCall += () => OnPythonProcessEnded?.Invoke();*/
+        UnityEditor.EditorApplication.delayCall += () => OnPythonProcessEnded?.Invoke();
+#else
+        StartCoroutine(CoolBack());
+        //CountingResults();
+#endif
     }
+
+
+    IEnumerator CoolBack()
+    {
+        yield return new WaitForEndOfFrame();
+        CountingResults();
+        yield return null;
+    }
+
+
 
 
     public void CountingResults()

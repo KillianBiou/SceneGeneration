@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.IO;
 using UnityEngine;
@@ -17,7 +18,7 @@ public class DiffuserInterface : MonoBehaviour
     private bool isProcessRunning = false;
     public static event Action OnPythonProcessEnded;
 
-    private Func<string,string> memoryCallback;
+    private Func<string, int> memoryCallback;
     private string target;
 
     private void Awake()
@@ -25,7 +26,7 @@ public class DiffuserInterface : MonoBehaviour
         Instance = this;
     }
 
-    public void RequestGeneration(StableCompleteRequest requestDetail, Func<string, string> callback = null)
+    public void RequestGeneration(StableCompleteRequest requestDetail, Func<string, int> callback = null)
     {
 
         if (isProcessRunning)
@@ -66,14 +67,14 @@ public class DiffuserInterface : MonoBehaviour
         ProcessStartInfo start = new ProcessStartInfo
         {
             FileName = GlobalVariables.Instance.GetPythonPath(),
-            Arguments = $"{Path.Combine(Application.dataPath, "TripoSR", "StableTest.py")} {args}",
+            Arguments = $"{Path.Combine(GlobalVariables.Instance.GetPyScriptDirectory(), "StableTest.py")} {args}",
             UseShellExecute = false,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             CreateNoWindow = true
         };
 
-        UnityEngine.Debug.Log("PROCESS STARTED : " + $"{Path.Combine(Application.dataPath, "TripoSR/StableTest.py")} {args}");
+        UnityEngine.Debug.Log("PROCESS STARTED : " + $"{Path.Combine(GlobalVariables.Instance.GetPyScriptDirectory(), "/StableTest.py")} {args}");
 
         pythonProcess = new Process { StartInfo = start };
         pythonProcess.StartInfo = start;
@@ -92,7 +93,22 @@ public class DiffuserInterface : MonoBehaviour
         pythonProcess.ErrorDataReceived += (sender, e) =>
         {
             UnityEngine.Debug.Log("Error :" + e.Data);
-            if(e.Data.Contains("Generated image"))
+            if (e.Data.Contains("%"))
+            {
+                int i = int.Parse(e.Data.Substring(e.Data.IndexOf("%") - 3, 3).Replace("%", ""));
+                if (i >= 20)
+                    GlobalProgressBar.Instance.NotifyPhaseChange(ApplicationStatePhase._20_100);
+                if (i >= 40)
+                    GlobalProgressBar.Instance.NotifyPhaseChange(ApplicationStatePhase._40_100);
+                if (i >= 60)
+                    GlobalProgressBar.Instance.NotifyPhaseChange(ApplicationStatePhase._60_100);
+                if (i >= 80)
+                    GlobalProgressBar.Instance.NotifyPhaseChange(ApplicationStatePhase._80_100);
+                if (i >= 100)
+                    GlobalProgressBar.Instance.NotifyPhaseChange(ApplicationStatePhase._100_100);
+            }
+
+            if (e.Data.Contains("Generated image"))
             {
                 //callback("");
             }
@@ -127,8 +143,21 @@ public class DiffuserInterface : MonoBehaviour
         if (memoryCallback != null)
         {
             UnityEngine.Debug.Log("MEMORY SET");
+#if UNITY_EDITOR
             memoryCallback(target);
+#else
+            StartCoroutine(CoolBack());
+#endif
         }
     }
+
+
+    private IEnumerator CoolBack()
+    {
+        yield return new WaitForEndOfFrame();
+        memoryCallback(target);
+        yield return null;
+    }
+
 
 }

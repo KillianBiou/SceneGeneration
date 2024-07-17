@@ -6,6 +6,7 @@ using System.Globalization;
 using System;
 using AsImpL;
 using UnityEngine.Events;
+using System.Collections;
 
 public enum TripoState
 {
@@ -303,15 +304,26 @@ public class TripoSRForUnity : MonoBehaviour
         UnityEngine.Debug.Log("Calling back for instantiation...");
         if (memoryCallback != null)
         {
+#if UNITY_EDITOR
             UnityEditor.EditorApplication.delayCall += () => memoryCallback.Invoke(savePath);
-#if !UNITY_EDITOR
-            memoryCallback.Invoke(savePath);
+#else
+            StartCoroutine(CoolBack());
+            //memoryCallback.Invoke(savePath);
 #endif
         }
         else
             UnityEngine.Debug.Log("XXX No python exit callback XXX ");
 
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.delayCall += () => OnPythonProcessEnded?.Invoke();
+#endif
+    }
+
+    IEnumerator CoolBack()
+    {
+        yield return new WaitForEndOfFrame();
+        memoryCallback.Invoke(savePath);
+        yield return null;
     }
 
 

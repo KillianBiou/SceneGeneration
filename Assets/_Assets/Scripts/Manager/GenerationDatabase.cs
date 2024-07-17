@@ -226,7 +226,7 @@ public class GenerationDatabase : MonoBehaviour
                     if(data.meshName != "")
                     {
                         Debug.Log("Found " + info.Name + " unregistered, adding to db");
-                        assetDatabase.Add(info.Name, Path.Combine(folderName.Substring(Application.dataPath.Length-1), info.Name, info.Name + ".json"));
+                        assetDatabase.Add(info.Name, Path.Combine(folderName.Substring(Application.dataPath.Length+1), info.Name, info.Name + ".json"));
                     }
                 }
             }
