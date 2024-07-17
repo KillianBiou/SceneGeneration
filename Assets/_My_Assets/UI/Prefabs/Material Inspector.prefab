@@ -293,7 +293,7 @@ GameObject:
   - component: {fileID: 2636104102156631180}
   - component: {fileID: 773764929821735122}
   - component: {fileID: 3144372579382959447}
-  - component: {fileID: 7381592314068705389}
+  - component: {fileID: 6437418567401998048}
   m_Layer: 5
   m_Name: Material Inspector
   m_TagString: Untagged
@@ -457,7 +457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3218314670bcca94ebd1af7ebfe28e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7381592314068705389
+--- !u!114 &6437418567401998048
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -466,7 +466,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5549247872271009007}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45ab80b5ab7d15041a22ca819352a579, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e59412ab9365c04092ac9c22559c470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 3469443418603524194}

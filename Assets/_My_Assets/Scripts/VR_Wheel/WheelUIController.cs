@@ -17,10 +17,13 @@ public class WheelUIController : MonoBehaviour
     public Vector2 input;
     [HideInInspector]
     public UnityEvent<int> ChoiceDone;
+    [HideInInspector]
+    public UnityEvent<float> ChoiceFloatDone;
 
     private int nChoices, currentChoice;
 
     private bool isChoosing;
+    private float floatChoice;
 
     public void Init(List<WheelVisuals> buttons)
     {
@@ -75,6 +78,7 @@ public class WheelUIController : MonoBehaviour
     {
         content.transform.GetChild(currentChoice).GetComponent<WheelUiButton>().EndHover();
         ChoiceDone.Invoke(Choosed());
+        ChoiceFloatDone.Invoke(floatChoice);
     }
 
     private void OnEnable()
@@ -106,6 +110,7 @@ public class WheelUIController : MonoBehaviour
 
         if (angle < 0)
             angle += 360;
+        floatChoice = angle / 360;
 
         float marge = 360 / nChoices;
 

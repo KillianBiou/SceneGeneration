@@ -88,7 +88,7 @@ public class TileLight : MonoBehaviour
 
     public void SetLightHeight(float height)
     {
-        lightObj.transform.position = new Vector3(0,height,0);
+        lightObj.transform.localPosition = new Vector3(0,height,0);
     }
 
     public void SetLightColor(Color c)

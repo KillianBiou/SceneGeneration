@@ -1,8 +1,11 @@
 using Microsoft.Win32;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public enum ApplicationState
@@ -42,15 +45,29 @@ public enum ApplicationStatePhase
     MODEL_IMPORT,
 }
 
+[Serializable]
+public struct ApplicationMode
+{
+    [SerializeField]
+    public ApplicationState state;
+    [SerializeField]
+    public GameObject[] gameObjects;
+    [SerializeField]
+    public Button bouton;
+}
+
+
 public class GlobalVariables : MonoBehaviour
 {
     [Header("Application State")]
     [SerializeField]
-    private ApplicationState currentApplicationState;
+    public ApplicationState currentApplicationState;
     [SerializeField]
     private ApplicationStatePhase currentPhase;
-
+    [ReadOnly, SerializeField]
     public bool isInVr = false;
+    [SerializeField]
+    public ApplicationMode[] modes;
 
     [Header("References")]
     [SerializeField]
@@ -58,8 +75,8 @@ public class GlobalVariables : MonoBehaviour
     [SerializeField]
     private Material meshBaseMaterial;
 
-    [Header("ReadOnly Global Variable")]
-    [ReadOnly, SerializeField]
+    //[Header("ReadOnly Global Variable")]
+    //[ReadOnly, SerializeField]
     private string pythonPath, modelsPath, imagesPath;
 
     public static GlobalVariables Instance;
@@ -75,6 +92,10 @@ public class GlobalVariables : MonoBehaviour
         if (!Directory.Exists(imagesPath))
             Directory.CreateDirectory(imagesPath);
         EndOfGen();
+
+        currentApplicationState = ApplicationState.IDLE;
+        ModeHideAll();
+        ModeActivate(currentApplicationState);
     }
 
     public bool SetCurrentApplicationState(ApplicationState newState)
@@ -103,6 +124,8 @@ public class GlobalVariables : MonoBehaviour
         currentPhase = ApplicationStatePhase.NONE;
         progressBar.StopProcedure();
     }
+
+    // GETTERS
 
     public Material GetBaseMaterial()
     {
@@ -206,5 +229,65 @@ public class GlobalVariables : MonoBehaviour
         }
 
         return "";
+    }
+
+
+
+    // MODES SWITCHER
+
+    public void ModeHideAll()
+    {
+        foreach(ApplicationMode am in modes)
+        {
+            foreach (GameObject go in am.gameObjects)
+                go.SetActive(false);
+        }
+    }
+
+    public void ModeActivate(ApplicationState newState)
+    {
+        foreach (ApplicationMode am in modes)
+        {
+            if (am.state == newState)
+            {
+                ModeDeactivate(currentApplicationState);
+                foreach (GameObject go in am.gameObjects)
+                    go.SetActive(true);
+                if(am.bouton)
+                    am.bouton.interactable = false;
+                currentApplicationState = newState;
+                return;
+            }
+        }
+        Debug.Log("State : " + newState + " not found.");
+    }
+
+    public void ModeDeactivate(ApplicationState oldState)
+    {
+        foreach (ApplicationMode am in modes)
+        {
+            if (am.state == oldState)
+            {
+                foreach (GameObject go in am.gameObjects)
+                    go.SetActive(false);
+                if (am.bouton)
+                    am.bouton.interactable = true;
+                return;
+            }
+        }
+        Debug.Log("State : " + oldState + " not found.");
+    }
+
+    public void ModeSwitchTo(AppState applicationState)
+    {
+        ModeActivate(applicationState.appState);
+    }
+
+    [SerializeField]
+    private AppState[] Modes;
+    public void ModeSwitchTo(int i)
+    {
+        if(i>-1 &&  i<Modes.Length)
+            ModeSwitchTo(Modes[i]);
     }
 }

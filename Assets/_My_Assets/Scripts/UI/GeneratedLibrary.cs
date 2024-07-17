@@ -64,7 +64,7 @@ public class GeneratedLibrary : MonoBehaviour
 
         DirectoryInfo dir = new DirectoryInfo(GlobalVariables.Instance.GetImagePath());
         FileInfo[] info = dir.GetFiles("*_T.png");
-        Debug.Log("jen ai trouve " + info.Length);
+        //Debug.Log("jen ai trouve " + info.Length);
         foreach (FileInfo f in info)
         {
             CreateButton(f);

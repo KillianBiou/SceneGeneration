@@ -30,8 +30,14 @@ public class WheelController : MonoBehaviour
 
     public InputActionProperty buttonHold, stick;
 
+
     [SerializeField]
     private UnityEvent<int> OutputChoiceEvent;
+    [SerializeField]
+    private bool floatOut;
+    [SerializeField]
+    [Tooltip("Retrun a value between 0 and 1")]
+    private UnityEvent<float> OutputFloatEvent;
 
 
     void Start()
@@ -39,7 +45,9 @@ public class WheelController : MonoBehaviour
         buttonHold.action.started += ShowWheel;
         buttonHold.action.performed += ShowWheel;
 
-        wheel.ChoiceDone.AddListener(ModeToggle);
+        wheel.ChoiceDone.AddListener(CallbackEvents);
+        if (floatOut)
+            wheel.ChoiceFloatDone.AddListener(CallbackEvents);
 
         wheel.Init(visuals);
     }
@@ -56,9 +64,13 @@ public class WheelController : MonoBehaviour
         }
     }
 
-    public void ModeToggle(int n)
+    public void CallbackEvents(int n)
     {
         OutputChoiceEvent.Invoke(n);
+    }
+    public void CallbackEvents(float f)
+    {
+        OutputFloatEvent.Invoke(f);
     }
 
 

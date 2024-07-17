@@ -305,18 +305,12 @@ namespace RTS_Cam
         private void OnShortClickTrigger()
         {
             // DIFFERENCIATE FROM SELECTION MODE
-            switch (triD_toolset.Instance.state)
+            switch (GlobalVariables.Instance.currentApplicationState)
             {
-                case D_EDIT_STATE.MOVE:
+                case ApplicationState.GENERATION2D:
                     OnMoveState.Invoke();
                     break;
-                case D_EDIT_STATE.SCALE:
-                    OnScaleState.Invoke();
-                    break;
-                case D_EDIT_STATE.ROTATE:
-                    OnRotateState.Invoke();
-                    break;
-                case D_EDIT_STATE.GEN:
+                case ApplicationState.GENERATION3D:
                     OnGenState.Invoke();
                     break;
                 default:

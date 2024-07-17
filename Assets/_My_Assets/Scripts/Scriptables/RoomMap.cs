@@ -5,8 +5,7 @@ using System.IO;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine.XR;
-
-
+using AYellowpaper.SerializedCollections.Editor.Data;
 
 
 
@@ -39,7 +38,7 @@ public struct ShaderValues
 }
 
 
-    [System.Serializable]
+[System.Serializable]
 public struct TileMat
 {
     [SerializeField]
@@ -80,7 +79,7 @@ public class RoomMap : MonoBehaviour
 
     public int size;
     public List<List<TileObject>> mapObj; // SAVE THIS
-    public List<GameObject> llights; //SAVE THIS
+    public List<TileLight> llights; //SAVE THIS
     public string nameOfMap;
     public GameObject tilePrefab, lightPrefab;
     public bool isEditing;
@@ -96,27 +95,20 @@ public class RoomMap : MonoBehaviour
         isEditing = false;
 
         mapObj = new List<List<TileObject>>();
+        llights = new List<TileLight>();
 
         for (int i = 0; i < size; i++)
         {
             mapObj.Add(new List<TileObject>());
             for (int j = 0; j < size; j++)
             {
-                GameObject last = Instantiate(tilePrefab);
-                last.transform.position = new Vector3(i, 0, j);
-                TileObject t = last.GetComponent<TileObject>();
-
-                t.Init(true, true, true, true, true);
-                t.roomMap = this;
-                last.transform.SetParent(gameObject.transform, false);
-
-                mapObj[i].Add(t);
+                mapObj[i].Add(CreateTile(new Vector3(i, 0, j)));
             }
         }
     }
 
 
-    public void EnterEdit()
+    public void TileToggleEdit(bool b)
     {
         isEditing = true;
 
@@ -124,22 +116,37 @@ public class RoomMap : MonoBehaviour
         {
             for (int j = 1; j < size-1; j++)
             {
-                mapObj[i][j].ShowGizmoEditGround();
+                if(b)
+                    mapObj[i][j].ShowGizmoEditGround();
+                else
+                    mapObj[i][j].HideButton();
             }
         }
     }
-    public void ExitEdit()
-    {
-        isEditing = false;
 
-        for (int i = 0; i < size; i++)
+
+    public void LightTogglePlaceGizmo(bool b)
+    {
+        foreach(TileLight l in llights)
         {
-            for (int j = 0; j < size; j++)
-            {
-                mapObj[i][j].HideButton();
-            }
+            if (b)
+                l.ActivateRemover();
+            else
+                l.DeactivateRemover();
         }
     }
+
+    public void LightToggleEditGizmo(bool b)
+    {
+        foreach (TileLight l in llights)
+        {
+            if (b)
+                l.ActivateEdit();
+            else
+                l.DeactivateEdit();
+        }
+    }
+
 
 
     public void Retile(int x, int y, bool b)
@@ -182,9 +189,10 @@ public class RoomMap : MonoBehaviour
                 l.Add(mapObj[i][j]);
             }
         }
-
         return l;
     }
+
+
 
     public void SetRoomName(string s)
     {
@@ -198,13 +206,32 @@ public class RoomMap : MonoBehaviour
         TileLight lightComp = last.GetComponent<TileLight>();
         lightComp.lightObj.transform.localPosition = new Vector3(0, lightHeight, 0);
         lightComp.ActivateRemover();
-        llights.Add(last);
+        llights.Add(lightComp);
     }
 
     public void RemoveLightTile(GameObject me)
     {
-        llights.Remove(me);
+        llights.Remove(me.GetComponent<TileLight>());
     }
+
+
+
+    private TileObject CreateTile(Vector3 position)
+    {
+        GameObject last = Instantiate(tilePrefab);
+        last.transform.position = position;
+        TileObject t = last.GetComponent<TileObject>();
+        t.Init(true, true, true, true, true);
+        last.transform.SetParent(gameObject.transform, false);
+
+        return t;
+    }
+
+
+
+
+
+    // MAP SAVE LOAD
 
     public void SaveMapToFile(string path)
     {
@@ -252,6 +279,19 @@ public class RoomMap : MonoBehaviour
         return data;
     }
 
+    public LightsData GetLightsSaveData()
+    {
+        LightsData ld = new LightsData();
+        ld.lights = new List<LightPlace>();
+
+        foreach (TileLight l in llights)
+        {
+            Light linfo = l.lightRef;
+            ld.lights.Add(new LightPlace(linfo.intensity, linfo.range, linfo.transform.position.y, l.transform.position));
+        }
+        return ld;
+    }
+
     public void DropCurrentMap()
     {
         for (int i = 0; i < size; i++)
@@ -262,6 +302,13 @@ public class RoomMap : MonoBehaviour
             }
         }
         mapObj.Clear();
+    }
+
+    public void DeleteAllLights()
+    {
+        foreach (TileLight l in llights)
+            Destroy(l.gameObject);
+        llights.Clear();
     }
 
     public void LoadMapFromFile(string path)
@@ -287,16 +334,7 @@ public class RoomMap : MonoBehaviour
             mapObj.Add(new List<TileObject>());
             for (int j = 0; j < size; j++)
             {
-                GameObject last = Instantiate(tilePrefab);
-                last.transform.position = new Vector3(i, 0, j);
-                TileObject t = last.GetComponent<TileObject>();
-
-                t.Init(data.map[i].list[j], true, true, true, true);
-                t.roomMap = this;
-
-                last.transform.SetParent(gameObject.transform, false);
-
-                mapObj[i].Add(t);
+                mapObj[i].Add(CreateTile(new Vector3(i, 0, j)));
             }
         }
 
@@ -333,6 +371,9 @@ public class RoomMap : MonoBehaviour
     {
 
     }
+
+
+
 
     public void ApplyShaderValues(GameObject go, ShaderValues sv)
     {

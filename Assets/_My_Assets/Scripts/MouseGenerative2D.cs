@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 public class MouseGenerative2D : MonoBehaviour
 {
 
-    private GenerativeInspector materialInspector;
+    private MaterialInspector materialInspector;
     public MatInfo matInfo;
 
 
@@ -17,13 +17,16 @@ public class MouseGenerative2D : MonoBehaviour
 
     void Awake()
     {
-        materialInspector = FindObjectOfType<GenerativeInspector>();
+        materialInspector = FindObjectOfType<MaterialInspector>();
     }
 
-    // Update is called once per frame
+
+
     void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject() || !materialInspector)
+
+
+        if (EventSystem.current.IsPointerOverGameObject() || !MaterialInspector.Instance)
             return;
 
 
@@ -36,13 +39,13 @@ public class MouseGenerative2D : MonoBehaviour
                 if (hit.collider.gameObject.GetComponent<Renderer>() != null)
                 {
                     matInfo.materials = hit.collider.gameObject.GetComponent<Renderer>().materials;
-                    materialInspector.gameObject.SetActive(true);
-                    materialInspector.InspectMat();
+                    MaterialInspector.Instance.gameObject.SetActive(true);
+                    MaterialInspector.Instance.InspectMat();
                 }
             }
             else
             {
-                materialInspector.gameObject.SetActive(false);
+                MaterialInspector.Instance.gameObject.SetActive(false);
                 matInfo.materials = null;
                 matInfo.selectedId = -1;
             }
@@ -83,8 +86,8 @@ public class MouseGenerative2D : MonoBehaviour
             else
                 mat.SetFloat("_use_normal", 0);
 
-
             matInfo.Changed.Invoke();
         }
     }
+
 }

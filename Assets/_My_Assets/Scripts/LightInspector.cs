@@ -16,7 +16,15 @@ public class LightInspector : MonoBehaviour
     [SerializeField]
     private Image colorIcon;
 
-    
+    public static LightInspector Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+        gameObject.SetActive(false);
+    }
+
+
     public void Inspect(TileLight l)
     {
         lightObj = l;

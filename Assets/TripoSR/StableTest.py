@@ -38,6 +38,8 @@ class StableHandler:
                 num_inference_steps=steps,
                 cfg=cfg,
                 generator = generator,
+                tilex=tileX,
+                tileY=tileY,
                 num_images_per_prompt=1,
             ).images[0].save(f"{outputDir}/{filename}{str(nb)}.png")
             print("Generated image " + str(nb))
@@ -51,6 +53,8 @@ class StableHandler:
             height=height,
             num_inference_steps=steps,
             cfg=cfg,
+            tilex=tileX,
+            tileY=tileY,
             generator = generator,
             num_images_per_prompt=1,
         ).images[0].save(f"{outputDir}/{filename}.png")

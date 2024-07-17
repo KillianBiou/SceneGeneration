@@ -20,29 +20,14 @@ public class TileObject : MonoBehaviour
     public GameObject ground, northWall, eastWall, southWall, westWall;
     public GameObject groundAdd, groundRemove, selected;
 
-    public RoomMap roomMap;
     public bool isWall = true;
     public BoxCollider editorCollider;
 
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public bool isNorthClosed()
     {
         return northWall.activeInHierarchy;
     }
-
 
     public bool isEastClosed()
     {
@@ -201,7 +186,6 @@ public class TileObject : MonoBehaviour
 
     public void TileClick()
     {
-
         if (isWall)
         {
             isWall = false;
@@ -214,8 +198,7 @@ public class TileObject : MonoBehaviour
             groundRemove.SetActive(false);
             groundAdd.SetActive(true);
         }
-
-        roomMap.Retile((int)gameObject.transform.position.x, (int)gameObject.transform.position.z, isWall);
+        RoomMap.Instance.Retile((int)gameObject.transform.position.x, (int)gameObject.transform.position.z, isWall);
     }
 
     public void ShowSelected()

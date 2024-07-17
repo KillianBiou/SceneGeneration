@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ColorPicker : MonoBehaviour
 {
-    static public ColorPicker instance;
+    static public ColorPicker Instance;
 
 
     public Color color;
@@ -22,7 +22,7 @@ public class ColorPicker : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
         color = new Color(0, 0, 0);
         gameObject.SetActive(false);
     }
