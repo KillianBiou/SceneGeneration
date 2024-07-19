@@ -68,7 +68,7 @@ public class GenerativeChoice : MonoBehaviour
 
     public void GenerateChoices(SdRequest rq, int n)
     {
-        if (!sdh || pending)
+        if (pending)
             return;
 
         ClearPicker();
@@ -83,36 +83,6 @@ public class GenerativeChoice : MonoBehaviour
         req.nbImages = n;
 
         DiffuserInterface.Instance.RequestGeneration(req, RemoveBackground);
-
-        amount = n;
-        pending = true;
-    }
-
-
-
-    public void Test(int n)
-    {
-        if (!sdh)
-            return;
-
-        ClearPicker();
-
-        GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.ZERO_IMAGE);
-
-        uiContainer.transform.parent.gameObject.SetActive(true);
-
-        req.request.directory = Path.Combine("GeneratedData", folderName);
-        req.request.filename = "GeneratedChoice";
-        req.nbImages = 4;
-
-
-        DiffuserInterface.Instance.RequestGeneration(req, RemoveBackground);
-
-        /*for (int i = 0; i < n; i++)
-        {
-            req.filename = req.filename.Replace(".png", "_" + i + ".png");
-            sdh.RequestGeneration(req);
-        }*/
 
         amount = n;
         pending = true;

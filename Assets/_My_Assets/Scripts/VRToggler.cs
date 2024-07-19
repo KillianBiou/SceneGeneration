@@ -16,11 +16,14 @@ public class VRToggler : MonoBehaviour
     public static VRToggler Instance;
     private bool isVrOn = false;
 
+    private Resolution appResolution;
+
     private void Awake()
     {
         Instance = this;
         isVrOn = isTracking.action.ReadValue<int>() == 15;
         ToggleVR(isVrOn);
+        appResolution = Screen.currentResolution;
     }
 
     private void Update()
@@ -42,6 +45,7 @@ public class VRToggler : MonoBehaviour
         else
         {
             TurnOffVR.Invoke();
+            Screen.SetResolution(appResolution.width, appResolution.height,FullScreenMode.Windowed);
         }
     }
 
