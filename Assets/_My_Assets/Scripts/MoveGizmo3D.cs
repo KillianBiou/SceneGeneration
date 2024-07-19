@@ -15,10 +15,8 @@ public class MoveGizmo3D : MonoBehaviour
     void Update()
     {
 
-
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-
             int layerMask = 1 << 5;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;

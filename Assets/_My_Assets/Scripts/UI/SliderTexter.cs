@@ -19,7 +19,7 @@ public class SliderTexter : MonoBehaviour
         Slider s = null;
 
         if ((s = gameObject.GetComponent<Slider>()) != null)
-            SetText(s.value);
+            SetText(s.value/s.maxValue*100);
     }
 
 

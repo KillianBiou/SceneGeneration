@@ -22,7 +22,8 @@ public enum ApplicationState
     OBJ_MOVE,
     OBJ_ROTATE,
     OBJ_SCALE,
-    GEN_3D
+    GEN_3D,
+    VR_OBJ_EDIT
 }
 
 [System.Serializable]

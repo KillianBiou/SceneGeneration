@@ -22,13 +22,11 @@ public class GeneratedLibrary : MonoBehaviour
 
     public UnityEvent<string, int> NewTextureAdded;
 
-    public static GeneratedLibrary Instance;
+    public static GeneratedLibrary Instance, VRInst;
     private void Awake()
     {
         if (!GeneratedLibrary.Instance)
             Instance = this;
-        else
-            GeneratedLibrary.Instance.NewTextureAdded.AddListener(AddNew);
     }
 
     // Start is called before the first frame update
@@ -36,6 +34,10 @@ public class GeneratedLibrary : MonoBehaviour
     {
         LoadLibrary();
 
+        if (GeneratedLibrary.Instance != this)
+        {
+            GeneratedLibrary.Instance.NewTextureAdded.AddListener(AddNew);
+        }
 
         StableHandler sdh;
         if ((sdh = FindFirstObjectByType<StableHandler>()) != null)

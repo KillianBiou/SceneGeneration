@@ -13,11 +13,13 @@ public class VR_LightInfo : MonoBehaviour
     public static VR_LightInfo Instance;
     private TileLight tileLightRef;
 
+    public WheelController colorWheel;
     private void Awake()
     {
         Instance = this;
         gameObject.SetActive(false);
     }
+
 
     public void Init(TileLight light)
     {
@@ -36,5 +38,10 @@ public class VR_LightInfo : MonoBehaviour
     {
         tileLightRef.SetLightIntensity(i);
         TXTintensity.text = "Light Intensity " + i.ToString("F2");
+    }
+
+    public void SetColor(float i)
+    {
+        tileLightRef.SetLightColor(Color.HSVToRGB(i, .5f, .5f));
     }
 }

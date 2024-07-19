@@ -48,8 +48,8 @@ public class WheelController : MonoBehaviour
         wheel.ChoiceDone.AddListener(CallbackEvents);
         if (floatOut)
             wheel.ChoiceFloatDone.AddListener(CallbackEvents);
-
-        wheel.Init(visuals);
+        if(!floatOut)
+            wheel.Init(visuals);
     }
 
 
