@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 
 [Serializable]
 public struct WheelVisuals
@@ -21,8 +22,8 @@ public class WheelController : MonoBehaviour
     [SerializeField]
     private List<WheelVisuals> visuals;
 
-    public GameObject cancelable;
-    private bool wasCanceled = false;
+    [SerializeField]
+    private List<XRRayInteractor> cancellables;
 
 
     [SerializeField]
@@ -80,23 +81,7 @@ public class WheelController : MonoBehaviour
 
         wheel.gameObject.SetActive(newState);
 
-        if (cancelable == null)
-            return;
-
-        if(newState && cancelable.activeSelf)
-        {
-            cancelable.SetActive(false);
-            wasCanceled = true;
-        }
-        else if (newState)
-        {
-            cancelable.SetActive(false);
-        }
-
-        if (wasCanceled && !newState)
-        {
-            cancelable.SetActive(true);
-            wasCanceled = false;
-        }
+        foreach (XRRayInteractor ray in cancellables)
+            ray.enabled = !newState;
     }
 }

@@ -43,7 +43,25 @@ public class GeneratedModelSerializable
     }
 }
 
-    [Serializable]
+public class GeneratedMaterialSerializable
+{
+    public string Albedo, Normal;
+
+    public GeneratedMaterialSerializable(string directoryPath)
+    {
+        string[] search = Directory.GetFiles(directoryPath, "*_T.png");
+        if (search.Length > 0)
+            Albedo = Path.GetFileName(search[0]);
+
+        search = Directory.GetFiles(directoryPath, "*_N.png");
+        if (search.Length > 0)
+            Normal = Path.GetFileName(search[0]);
+    }
+}
+
+
+
+[Serializable]
 public class GameObjectSerializable
 {
     public string assetName;

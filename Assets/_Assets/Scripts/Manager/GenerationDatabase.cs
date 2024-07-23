@@ -28,7 +28,7 @@ public class GenerationDatabase : MonoBehaviour
 
     [SerializedDictionary("Material name", "Material Path")]
     [SerializeField]
-    private SerializedDictionary<string, string> MaterialDatabase;
+    private SerializedDictionary<string, string> MaterialDatabase = new SerializedDictionary<string, string>();
 
     public static event Action OnDatabaseUpdated;
 
@@ -53,12 +53,18 @@ public class GenerationDatabase : MonoBehaviour
 
     }
 
-    public void AddEntry(string key, string value)
+    public void AddModelEntry(string key, string value)
     {
         if (assetDatabase.ContainsKey(key))
             key += "_01";
         assetDatabase.Add(key, value);
-        //SaveDatabase();
+    }
+
+    public void AddMaterialEntry(string key, string value)
+    {
+        if (MaterialDatabase.ContainsKey(key))
+            key += "_01";
+        MaterialDatabase.Add(key, value);
     }
 
 
@@ -159,16 +165,7 @@ public class GenerationDatabase : MonoBehaviour
             gd.GeneratedModelSetup(lastImportedGo.transform);
             
             lastImportedGo.GetComponent<GLTFComponent>().onLoadComplete = null;
-            /*
-            Destroy(lastImportedGo.GetComponent<GLTFComponent>());
-            GameObject mem = lastImportedGo.transform.GetChild(0).gameObject;
-
-            lastImportedGo.transform.GetChild(0).GetChild(0).GetChild(0).SetParent(lastImportedGo.transform);
-            Destroy(mem);
-            lastImportedGo.transform.GetChild(0).name = "mesh_" + importationKey;
-            */
         }
-
 
         // FIRST TIME ?
         if (data.goData.assetName == "")
@@ -195,7 +192,6 @@ public class GenerationDatabase : MonoBehaviour
         data.goData = new GameObjectSerializable(parent.transform.GetChild(0).gameObject, true);
         File.WriteAllText(fullPath, JsonUtility.ToJson(data));
     }
-
 
 
     public void CheckEntryAtFolders(List<string> folderName)
@@ -270,8 +266,16 @@ public class GenerationDatabase : MonoBehaviour
         UnityEngine.Debug.Log("Generating json at " + Path.Combine(savePath, Path.GetFileName(savePath) + ".json"));
         GeneratedModelSerializable data = new GeneratedModelSerializable(savePath);
         File.WriteAllText(Path.Combine(savePath, Path.GetFileName(savePath) + ".json"), JsonUtility.ToJson(data));
-        AddEntry(Path.GetFileName(savePath), Path.Combine(savePath.Substring(Application.dataPath.Length+1, savePath.Length - Application.dataPath.Length-1), Path.GetFileName(savePath) + ".json"));
+        AddModelEntry(Path.GetFileName(savePath), Path.Combine(savePath.Substring(Application.dataPath.Length+1, savePath.Length - Application.dataPath.Length-1), Path.GetFileName(savePath) + ".json"));
         NewGeneratedModel.Invoke(Path.GetFileName(savePath), Path.Combine(savePath, Path.GetFileName(savePath))  + ".json");
+    }
+
+    public void SetupMaterialFolder(string savePath)
+    {
+        UnityEngine.Debug.Log("Generating json at " + Path.Combine(savePath, Path.GetFileName(savePath) + ".json"));
+        GeneratedMaterialSerializable data = new GeneratedMaterialSerializable(savePath);
+        File.WriteAllText(Path.Combine(savePath, Path.GetFileName(savePath) + ".json"), JsonUtility.ToJson(data));
+        AddMaterialEntry(Path.GetFileName(savePath), Path.Combine(savePath.Substring(Application.dataPath.Length + 1, savePath.Length - Application.dataPath.Length - 1), Path.GetFileName(savePath) + ".json"));
     }
 
 
@@ -309,7 +313,7 @@ public class GenerationDatabase : MonoBehaviour
         File.WriteAllText(Path.Combine(Application.dataPath, fullSavingPath), JsonUtility.ToJson(parentSerializable));
 
         Debug.Log("Object pose saved");
-        AddEntry(gameobject.name, fullSavingPath);
+        AddModelEntry(gameobject.name, fullSavingPath);
         OnDatabaseUpdated.Invoke();
     }
 
