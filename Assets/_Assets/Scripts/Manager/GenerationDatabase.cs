@@ -136,7 +136,9 @@ public class GenerationDatabase : MonoBehaviour
             glb.Collider = GLTFSceneImporter.ColliderType.MeshConvex;
             glb.ImportNormals = GLTFImporterNormals.Calculate;
             glb.GLTFUri = meshFullPath;
+#if !UNITY_EDITOR
             //glb.Load();
+#endif
         }
         else
         {

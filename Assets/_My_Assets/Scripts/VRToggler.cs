@@ -46,7 +46,7 @@ public class VRToggler : MonoBehaviour
         else
         {
             TurnOffVR.Invoke();
-            Screen.SetResolution(appResolution.width, appResolution.height,FullScreenMode.Windowed);
+            //Screen.SetResolution(appResolution.width, appResolution.height,FullScreenMode.Windowed);
         }
     }
 
