@@ -17,25 +17,25 @@ public class ScaleGizmo3D : Gizmo3D
 
     public override void Treatment()
     {
-        Vector2 diff = Input.mousePosition - mousePos;
+        Vector2 diff = Input.mousePosition - beginMousePos;
 
         if (rx && ry && rz)
         {
-            target.transform.localScale = targetScale + new Vector3(.01f * -diff.x, .01f * -diff.x, .01f * -diff.x);
+            target.transform.localScale = beginTargetScale + new Vector3(.01f * -diff.x, .01f * -diff.x, .01f * -diff.x);
             return;
         }
 
         if (rx)
         {
-            target.transform.localScale = targetScale + new Vector3(.01f * -diff.x, 0, 0);
+            target.transform.localScale = beginTargetScale + new Vector3(.01f * -diff.x, 0, 0);
         }
         if (ry)
         {
-            target.transform.localScale = targetScale + new Vector3(0, .01f * diff.y, 0);
+            target.transform.localScale = beginTargetScale + new Vector3(0, .01f * diff.y, 0);
         }
         if (rz)
         {
-            target.transform.localScale = targetScale + new Vector3(0, 0, .01f * diff.x);
+            target.transform.localScale = beginTargetScale + new Vector3(0, 0, .01f * diff.x);
         }
     }
 }

@@ -5,12 +5,13 @@ using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 public abstract class Gizmo3D : MonoBehaviour
 {
     public GameObject target;
+    public Plane XZplane;
 
     [SerializeField]
     protected GameObject X, Y, Z, W, reset;
     protected bool rx, ry, rz = false;
-    protected Vector3 mousePos, targetScale;
-
+    protected Vector3 beginMousePos, beginTargetPosition, beginTargetRotation, beginTargetScale;
+    protected Vector3 XZbeginMousePosition;
 
     void Update()
     {
@@ -45,8 +46,14 @@ public abstract class Gizmo3D : MonoBehaviour
                     TargetReset();
                 }
 
-                mousePos = Input.mousePosition;
-                targetScale = target.transform.localScale;
+                beginMousePos = Input.mousePosition;
+                beginTargetPosition = target.transform.position;
+                beginTargetRotation = target.transform.rotation.eulerAngles;
+                beginTargetScale = target.transform.localScale;
+
+                float enter;
+                if(XZplane.Raycast(ray, out enter))
+                    XZbeginMousePosition = ray.GetPoint(enter);
             }
             else
             {
@@ -84,6 +91,7 @@ public abstract class Gizmo3D : MonoBehaviour
     {
         target = t;
         gameObject.transform.position = target.transform.position;
+        XZplane = new Plane(Vector3.up, target.transform.position);
     }
 
     private void OnDisable()
@@ -96,8 +104,10 @@ public abstract class Gizmo3D : MonoBehaviour
         X.SetActive(false);
         Y.SetActive(false);
         Z.SetActive(false);
-        W.SetActive(false);
-        reset.SetActive(false);
+        if (W != null)
+            W.SetActive(false);
+        if (reset != null)
+            reset.SetActive(false);
     }
 
     public void ShowGizmos()
@@ -105,8 +115,10 @@ public abstract class Gizmo3D : MonoBehaviour
         X.SetActive(true);
         Y.SetActive(true);
         Z.SetActive(true);
-        W.SetActive(true);
-        reset.SetActive(true);
+        if(W != null)
+            W.SetActive(true);
+        if (reset != null)
+            reset.SetActive(true);
     }
 
     public abstract void TargetReset();

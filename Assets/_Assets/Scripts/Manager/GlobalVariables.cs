@@ -2,7 +2,9 @@ using Microsoft.Win32;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -85,7 +87,7 @@ public class GlobalVariables : MonoBehaviour
 
     //[Header("ReadOnly Global Variable")]
     //[ReadOnly, SerializeField]
-    private string pythonPath, pyDirectory, modelsPath, imagesPath;
+    private string pythonPath, scriptDirectory, modelsPath, imagesPath;
 
     public static GlobalVariables Instance;
 
@@ -93,7 +95,7 @@ public class GlobalVariables : MonoBehaviour
     {
         Instance = this;
         pythonPath = GetPythonPathFromRegistry();
-        pyDirectory = Path.Combine(Application.dataPath, "TripoSR/");
+        scriptDirectory = Path.Combine(Application.dataPath, "TripoSR/");
         modelsPath = Path.Combine(Application.dataPath, "GeneratedData/Models/");
         imagesPath = Path.Combine(Application.dataPath, "GeneratedData/Images/");
 
@@ -110,7 +112,58 @@ public class GlobalVariables : MonoBehaviour
     private void Start()
     {
         ModeActivate(currentApplicationState);
+        if (!IsPythonReady())
+            return;
     }
+
+
+
+    public bool IsPythonReady()
+    {
+
+        Process process = new Process();
+
+        // redirect the output stream of the child process.
+        process.StartInfo.UseShellExecute = false;
+        process.StartInfo.RedirectStandardOutput = true;
+        process.StartInfo.CreateNoWindow = true;
+        process.StartInfo.FileName = Path.Combine(scriptDirectory, "Check.py");
+        process.StartInfo.Arguments = pythonPath;
+
+        if (!string.IsNullOrEmpty(scriptDirectory))
+        {
+            process.StartInfo.WorkingDirectory = scriptDirectory;
+        }
+        else
+        {
+            process.StartInfo.WorkingDirectory = Application.temporaryCachePath;
+        }
+
+        int exitCode = -1;
+        string output = null;
+
+        try
+        {
+            process.Start();
+            UnityEngine.Debug.Log("Start");
+            output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+        }
+        catch (Exception e)
+        {
+            UnityEngine.Debug.LogError("Run error" + e.ToString()); // or throw new Exception
+        }
+        finally
+        {
+            exitCode = process.ExitCode;
+
+            process.Dispose();
+            process = null;
+        }
+
+        return exitCode == 0 ? true : false;
+    }
+
 
     public bool SetCurrentApplicationState(ApplicationState newState)
     {
@@ -153,7 +206,7 @@ public class GlobalVariables : MonoBehaviour
 
     public string GetPyScriptDirectory()
     {
-        return pyDirectory;
+        return scriptDirectory;
     }
 
     public string GetModelPath()
@@ -280,7 +333,7 @@ public class GlobalVariables : MonoBehaviour
                 return;
             }
         }
-        Debug.Log("State : " + newState + " not found.");
+        UnityEngine.Debug.Log("State : " + newState + " not found.");
     }
 
     public void ModeDeactivate(ApplicationState oldState)
@@ -296,7 +349,7 @@ public class GlobalVariables : MonoBehaviour
                 return;
             }
         }
-        Debug.Log("State : " + oldState + " not found.");
+        UnityEngine.Debug.Log("State : " + oldState + " not found.");
     }
 
     public void ModeSwitchTo(AppState applicationState)

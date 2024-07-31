@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 0
-    path: Assets/MainScene.unity
+    path: Assets/_Scenes/MainScene.unity
     guid: d32820c31bec60a4880ff8198bbaf967
   - enabled: 0
     path: Assets/AsImpL/Examples/001_Import_SimpleTest.unity
