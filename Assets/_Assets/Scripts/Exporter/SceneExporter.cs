@@ -11,7 +11,7 @@ public class SceneExporter : MonoBehaviour
 {
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             StartCoroutine(TestExport());
         }
