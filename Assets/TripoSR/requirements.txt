@@ -1,16 +1,11 @@
 numpy
---index-url https://download.pytorch.org/whl/cu121
-torch
-torchvision
-torchaudio
-omegaconf==2.3.0
-Pillow==10.1.0
-einops==0.7.0
-git+https://github.com/tatsy/torchmcubes.git
-transformers==4.35.0
-trimesh==4.0.5
-rembg
+Pillow
+einops
+omegaconf
+transformers
+trimesh
 huggingface-hub
 imageio[ffmpeg]
 gradio
 diffusers
+rembg
