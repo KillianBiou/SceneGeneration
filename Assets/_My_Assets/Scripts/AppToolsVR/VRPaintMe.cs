@@ -12,6 +12,6 @@ public class VRPaintMe : MonoBehaviour
 
     public void PaintMe()
     {
-        GetComponent<Renderer>().material.SetTexture("_Texture2D", _mat.texture);
+        GetComponent<Renderer>().material.SetTexture("_BaseMap", _mat.texture);
     }
 }

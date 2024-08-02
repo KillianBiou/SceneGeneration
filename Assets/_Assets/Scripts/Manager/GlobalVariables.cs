@@ -109,11 +109,14 @@ public class GlobalVariables : MonoBehaviour
         ModeHideAll();
     }
 
+
     private void Start()
     {
         ModeActivate(currentApplicationState);
-        if (!IsPythonReady())
+        if (IsPythonReady())
             return;
+
+        Run();
     }
 
 
@@ -127,8 +130,8 @@ public class GlobalVariables : MonoBehaviour
         process.StartInfo.UseShellExecute = false;
         process.StartInfo.RedirectStandardOutput = true;
         process.StartInfo.CreateNoWindow = true;
-        process.StartInfo.FileName = Path.Combine(scriptDirectory, "Check.py");
-        process.StartInfo.Arguments = pythonPath;
+        process.StartInfo.FileName = pythonPath;
+        process.StartInfo.Arguments = Path.Combine(scriptDirectory, "Check.py");
 
         if (!string.IsNullOrEmpty(scriptDirectory))
         {
@@ -145,7 +148,60 @@ public class GlobalVariables : MonoBehaviour
         try
         {
             process.Start();
+            UnityEngine.Debug.Log("Check python...");
+            output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+        }
+        catch (Exception e)
+        {
+            UnityEngine.Debug.LogError("Run error" + e.ToString()); // or throw new Exception
+        }
+        finally
+        {
+            exitCode = process.ExitCode;
+            process.Dispose();
+            process = null;
+        }
+
+        return exitCode == 0 ? true : false;
+    }
+
+
+    public void Run()
+    {
+        UnityEngine.Debug.Log(Path.Combine(Application.dataPath, "TripoSR", "InstallRequirement.bat"));
+        // start the child process
+        Process process = new Process();
+
+        // redirect the output stream of the child process.
+        process.StartInfo.UseShellExecute = false;
+        process.StartInfo.RedirectStandardOutput = true;
+        process.StartInfo.CreateNoWindow = false;
+        process.StartInfo.FileName = Path.Combine(Application.dataPath, "TripoSR", "InstallRequirement.bat");
+        process.StartInfo.Arguments = pythonPath;
+
+        if (!string.IsNullOrEmpty(Path.Combine(Application.dataPath, "TripoSR")))
+        {
+            process.StartInfo.WorkingDirectory = Path.Combine(Application.dataPath, "TripoSR");
+        }
+        else
+        {
+            process.StartInfo.WorkingDirectory = Application.temporaryCachePath; // nb. can only be called on the main thread
+        }
+
+        int exitCode = -1;
+        string output = null;
+
+        try
+        {
+            process.Start();
             UnityEngine.Debug.Log("Start");
+
+            // do not wait for the child process to exit before
+            // reading to the end of its redirected stream.
+            // process.WaitForExit();
+
+            // read the output stream first and then wait.
             output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
         }
@@ -161,9 +217,11 @@ public class GlobalVariables : MonoBehaviour
             process = null;
         }
 
-        return exitCode == 0 ? true : false;
-    }
+        // process exitCode/output, call onComplete handlers etc.
+        // ...
+        UnityEngine.Debug.Log(output);
 
+    }
 
     public bool SetCurrentApplicationState(ApplicationState newState)
     {

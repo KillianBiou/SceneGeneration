@@ -99,10 +99,10 @@ public class MatInspector : MonoBehaviour
     }
     public void Refresh()
     {
-        if (!mat.HasTexture("_Texture2D"))
+        if (!mat.HasTexture("_BaseMap"))
             return;
 
-        Texture tex = mat.GetTexture("_Texture2D");
+        Texture tex = mat.GetTexture("_BaseMap");
         img.sprite = Sprite.Create((Texture2D)tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
 
         Vector4 offsets = mat.GetVector("_position_offset");

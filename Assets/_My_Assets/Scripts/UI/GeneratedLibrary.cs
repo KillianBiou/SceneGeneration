@@ -49,7 +49,7 @@ public class GeneratedLibrary : MonoBehaviour
         if (selectedMaterial == null || selectedMaterial.selectedId ==-1)
             return;
 
-        selectedMaterial.materials[selectedMaterial.selectedId].SetTexture("_Texture2D", texture);
+        selectedMaterial.materials[selectedMaterial.selectedId].SetTexture("_BaseMap", texture);
         if(normal != null)
             selectedMaterial.materials[selectedMaterial.selectedId].SetTexture("_Normal_Map", normal);
     }

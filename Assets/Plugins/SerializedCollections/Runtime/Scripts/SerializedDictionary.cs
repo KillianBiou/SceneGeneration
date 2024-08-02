@@ -110,7 +110,7 @@ namespace AYellowpaper.SerializedCollections
                 _serializedList.Remove(new SerializedKeyValuePair<TKey, TValue>(key, value));
                 return true;
             }
-
+             
             return false;
         }
 

@@ -45,8 +45,7 @@ public class MaterialSetter : MonoBehaviour
     {
         if (matInfo == null || matInfo.selectedId == -1)
             return;
-
-        matInfo.materials[matInfo.selectedId].SetTexture("_Texture2D", tex);
+        matInfo.materials[matInfo.selectedId].SetTexture("_BaseMap", tex);
         if (norm != null)
         {
             matInfo.materials[matInfo.selectedId].SetTexture("_Normal_Map", norm);

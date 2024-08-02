@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 
@@ -183,6 +184,42 @@ public class TileObject : MonoBehaviour
         westWall.transform.GetChild(0).GetComponent<Collider>().enabled = true;
     }
 
+    public GameObject GetCleanCopy()
+    {
+        GameObject copy = Instantiate(gameObject);
+
+        // Destroy Inactive
+        foreach (Transform t in copy.transform)
+        {
+            if(!t.gameObject.activeSelf)
+                Destroy(t.gameObject);
+        }
+
+        // Destroy shadows related mesh
+        foreach (Renderer t in copy.GetComponentsInChildren<Renderer>(false))
+        {
+            if (t.name.ToLower() == "shadow" || t.name.ToLower() == "cube")
+                Destroy(t.gameObject);
+        }
+
+        // Destroy unneaded component for export
+        foreach (Transform component in copy.transform)
+        {
+            // Destroy ceiling
+            if (component.Find("ceiling"))
+            {
+                Destroy(component.Find("ceiling").gameObject);
+            }
+            // Destroy Ground -
+        }
+
+        if (copy.transform.Find("ground -"))
+        {
+            Destroy(copy.transform.Find("ground -").gameObject);
+        }
+
+        return copy;
+    }
 
     public void TileClick()
     {

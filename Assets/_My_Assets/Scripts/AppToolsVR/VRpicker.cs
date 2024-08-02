@@ -39,6 +39,6 @@ public class VRPicker : MonoBehaviour
         if (!(args.interactableObject.interactionLayers == imask))
             return;
 
-        args.interactableObject.transform.gameObject.GetComponent<Renderer>().material.SetTexture("_Texture2D", selectedMaterial.texture);
+        args.interactableObject.transform.gameObject.GetComponent<Renderer>().material.SetTexture("_BaseMap", selectedMaterial.texture);
     }
 }
