@@ -76,6 +76,7 @@ public class LightPlacer : MonoBehaviour
     private void OnDisable()
     {
         RoomMap.Instance.LightTogglePlaceGizmo(false);
-        lightGizmo.SetActive(false);
+        if(lightGizmo)
+            lightGizmo.SetActive(false);
     }
 }

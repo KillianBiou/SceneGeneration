@@ -8,13 +8,13 @@ public class SD_PromptHandler : MonoBehaviour
 {
     [SerializeField]
     private SdRequest request = new SdRequest();
+    [SerializeField]
     private string _model = "";
 
     [SerializeField]
     private GenerativeChoice genChoice;
     [SerializeField]
     private GameObject modelInput;
-
 
     public void SendGenerationRequest()
     {

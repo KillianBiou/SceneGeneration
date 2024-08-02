@@ -1,0 +1,11 @@
+numpy
+Pillow
+einops
+omegaconf
+transformers
+trimesh
+huggingface-hub
+imageio[ffmpeg]
+gradio
+diffusers
+rembg

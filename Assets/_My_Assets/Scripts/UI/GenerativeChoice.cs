@@ -140,7 +140,7 @@ public class GenerativeChoice : MonoBehaviour
             ProcessStartInfo start = new ProcessStartInfo
             {
                 FileName = GlobalVariables.Instance.GetPythonPath(),
-                Arguments = $"{Path.Combine(Application.dataPath, "TripoSR/BackgroundRemover.py")} {args}",
+                Arguments = $"{Path.Combine(GlobalVariables.Instance.GetPyScriptDirectory(), "BackgroundRemover.py")} {args}",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,

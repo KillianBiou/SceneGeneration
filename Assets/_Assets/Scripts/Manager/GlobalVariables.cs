@@ -95,7 +95,7 @@ public class GlobalVariables : MonoBehaviour
     {
         Instance = this;
         pythonPath = GetPythonPathFromRegistry();
-        scriptDirectory = Path.Combine(Application.dataPath, "TripoSR/");
+        scriptDirectory = Path.Combine(Application.dataPath, "PythonScripts/");
         modelsPath = Path.Combine(Application.dataPath, "GeneratedData/Models/");
         imagesPath = Path.Combine(Application.dataPath, "GeneratedData/Images/");
 
@@ -114,8 +114,11 @@ public class GlobalVariables : MonoBehaviour
     {
         ModeActivate(currentApplicationState);
         if (IsPythonReady())
+        {
+            UnityEngine.Debug.Log("Python dependencies are OK.");
             return;
-
+        }
+        UnityEngine.Debug.Log("Starting python dependencies installation...");
         Run();
     }
 
@@ -169,7 +172,7 @@ public class GlobalVariables : MonoBehaviour
 
     public void Run()
     {
-        UnityEngine.Debug.Log(Path.Combine(Application.dataPath, "TripoSR", "InstallRequirement.bat"));
+        UnityEngine.Debug.Log(Path.Combine(scriptDirectory, "InstallRequirement.bat"));
         // start the child process
         Process process = new Process();
 
@@ -177,12 +180,12 @@ public class GlobalVariables : MonoBehaviour
         process.StartInfo.UseShellExecute = false;
         process.StartInfo.RedirectStandardOutput = true;
         process.StartInfo.CreateNoWindow = false;
-        process.StartInfo.FileName = Path.Combine(Application.dataPath, "TripoSR", "InstallRequirement.bat");
+        process.StartInfo.FileName = Path.Combine(scriptDirectory, "InstallRequirement.bat");
         process.StartInfo.Arguments = pythonPath;
 
-        if (!string.IsNullOrEmpty(Path.Combine(Application.dataPath, "TripoSR")))
+        if (!string.IsNullOrEmpty(scriptDirectory))
         {
-            process.StartInfo.WorkingDirectory = Path.Combine(Application.dataPath, "TripoSR");
+            process.StartInfo.WorkingDirectory = scriptDirectory;
         }
         else
         {

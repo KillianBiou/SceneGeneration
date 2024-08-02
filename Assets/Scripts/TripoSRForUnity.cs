@@ -243,7 +243,7 @@ public class TripoSRForUnity : MonoBehaviour
         ProcessStartInfo start = new ProcessStartInfo
         {
             FileName = GlobalVariables.Instance.GetPythonPath(),
-            Arguments = $"{Path.Combine(Application.dataPath, "TripoSR/run.py")} {args}",
+            Arguments = $"{Path.Combine(GlobalVariables.Instance.GetPyScriptDirectory(), "run.py")} {args}",
             UseShellExecute = false,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
