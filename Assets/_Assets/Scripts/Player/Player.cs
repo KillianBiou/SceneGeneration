@@ -298,7 +298,7 @@ public class Player : MonoBehaviour
         return 0;
     }
 
-    public void AddImage(string imageFullpath, Vector3 generationPos)
+    public void ImgToMesh(string imageFullpath, Vector3 generationPos)
     {
         instanciationPoint = generationPos;
         generationLock = true;

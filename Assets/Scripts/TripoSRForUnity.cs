@@ -7,6 +7,7 @@ using System;
 using AsImpL;
 using UnityEngine.Events;
 using System.Collections;
+using System.Linq;
 
 public enum TripoState
 {
@@ -96,106 +97,6 @@ public class TripoSRForUnity : MonoBehaviour
             SetTripoState();
         }
     }
-    /*
-    public void RunTripoSR(Func<string, int> callback = null, string imagePath = null)
-    {
-        memoryCallback = callback;
-        if(imagePath != null)
-            destinationPath = Path.Combine("Models", imagePath.Split('/')[imagePath.Split('/').Length - 1].Split(".")[0]);
-        if (isProcessRunning)
-        {
-            UnityEngine.Debug.Log("A TripoSR process is already running - quitting and replacing process.");
-
-            if (pythonProcess is { HasExited: false })
-            {
-                pythonProcess.Kill();
-                pythonProcess.Dispose();
-            }
-
-            pythonProcess = null;
-            isProcessRunning = false;
-        }
-        string[] imagePaths = new string[images.Length];
-
-        if (imagePath != null)
-        {
-            imagePaths[0] = imagePath;
-            generatedImagePath = imagePath;
-        }
-        else
-        {
-#if UNITY_EDITOR
-            for (int i = 0; i < images.Length; i++)
-            {
-                string path = AssetDatabase.GetAssetPath(images[i]);
-                imagePaths[i] = Path.GetFullPath(path);
-            }
-#endif
-        }
-
-        string args = $"\"{string.Join("\" \"", imagePaths)}\" --device {device} " +
-                      $"--pretrained-model-name-or-path {pretrainedModelNameOrPath} " +
-                      $"--chunk-size {chunkSize} --mc-resolution {marchingCubesResolution} " +
-                      $"{(noRemoveBg ? "--no-remove-bg " : "")} " +
-                      $"--foreground-ratio {foregroundRatio.ToString(CultureInfo.InvariantCulture)} +" +
-                      $"--output-dir {Path.Combine(Application.dataPath, "TripoSR/" + outputDir)} " +
-                      $"--model-save-format {((modelSaveFormat == "dae") ? "obj" : modelSaveFormat)} " +
-                      $"{(render ? "--render" : "")}";
-
-        ProcessStartInfo start = new ProcessStartInfo
-        {
-            FileName = GlobalVariables.Instance.GetPythonPath(),
-            Arguments = $"{Path.Combine(Application.dataPath, "TripoSR/run.py")} {args}",
-            UseShellExecute = false,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            CreateNoWindow = true
-        };
-
-        pythonProcess = new Process {StartInfo = start};
-        pythonProcess.StartInfo = start;
-        pythonProcess.EnableRaisingEvents = true;
-        pythonProcess.Exited += OnPythonProcessExited;
-
-        pythonProcess.OutputDataReceived += (sender, e) => 
-        {
-            if (showDebugLogs && !string.IsNullOrEmpty(e.Data))
-            {
-                UnityEngine.Debug.Log(e.Data);
-            }
-        };
-
-        pythonProcess.ErrorDataReceived += (sender, e) => 
-        {
-            if (e.Data.Contains("Initializing"))
-            {
-                currentState = TripoState.INITIALIZATION;
-            }
-            if (e.Data.Contains("Processing"))
-            {
-                currentState = TripoState.PROCESSING;
-            }
-            if (e.Data.Contains("Running"))
-            {
-                currentState = TripoState.RUNNING;
-            }
-            if (e.Data.Contains("Exporting"))
-            {
-                currentState = TripoState.EXPORTING;
-            }
-
-            UnityEngine.Debug.Log(e.Data);
-        };
-
-        // External set because it cause an unkown bug either way
-
-        pythonProcess.Start();
-        pythonProcess.BeginOutputReadLine();
-        pythonProcess.BeginErrorReadLine();
-        isProcessRunning = true;
-    }
-    */
-
 
     private string savePath;
     public UnityEvent<string> memoryCallbackGLB;
@@ -327,52 +228,7 @@ public class TripoSRForUnity : MonoBehaviour
     }
 
 
-    /*
-    private void OnPythonProcessExited(object sender, EventArgs e)
-    {
-        currentState = TripoState.WAITING;
-        isProcessRunning = false;
-        pythonProcess = null;
-        
-        //if (moveAndRename) UnityEditor.EditorApplication.delayCall += MoveAndRenameOutputFile;
-        //else if (autoAddMesh) UnityEditor.EditorApplication.delayCall += () => AddMeshToScene(null);
 
-        //UnityEditor.EditorApplication.delayCall += () => OnPythonProcessEnded?.Invoke();
-    }*/
-    /*
-    private void MoveAndRenameOutputFile()
-    {
-        string originalPath = Path.Combine(Application.dataPath, "TripoSR/" + outputDir + "0/mesh.obj");
-        string modelsDirectory = "Assets/"+destinationPath;
-        string newFileName = destinationPath.Split("\\")[destinationPath.Split("\\").Length - 1] + ".obj";
-        string newAssetPath = Path.Combine(modelsDirectory, newFileName);
-        string newPath = Path.Combine(Application.dataPath, newAssetPath.Substring("Assets/".Length));
-
-
-        if (!Directory.Exists(modelsDirectory)) Directory.CreateDirectory(modelsDirectory);
-
-        if (File.Exists(originalPath))
-        {
-            if (File.Exists(newPath)) UnityEngine.Debug.LogWarning($"The file '{newPath}' already exists. Please move or rename, then run TripoSR again.");
-            else {
-                File.Move(originalPath, newPath);
-                if (generatedImagePath != null)
-                    File.Copy(generatedImagePath, newPath.Replace(".obj", ".png"));
-                //AssetDatabase.Refresh();
-
-                UnityEngine.Debug.Log($"Moved and renamed mesh to path: {newPath}");
-            }
-
-            if (autoAddMesh) AddMeshToScene(newAssetPath);
-        }
-        else UnityEngine.Debug.Log($"File @ {originalPath} does not exist - cannot move and rename.");
-        if (memoryCallback != null)
-        {
-            GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.MODEL_IMPORT);
-            memoryCallback(newAssetPath);
-        }
-    }
-    */
     private void SetTripoState()
     {
         switch (currentState)
@@ -391,40 +247,7 @@ public class TripoSRForUnity : MonoBehaviour
                 break;
         }
     }
-    
-    /*
-    private void AddMeshToScene(string path = null)
-    {        
-        string objPath = path ?? "Assets/TripoSR/" + outputDir + "0/mesh.obj";
 
-        /*AssetDatabase.Refresh();
-        AssetDatabase.ImportAsset(objPath, ImportAssetOptions.ForceUpdate);
-
-        GameObject importedObj = AssetDatabase.LoadAssetAtPath<GameObject>(objPath);*/
-
-    /*
-        if (File.Exists(objPath))
-        {
-            AsImpL.ImportOptions importOptions = new AsImpL.ImportOptions();
-
-            ObjectImporter.Instance.ImportModelAsync(Path.GetFileNameWithoutExtension(path), objPath, null, new AsImpL.ImportOptions());
-
-            /*UnityEngine.Debug.Log("Instantiated GameObject prefab: " + instantiatedObj.name);
-
-            if (autoFixRotation) instantiatedObj.transform.GetChild(0).rotation = Quaternion.Euler(new Vector3(-90f, -90f, 0f));
-
-            if (autoAddPhysicsComponents) 
-            {
-                GameObject meshObj = instantiatedObj.transform.GetChild(0).gameObject;
-                MeshCollider mc = meshObj.AddComponent<MeshCollider>();
-                mc.convex = true;
-                meshObj.AddComponent<Rigidbody>();
-            }*/
-    /*
-        }
-        else UnityEngine.Debug.LogError("Failed to load the mesh at path: " + objPath);
-    }
-    */
     public TripoState GetCurrentState()
     {
         return currentState;

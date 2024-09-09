@@ -39,21 +39,18 @@ public class GeneratedLibrarySky : MonoBehaviour
 
     public void LoadLibrary()
     {
-        if (!Directory.Exists(Application.dataPath + libraryName))
-            return;
-
-        DirectoryInfo dir = new DirectoryInfo(Application.dataPath + libraryName);
+        DirectoryInfo dir = new DirectoryInfo(GlobalVariables.Instance.GetSkyPath());
         FileInfo[] info = dir.GetFiles("*_SKY.png");
+
         foreach (FileInfo f in info)
         {
             GameObject last = Instantiate(buttonPrefab);
 
             Texture2D tex = new Texture2D(2, 2);
-            tex.LoadImage(File.ReadAllBytes(Application.dataPath + libraryName + f.Name));
+            tex.LoadImage(File.ReadAllBytes(f.FullName));
             tex.name = f.Name;
 
-            last.GetComponent<MaterialSetter>().tex = tex;
-            last.GetComponent<MaterialSetter>().SetupButton(tex);
+            last.GetComponent<ButtonMaterial>().SetupButton(tex);
 
             last.transform.SetParent(transform, false);
         }

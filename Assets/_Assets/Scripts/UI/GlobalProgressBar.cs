@@ -40,6 +40,11 @@ public class GlobalProgressBar : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        currentProcedureList = new List<ApplicationStatePhase>();
+    }
+
     private void Update()
     {
         if (newPhase != ApplicationStatePhase.UNKNOWN)
@@ -72,6 +77,9 @@ public class GlobalProgressBar : MonoBehaviour
 
     private void InternalNotifyPhaseChange(ApplicationStatePhase newPhase)
     {
+        if (!currentProcedureList.Contains(newPhase))
+            return;
+
         // Advancement value
         int currentAdvancement = currentProcedureList.IndexOf(newPhase);
         // Set slider at current percentage (advancement for correct mapping)

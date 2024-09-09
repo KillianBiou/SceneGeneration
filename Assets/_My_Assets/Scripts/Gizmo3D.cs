@@ -5,13 +5,14 @@ using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 public abstract class Gizmo3D : MonoBehaviour
 {
     public GameObject target;
-    public Plane XZplane;
+    public Plane XZplane, XYplane, YZplane;
 
     [SerializeField]
-    protected GameObject X, Y, Z, W, reset;
+    protected GameObject X, Y, Z, W, reset, XZ;
     protected bool rx, ry, rz = false;
     protected Vector3 beginMousePos, beginTargetPosition, beginTargetRotation, beginTargetScale;
-    protected Vector3 XZbeginMousePosition;
+    protected Quaternion biginTargetRotation;
+    protected Vector3 XZbeginMousePosition, XYbeginMousePosition, YZbeginMousePosition;
 
     void Update()
     {
@@ -31,8 +32,15 @@ public abstract class Gizmo3D : MonoBehaviour
                 if (hit.collider.gameObject == Y)
                     ry = true;
 
+
                 if (hit.collider.gameObject == Z)
                     rz = true;
+
+                if(hit.collider.gameObject == XZ)
+                {
+                    rx = true;
+                    rz = true;
+                }
 
                 if (hit.collider.gameObject == W)
                 {
@@ -46,14 +54,25 @@ public abstract class Gizmo3D : MonoBehaviour
                     TargetReset();
                 }
 
+                XZplane = new Plane(Vector3.up, target.transform.position);
+                XYplane = new Plane(Vector3.forward * (Camera.main.transform.position.z > target.transform.position.z ? 1 : -1), target.transform.position);
+                YZplane = new Plane(Vector3.left * (Camera.main.transform.position.x > target.transform.position.x ? 1 : -1), target.transform.position);
+
                 beginMousePos = Input.mousePosition;
                 beginTargetPosition = target.transform.position;
+                biginTargetRotation = target.transform.rotation;
                 beginTargetRotation = target.transform.rotation.eulerAngles;
                 beginTargetScale = target.transform.localScale;
 
                 float enter;
-                if(XZplane.Raycast(ray, out enter))
+                if (XZplane.Raycast(ray, out enter))
                     XZbeginMousePosition = ray.GetPoint(enter);
+
+                if (XYplane.Raycast(ray, out enter))
+                    XYbeginMousePosition = ray.GetPoint(enter);
+
+                if (YZplane.Raycast(ray, out enter))
+                    YZbeginMousePosition = ray.GetPoint(enter);
             }
             else
             {
@@ -78,6 +97,7 @@ public abstract class Gizmo3D : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
+            transform.rotation = Quaternion.identity;
             rx = false;
             ry = false;
             rz = false;
@@ -92,6 +112,8 @@ public abstract class Gizmo3D : MonoBehaviour
         target = t;
         gameObject.transform.position = target.transform.position;
         XZplane = new Plane(Vector3.up, target.transform.position);
+        XYplane = new Plane(Vector3.forward, target.transform.position);
+        YZplane = new Plane(Vector3.left, target.transform.position);
     }
 
     private void OnDisable()
@@ -106,6 +128,8 @@ public abstract class Gizmo3D : MonoBehaviour
         Z.SetActive(false);
         if (W != null)
             W.SetActive(false);
+        if (XZ != null)
+            XZ.SetActive(false);
         if (reset != null)
             reset.SetActive(false);
     }
@@ -117,6 +141,8 @@ public abstract class Gizmo3D : MonoBehaviour
         Z.SetActive(true);
         if(W != null)
             W.SetActive(true);
+        if(XZ != null)
+            XZ.SetActive(true);
         if (reset != null)
             reset.SetActive(true);
     }

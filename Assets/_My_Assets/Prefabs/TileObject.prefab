@@ -2180,7 +2180,7 @@ GameObject:
   - component: {fileID: 7379392446451072574}
   - component: {fileID: 2874446639302010129}
   - component: {fileID: 5574910340723055643}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TileObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2230,7 +2230,6 @@ MonoBehaviour:
   groundAdd: {fileID: 714910834785402816}
   groundRemove: {fileID: 8810163050287636720}
   selected: {fileID: 859007873967185617}
-  roomMap: {fileID: 0}
   isWall: 0
   editorCollider: {fileID: 2874446639302010129}
 --- !u!65 &2874446639302010129

@@ -19,9 +19,6 @@ public class GenerativeChoice : MonoBehaviour
     private TMP_Text title;
 
 
-
-
-    private StableHandler sdh;
     private int amount;
     private bool pending;
 
@@ -36,8 +33,6 @@ public class GenerativeChoice : MonoBehaviour
     void Awake()
     {
         pending = false;
-
-        sdh = FindFirstObjectByType<StableHandler>();
 
         req = DiffuserInterface.GetRequestTemplate();
 
@@ -103,12 +98,13 @@ public class GenerativeChoice : MonoBehaviour
             pythonProcess = null;
             isProcessRunning = false;
         }
+        UnityEngine.Debug.Log("Starting removing all BG from " + Path.Combine(Application.dataPath, req.request.directory));
 
         DirectoryInfo dir = new DirectoryInfo(Path.Combine(Application.dataPath, req.request.directory));
-        FileInfo[] info = dir.GetFiles("*.png");
+        FileInfo[] infos = dir.GetFiles("*.png");
 
         // Progress Bar Notification
-        switch (info.Length)
+        switch (infos.Length)
         {
             case 1:
                 GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.ONE_IMAGE);
@@ -124,15 +120,15 @@ public class GenerativeChoice : MonoBehaviour
                 break;
         }
 
-        UnityEngine.Debug.Log("Nb element = " + info.Length);
+        UnityEngine.Debug.Log("Nb element = " + infos.Length);
 
-        if (info.Length >= amount)
+        if (infos.Length >= amount)
         {
-            string[] names = new string[info.Length];
+            string[] names = new string[infos.Length];
 
-            for (int i = 0; i < info.Length; i++)
+            for (int i = 0; i < infos.Length; i++)
             {
-                names[i] =  Application.dataPath + "/GeneratedData/" + folderName + "/" + info[i].Name;
+                names[i] =  infos[i].FullName;
             }
 
             string args = $"\"{string.Join("\" \"", names)}\" ";
@@ -178,7 +174,7 @@ public class GenerativeChoice : MonoBehaviour
         pythonProcess = null;
 
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.delayCall += CountingResults;
+        UnityEditor.EditorApplication.delayCall += GenerateButtons;
 
         UnityEditor.EditorApplication.delayCall += () => OnPythonProcessEnded?.Invoke();
 #else
@@ -187,52 +183,46 @@ public class GenerativeChoice : MonoBehaviour
 #endif
     }
 
-
     IEnumerator CoolBack()
     {
         yield return new WaitForEndOfFrame();
-        CountingResults();
+        GenerateButtons();
         yield return null;
     }
 
 
 
 
-    public void CountingResults()
+    public void GenerateButtons()
     {
 
         DirectoryInfo dir = new DirectoryInfo(Application.dataPath + "/GeneratedData/" +  folderName); // CALL THE DIR
-        FileInfo[] info = dir.GetFiles("*.png");
+        FileInfo[] infos = dir.GetFiles("*.png");
 
-        if (info.Length >= amount)
+        foreach (FileInfo f in infos)
         {
-            //generate buttons
-            foreach (FileInfo f in info)
-            {
-                GameObject last = Instantiate(buttonChoice);
+            GameObject last = Instantiate(buttonChoice);
 
-                Texture2D tex = new Texture2D(2, 2);
-                tex.LoadImage(File.ReadAllBytes(f.FullName));
+            Texture2D tex = new Texture2D(2, 2);
+            tex.LoadImage(File.ReadAllBytes(f.FullName));
 
-                last.GetComponent<Button>().onClick.AddListener(() => PickedImageCallback(f.FullName));
+            last.GetComponent<Button>().onClick.AddListener(() => PickedImageCallback(f.FullName));
 
-                last.transform.GetChild(0).GetComponent<RawImage>().texture = tex;
-                last.transform.SetParent(uiContainer.transform, false);
-            }
-
-            title.text = "Choices (" + amount + ")";
-
-            pending = false;
-
-            GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.USER_SELECTION);
+            last.transform.GetChild(0).GetComponent<RawImage>().texture = tex;
+            last.transform.SetParent(uiContainer.transform, false);
         }
+
+        title.text = "Choices (" + amount + ")";
+        pending = false;
+        GlobalVariables.Instance.SetCurrentPhase(ApplicationStatePhase.USER_SELECTION);
     }
 
 
     public void PickedImageCallback(string path)
     {
         gameObject.SetActive(false);
-        Player.Instance.AddImage(path, generationPos);
+        //TripoSRForUnity.Instance.RunTripoSR_GLB();
+        Player.Instance.ImgToMesh(path, generationPos);
     }
 
 

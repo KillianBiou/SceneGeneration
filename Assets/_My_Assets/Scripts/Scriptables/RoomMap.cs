@@ -311,6 +311,23 @@ public class RoomMap : MonoBehaviour
         return ld;
     }
 
+    public void LoadLightsData(LightsData data)
+    {
+        DeleteAllLights();
+
+        foreach (LightPlace l in data.lights)
+        {
+            GameObject last = Instantiate(lightPrefab);
+            last.transform.position = l.position;
+            Light li = last.GetComponent<TileLight>().lightObj.GetComponent<Light>();
+            li.transform.localPosition = new Vector3(0, l.height, 0);
+            li.intensity = l.intensity;
+            li.range = l.range;
+            last.GetComponent<TileLight>().DeactivateEdit();
+            llights.Add(last.GetComponent<TileLight>());
+        }
+    }
+
     public void DropCurrentMap()
     {
         for (int i = 0; i < size; i++)
@@ -343,7 +360,6 @@ public class RoomMap : MonoBehaviour
 
     public void LoadMap(MapData data)
     {
-
         DropCurrentMap();
 
         size = data.map.Count;
@@ -354,6 +370,7 @@ public class RoomMap : MonoBehaviour
             for (int j = 0; j < size; j++)
             {
                 mapObj[i].Add(CreateTile(new Vector3(i, 0, j)));
+                mapObj[i][j].isWall = data.map[i].list[j];
             }
         }
 

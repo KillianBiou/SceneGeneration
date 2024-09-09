@@ -25,27 +25,15 @@ public class SaveUIManager : MonoBehaviour
     private void ClearHolder()
     {
         foreach (Transform item in holder)
-        {
             Destroy(item.gameObject);
-        }
     }
 
     private void FetchSaveList()
     {
-        string fullPath = Path.Combine(Application.dataPath, savePath);
-        Debug.Log(fullPath);
+        DirectoryInfo directoryInfo = new DirectoryInfo(GlobalVariables.Instance.GetScenePath());
 
-        if (!Directory.Exists(fullPath))
-            return;
-
-        DirectoryInfo directoryInfo = new DirectoryInfo(fullPath);
-
-        foreach (FileInfo info in directoryInfo.GetFiles())
-        {
-            if(info.Extension == ".json")
-                AddEntry(info.Name, File.GetLastWriteTimeUtc(info.FullName), info.FullName);
-            
-        }
+        foreach (FileInfo info in directoryInfo.GetFiles("*.json"))
+            AddEntry(info.Name, File.GetLastWriteTimeUtc(info.FullName), info.FullName);
     }
 
     private void AddEntry(string saveName, DateTime lastEdit, string fullPath)

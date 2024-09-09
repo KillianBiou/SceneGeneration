@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.XR;
 using UnityEngine.XR.Management;
 
 public class VRToggler : MonoBehaviour
@@ -42,10 +43,12 @@ public class VRToggler : MonoBehaviour
         if(isVrOn)
         {
             TurnOnVR.Invoke();
+            XRSettings.enabled = true;
         }
         else
         {
             TurnOffVR.Invoke();
+            XRSettings.enabled = false;
             //Screen.SetResolution(appResolution.width, appResolution.height,FullScreenMode.Windowed);
         }
     }

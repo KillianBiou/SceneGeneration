@@ -82,6 +82,6 @@ public class WheelController : MonoBehaviour
         wheel.gameObject.SetActive(newState);
 
         foreach (XRRayInteractor ray in cancellables)
-            ray.enabled = !newState;
+            ray.gameObject.SetActive(!newState);// = !newState;
     }
 }

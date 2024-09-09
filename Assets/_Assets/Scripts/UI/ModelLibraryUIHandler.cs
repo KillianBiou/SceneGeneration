@@ -121,6 +121,5 @@ public class ModelLibraryUIHandler : MonoBehaviour
             if(item.name != "AddModel")
                 Destroy(item.gameObject);
         }
-        //Debug.Log("Cleared database View");
     }
 }

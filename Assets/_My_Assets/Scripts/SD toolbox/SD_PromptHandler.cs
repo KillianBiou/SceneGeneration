@@ -20,7 +20,7 @@ public class SD_PromptHandler : MonoBehaviour
     {
         request.filename = request.prompt + DateTime.Now.ToString("_MMdd-HHmmss") + "_T";
         StableCompleteRequest sdcr = new StableCompleteRequest(request, _model, 1, "");
-        DiffuserInterface.Instance.RequestGeneration(sdcr, GeneratedLibrary.Instance.AddNew);
+        DiffuserInterface.Instance.RequestGeneration(sdcr);
         //DiffuserInterface.Instance.RequestGeneration(sdcr, null);
     }
 

@@ -40,5 +40,6 @@ public class VRPicker : MonoBehaviour
             return;
 
         args.interactableObject.transform.gameObject.GetComponent<Renderer>().material.SetTexture("_BaseMap", selectedMaterial.texture);
+        args.interactableObject.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_use_normal", 0.0f);
     }
 }

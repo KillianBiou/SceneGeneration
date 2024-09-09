@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-public class MaterialSetter : MonoBehaviour
+public class ButtonMaterial : MonoBehaviour
 {
     public RawImage texture, normal;
 

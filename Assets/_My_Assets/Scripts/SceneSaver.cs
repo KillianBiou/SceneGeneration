@@ -20,11 +20,6 @@ public struct SceneDescription
 {
     public string fileName;
 
-
-    private RoomMap rm;
-    private EditmapMode le;
-    private Player p;
-
     public string debugPath;
 
     public static SceneSaver Instance;
@@ -34,23 +29,16 @@ public struct SceneDescription
         Instance = this;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        rm = RoomMap.Instance;
-        le = EditmapMode.Instance;
-        p = Player.Instance;
-    }
 
     public void SaveScene(string path)
     {
         SceneDescription saveData = new SceneDescription();
 
-        saveData.tileData = rm.GetSaveMapData();
-        saveData.lightData = le.GetLightsSaveData();
-        saveData.goData = p.GetGameObjectSaveData();
+        saveData.tileData = RoomMap.Instance.GetSaveMapData();
+        saveData.lightData = RoomMap.Instance.GetLightsSaveData();
+        saveData.goData = Player.Instance.GetGameObjectSaveData();
 
-        string fullPath = Path.Combine(Application.dataPath, path, fileName + ".json");
+        string fullPath = Path.Combine(GlobalVariables.Instance.GetScenePath(), fileName + ".json");
 
 
         if (File.Exists(fullPath))
@@ -58,7 +46,6 @@ public struct SceneDescription
             Debug.Log("File already exist, overwritting...");
             File.Delete(fullPath);
         }
-
 
         File.WriteAllText(fullPath, JsonUtility.ToJson(saveData));
         Debug.Log("File successfully saved at : " + fullPath);
@@ -70,9 +57,9 @@ public struct SceneDescription
         {
             SceneDescription data = JsonUtility.FromJson<SceneDescription>(File.ReadAllText(path));
 
-            rm.LoadMap(data.tileData);
-            le.LoadLightsData(data.lightData);
-            p.LoadScene(data.goData);
+            RoomMap.Instance.LoadMap(data.tileData);
+            RoomMap.Instance.LoadLightsData(data.lightData);
+            Player.Instance.LoadScene(data.goData);
 
             Debug.Log("Successfully loaded from '" + path + "'.");
         }

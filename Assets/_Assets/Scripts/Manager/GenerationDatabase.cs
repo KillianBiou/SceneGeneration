@@ -16,6 +16,7 @@ using Unity.VisualScripting;
 using Unity.Serialization.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class GenerationDatabase : MonoBehaviour
 {
@@ -107,6 +108,11 @@ public class GenerationDatabase : MonoBehaviour
         parent.transform.position = targetPos;
         parent.transform.rotation = targetRot;
         parent.transform.localScale = targetScale;
+
+        parent.AddComponent<XRGrabInteractable>();
+        parent.GetComponent<Rigidbody>().useGravity = false;
+        parent.GetComponent<Rigidbody>().isKinematic = true;
+        //parent.GetComponent<XRGrabInteractable>().
 
         if (parent == null)
             parent.transform.SetParent(GameObject.FindGameObjectWithTag("Playground").transform);
@@ -209,7 +215,7 @@ public class GenerationDatabase : MonoBehaviour
         if (!Directory.Exists(folderName))
             return;
 
-        Debug.Log("Looking for entry in " + folderName);
+        //Debug.Log("Looking for entry in " + folderName);
         DirectoryInfo directoryInfo = new DirectoryInfo(folderName);
 
         foreach (DirectoryInfo info in directoryInfo.GetDirectories())

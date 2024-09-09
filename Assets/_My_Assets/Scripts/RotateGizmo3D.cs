@@ -11,28 +11,55 @@ public class RotateGizmo3D : Gizmo3D
 
     public override void AssignTarget(GameObject t)
     {
+        base.AssignTarget(t);
         target = t.GetComponent<GeneratedData>().rotateTransform.gameObject;
         gameObject.transform.position = target.transform.position;
     }
 
     public override void Treatment()
     {
+        if (!rx && !ry && !rz)
+            return;
+
         Vector2 diff = Input.mousePosition - beginMousePos;
+        Vector3 difff = new Vector3(0, 0, 0);
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        float enter;
+        if (XZplane.Raycast(ray, out enter))
+            difff = ray.GetPoint(enter) - XZbeginMousePosition;
+
+
+        Quaternion offset = Quaternion.identity;
+        Vector3 oofset = new Vector3();
 
         if (rx)
         {
-            target.transform.eulerAngles = beginTargetRotation + new Vector3(.1f * diff.x, 0, 0);
-            gameObject.transform.eulerAngles = new Vector3(.1f * diff.x, 0, 0);
+            if (XZplane.Raycast(ray, out enter))
+                difff = ray.GetPoint(enter);
+
+
+
+            offset *= Quaternion.LookRotation(Vector3.Normalize(difff - target.transform.position), Vector3.up) * Quaternion.Inverse(Quaternion.LookRotation(Vector3.Normalize(XZbeginMousePosition - target.transform.position), Vector3.up));
+            oofset = Quaternion.LookRotation(Vector3.Normalize(difff - target.transform.position), Vector3.up) * Quaternion.Inverse(Quaternion.LookRotation(Vector3.Normalize(XZbeginMousePosition - target.transform.position), Vector3.up)).eulerAngles;
         }
         if (ry)
         {
-            target.transform.eulerAngles = beginTargetRotation + new Vector3(0, .1f * diff.x, 0);
-            gameObject.transform.eulerAngles = new Vector3(0, .1f * diff.x, 0);
+            if (XYplane.Raycast(ray, out enter))
+                difff = ray.GetPoint(enter);
+
+            offset *= Quaternion.LookRotation(Vector3.Normalize(difff - target.transform.position), Vector3.forward) * Quaternion.Inverse(Quaternion.LookRotation(Vector3.Normalize(XYbeginMousePosition - target.transform.position), Vector3.forward));
         }
         if (rz)
         {
-            target.transform.eulerAngles = beginTargetRotation + new Vector3(0, 0, .1f * diff.y);
-            gameObject.transform.eulerAngles = new Vector3(0, 0, .1f * diff.y);
+            if (YZplane.Raycast(ray, out enter))
+                difff = ray.GetPoint(enter);
+
+            offset *= Quaternion.LookRotation(Vector3.Normalize(difff - target.transform.position), Vector3.left) * Quaternion.Inverse(Quaternion.LookRotation(Vector3.Normalize(YZbeginMousePosition - target.transform.position), Vector3.left));
         }
+        
+        //target.transform.eulerAngles = beginTargetRotation + oofset;
+        target.transform.rotation = offset * biginTargetRotation;
+        gameObject.transform.rotation = Quaternion.identity * offset;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Windows;
 
 public class DiffuserInterface : MonoBehaviour
@@ -21,10 +22,26 @@ public class DiffuserInterface : MonoBehaviour
     private Func<string, int> memoryCallback;
     private string target;
 
+
+    public UnityEvent FinishedGenerating;
+
     private void Awake()
     {
         Instance = this;
     }
+
+    public static StableCompleteRequest GetRequestTemplate()
+    {
+        StableCompleteRequest request = new StableCompleteRequest();
+        request.request = new SdRequest("", "image", "", "", 512, 512, 20, 7, -1, false, false, false, "");
+        request.device = "";
+        request.nbImages = 1;
+        request.imagesModels = "";
+
+        return request;
+
+    }
+
 
     public void RequestGeneration(StableCompleteRequest requestDetail, Func<string, int> callback = null)
     {
@@ -122,17 +139,6 @@ public class DiffuserInterface : MonoBehaviour
         isProcessRunning = true;
     }
 
-    public static StableCompleteRequest GetRequestTemplate()
-    {
-        StableCompleteRequest request = new StableCompleteRequest();
-        request.request = new SdRequest("", "image", "", "", 512, 512, 20, 7, -1, false, false, false, "");
-        request.device = "";
-        request.nbImages = 1;
-        request.imagesModels = "";
-
-        return request;
-
-    }
 
     private void OnPythonProcessExited(object sender, EventArgs e)
     {
@@ -142,8 +148,9 @@ public class DiffuserInterface : MonoBehaviour
 
         if (memoryCallback != null)
         {
-            UnityEngine.Debug.Log("MEMORY SET");
+            UnityEngine.Debug.Log("Calling back...");
 #if UNITY_EDITOR
+            FinishedGenerating.Invoke();
             memoryCallback(target);
 #else
             StartCoroutine(CoolBack());
@@ -155,6 +162,7 @@ public class DiffuserInterface : MonoBehaviour
     private IEnumerator CoolBack()
     {
         yield return new WaitForEndOfFrame();
+        FinishedGenerating.Invoke();
         memoryCallback(target);
         yield return null;
     }

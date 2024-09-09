@@ -18,31 +18,35 @@ public class MoveGizmo3D : Gizmo3D
 
     public override void Treatment()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (!rx && !ry && !rz)
+            return;
+
 
         Vector2 diff = Input.mousePosition - beginMousePos;
 
         Vector3 difff = new Vector3(0, 0, 0);
 
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         float enter;
         if (XZplane.Raycast(ray, out enter))
             difff = ray.GetPoint(enter) - XZbeginMousePosition;
 
+        Vector3 offset = new Vector3();
 
         if (rx)
         {
-            target.transform.position = beginTargetPosition + new Vector3(difff.x, 0, 0);
-            gameObject.transform.position = target.transform.position;
+            offset += new Vector3(difff.x, 0, 0);
         }
         if (ry)
         {
-            target.transform.position = beginTargetPosition + new Vector3(0,0.01f * diff.y, 0);
-            gameObject.transform.position = target.transform.position;
+            offset += new Vector3(0, 0.01f * diff.y, 0);
         }
         if (rz)
         {
-            target.transform.position = beginTargetPosition + new Vector3(0, 0, difff.z);
-            gameObject.transform.position = target.transform.position;
+            offset += new Vector3(0, 0, difff.z);
         }
+
+        target.transform.position = beginTargetPosition + offset;
+        gameObject.transform.position = target.transform.position;
     }
 }

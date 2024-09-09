@@ -87,7 +87,7 @@ public class GlobalVariables : MonoBehaviour
 
     //[Header("ReadOnly Global Variable")]
     //[ReadOnly, SerializeField]
-    private string pythonPath, scriptDirectory, modelsPath, imagesPath;
+    private string pythonPath, scriptDirectory, modelsPath, imagesPath, skyboxPath, photoPath, scenePath;
 
     public static GlobalVariables Instance;
 
@@ -98,11 +98,20 @@ public class GlobalVariables : MonoBehaviour
         scriptDirectory = Path.Combine(Application.dataPath, "PythonScripts/");
         modelsPath = Path.Combine(Application.dataPath, "GeneratedData/Models/");
         imagesPath = Path.Combine(Application.dataPath, "GeneratedData/Images/");
+        skyboxPath = Path.Combine(Application.dataPath, "GeneratedData/Skies/");
+        photoPath = Path.Combine(Application.dataPath, "GeneratedData/Photos/");
+        scenePath = Path.Combine(Application.dataPath, "GeneratedData/Saves/");
 
         if (!System.IO.Directory.Exists(modelsPath))
             System.IO.Directory.CreateDirectory(modelsPath);
         if (!System.IO.Directory.Exists(imagesPath))
             System.IO.Directory.CreateDirectory(imagesPath);
+        if (!System.IO.Directory.Exists(skyboxPath))
+            System.IO.Directory.CreateDirectory(skyboxPath);
+        if (!System.IO.Directory.Exists(photoPath))
+            System.IO.Directory.CreateDirectory(photoPath);
+        if (!System.IO.Directory.Exists(scenePath))
+            System.IO.Directory.CreateDirectory(scenePath);
         EndOfGen();
 
         currentApplicationState = ApplicationState.IDLE;
@@ -278,6 +287,20 @@ public class GlobalVariables : MonoBehaviour
     public string GetImagePath()
     {
         return imagesPath;
+    }
+
+    public string GetSkyPath()
+    {
+        return skyboxPath;
+    }
+
+    public string GetPhotoPath()
+    {
+        return photoPath;
+    }
+    public string GetScenePath()
+    {
+        return scenePath;
     }
 
     private string GetPythonPathFromRegistry(string requiredVersion = "", string maxVersion = "")
