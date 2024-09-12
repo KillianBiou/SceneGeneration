@@ -78,6 +78,7 @@ public class GenerativeChoice : MonoBehaviour
         req.nbImages = n;
 
         DiffuserInterface.Instance.RequestGeneration(req, RemoveBackground);
+        //BGRemover.Instance.
 
         amount = n;
         pending = true;
@@ -85,6 +86,8 @@ public class GenerativeChoice : MonoBehaviour
 
     public int RemoveBackground(string s)
     {
+        UnityEngine.Debug.Log("Starting BG remover");
+
         if (isProcessRunning)
         {
             UnityEngine.Debug.Log("A background remover process is already running - quitting and replacing process.");
