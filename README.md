@@ -21,8 +21,8 @@ This project was conducted over a five-month research internship in Japan, as pa
 
 
 ## ✍️ Authors
-Bastien Bodineau
-Killian Biou
++ Bastien Bodineau
++ Killian Biou
 
 ## 📄 License
 This project is for academic and portfolio purposes. Please contact the author before reuse or distribution.
